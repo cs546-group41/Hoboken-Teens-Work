@@ -1,17 +1,13 @@
-const postRoutes = require("./jobs");
+const jobRoutes = require("./jobs");
 const userRoutes = require("./users");
 const path = require("path");
 
 const constructorMethod = (app) => {
-  app.use("/jobs", postRoutes);
-  app.use("/users", userRoutes);
-  //   app.get("/about", (req, res) => {
-  //     res.sendFile(path.resolve("static/about.html"));
-  //   });
 
-  app.use("*", (req, res) => {
-    res.redirect("/jobs");
-  });
+	// app.use("/jobs", jobRoutes);
+	// app.use("/users", userRoutes);
+	app.use("/", res.render("homepage", {title: "Homepage"}));
+	app.use("*", res.sendFile(path.resolve("static/notfound.html")));
 };
 
 module.exports = constructorMethod;
