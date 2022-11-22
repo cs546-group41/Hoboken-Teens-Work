@@ -1,7 +1,17 @@
 const mongoCollections = require("../config/mongoCollections");
 const jobs = mongoCollections.jobs;
 
+const getAllJobs = async() => {
+
+}
+
+const searchJobs = async(jobSearchQuery) => {
+
+}
+
 const createJob = async (jobTitle, jobDescription, jobStreetName, jobAuthor) => {
+
+	
 	const newJob = {
 		jobTitle: jobTitle,
 		jobDescription: jobDescription,
