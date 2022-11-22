@@ -1,35 +1,39 @@
-const mongoCollections = require("../config/mongoCollections");
-const jobs = mongoCollections.jobs;
-
-const getAllJobs = async() => {
-
-}
-
-const searchJobs = async(jobSearchQuery) => {
-
-}
-
-const createJob = async (jobTitle, jobDescription, jobStreetName, jobAuthor) => {
-
-	
-	const newJob = {
-		jobTitle: jobTitle,
-		jobDescription: jobDescription,
-		jobStreetName: jobStreetName,
-		jobAuthor: jobAuthor,
-		jobStatus: "open",
-		applicants: [],
-		hired: {},
-		comments: [],
-	};
-};
-
-const removeJob = async (jobId) => {};
-
-const editJob = async (jobId, jobTitle, jobDescription, jobStreetName, jobAuthor) => {};
+const { jobs } = require("../config/mongoCollections");
 
 module.exports = {
-	createJob,
-	removeJob,
-    editJob
+	getAllJobs: async () => {
+		const jobsCollection = await jobs();
+		const jobsList = await jobsCollection.find({}).toArray();
+
+		if (!jobsList) throw new Error("Could not get all jobs");
+
+		return jobsList;
+	},
+
+	getJobById: async(JobId) => {},
+
+	searchJobs: async (jobSearchQuery) => {},
+
+	createJob: async (jobTitle, jobDescription, jobStreetName, jobAuthor) => {
+		const newJob = {
+			jobTitle: jobTitle,
+			jobDescription: jobDescription,
+			jobStreetName: jobStreetName,
+			jobAuthor: jobAuthor,
+			jobStatus: "open",
+			applicants: [],
+			hired: {},
+			comments: [],
+		};
+	},
+
+	removeJob: async (jobId) => {},
+
+	editJob: async (jobId, jobTitle, jobDescription, jobStreetName, jobAuthor) => {},
+
+	getAllResume: async (authorId, jobId) => {},
+
+	hireForJob: async (authorId, JobId, hiredUserId) => {},
+
+	fireFromJob: async (authorId, JobId, firedUserId) => {},
 };
