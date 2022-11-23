@@ -1,0 +1,90 @@
+const { ObjectId } = require("mongodb");
+
+function checkId(id) {
+  if (!id) throw `Error: You must provide an ID `;
+  if (typeof id !== "string") throw `Error: ID must be a string`;
+  id = id.trim();
+  if (id.length === 0)
+    throw `Error: ID cannot be an empty string or just spaces`;
+  if (!ObjectId.isValid(id)) throw `Error:invalid object ID`;
+  return id;
+}
+
+function checkString(strVal) {
+  if (!strVal) throw `Error: You must supply a string!`;
+  if (typeof strVal !== "string") throw `Error:Input  must be a string!`;
+  strVal = strVal.trim();
+  if (strVal.length === 0)
+    throw `Error:Input cannot be an empty string or string with just spaces`;
+  if (!isNaN(strVal))
+    throw `Error: input is not a valid value for as it only contains digits`;
+  return strVal;
+}
+function checkFirstName(input) {
+  //  only letters a-z or A-Z. No numbers or special characters.
+  if (input.length < 2) throw "First name must be atleast 2 characters";
+  const regex = /[^A-z\s'"]/g;
+  if (regex.test(input) || input.includes("_"))
+    throw "First name must not contain special characters";
+  let count = 0;
+  for (char of input) if (char === "'") count++;
+  if (count > 1) throw "First name cannot have more than one apostrophe";
+}
+function checkLastName(input) {
+  if (input.length < 2) throw "Last name must be atleast 2 characters";
+
+  const regex = /[^A-z\s'\-"]/g;
+  if (regex.test(input) || input.includes("_"))
+    throw "Last name must not contain special characters";
+  let countApostrophe = 0;
+  for (char of input) if (char === "'") countApostrophe++;
+  if (countApostrophe > 1)
+    throw "Last name cannot have more than one apostrophe";
+  let countHyphen = 0;
+  for (char of input) if (char === "-") countHyphen++;
+  if (countHyphen > 1) throw "Last name cannot have more than one countHyphen";
+}
+
+function checkStringArray(arr) {
+  let arrayInvalidFlag = false;
+  if (!arr || !Array.isArray(arr)) throw `You must provide an array of `;
+  for (i in arr) {
+    if (typeof arr[i] !== "string" || arr[i].trim().length === 0) {
+      arrayInvalidFlag = true;
+      break;
+    }
+    arr[i] = arr[i].trim();
+  }
+  if (arrayInvalidFlag)
+    throw `One or more elements in  array is not a string or is an empty string`;
+  return arr;
+}
+function checkPassword(strVal) {
+  const oneUpper = /[A-Z]/;
+  const oneNumber = /[0-9]/;
+  const specialChar = /[^\w\s]/;
+  if (!strVal) throw `Error: You must supply a password!`;
+  if (typeof strVal !== "string") throw `Error: password must be a string!`;
+  strVal = strVal.trim();
+  if (strVal.length === 0)
+    throw `Error: password cannot be an empty string or string with just spaces`;
+  if (strVal.length < 6)
+    throw "Error: password must at least 6 characters long";
+  if (strVal.includes(" ")) throw "Error: password must not contain space";
+  if (!oneUpper.test(strVal))
+    throw "Error: password must contain one upper case ";
+  if (!oneNumber.test(strVal)) throw "Error: password must contain one number ";
+  if (!specialChar.test(strVal) && !strVal.includes("_"))
+    throw "Error: password must contain one special character ";
+  return strVal;
+}
+
+module.exports = {
+  checkString,
+  checkFirstName,
+  checkLastName,
+  checkId,
+  checkPassword,
+  checkStringArray,
+};
+// checkFirstName("O''Neil");
