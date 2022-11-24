@@ -21,7 +21,6 @@ function checkString(strVal) {
   return strVal;
 }
 function checkFirstName(input) {
-  //  only letters a-z or A-Z. No numbers or special characters.
   if (input.length < 2) throw "First name must be atleast 2 characters";
   const regex = /[^A-z\s'"]/g;
   if (regex.test(input) || input.includes("_"))
@@ -44,7 +43,31 @@ function checkLastName(input) {
   for (char of input) if (char === "-") countHyphen++;
   if (countHyphen > 1) throw "Last name cannot have more than one countHyphen";
 }
+function checkEmail(email) {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    email = email.trim();
+    return email;
+  } else {
+    throw "Invalid email format";
+  }
+}
+function checkAge(age) {
+  if (!age) throw `Error: You must provide an age `;
 
+  const regex = /[^0-9]/;
+  if (regex.test(age)) throw "Age must be an integer number";
+  if (age > 118 || age < 0) throw "Age must be <= 118 and >= 0";
+  age = parseInt(age);
+  return age;
+}
+function checkPhone(phone) {
+  if (!phone) throw `Error: You must provide a phone number `;
+  const regex = /[^0-9]/;
+  phone = phone.trim();
+  if (regex.test(phone)) throw "Phone number must contain only integer number";
+  if (phone.length !== 10) throw "Phone number must have 10 digits";
+  return phone;
+}
 function checkStringArray(arr) {
   let arrayInvalidFlag = false;
   if (!arr || !Array.isArray(arr)) throw `You must provide an array of `;
@@ -78,13 +101,13 @@ function checkPassword(strVal) {
     throw "Error: password must contain one special character ";
   return strVal;
 }
-
 module.exports = {
   checkString,
   checkFirstName,
   checkLastName,
   checkId,
   checkPassword,
-  checkStringArray,
+  checkAge,
+  checkEmail,
+  checkPhone,
 };
-// checkFirstName("O''Neil");

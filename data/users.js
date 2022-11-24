@@ -16,6 +16,9 @@ const createUser = async (
   validation.checkFirstName(firstName);
   validation.checkLastName(lastName);
   email = validation.checkString(email);
+  validation.checkEmail(email);
+  age = validation.checkAge(age);
+  phone = validation.checkPhone(phone);
   hashedPassword = validation.checkPassword(hashedPassword);
   const userCollection = await users();
   let myUser = {};
@@ -46,7 +49,6 @@ const createUser = async (
     };
   }
   const insertInfo = await userCollection.insertOne(myUser);
-  console.log(insertInfo);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw "Could not add movie";
   const newId = insertInfo.insertedId.toString();
@@ -54,8 +56,40 @@ const createUser = async (
   user._id = user._id.toString();
   return user;
 };
+const getUserById = async (id) => {
+  id = validation.checkId(id);
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(id) });
+  if (!user) throw "User not found";
+  return user;
+};
+const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
+  firstName = validation.checkString(firstName);
+  lastName = validation.checkString(lastName);
+  validation.checkFirstName(firstName);
+  validation.checkLastName(lastName);
+  email = validation.checkString(email);
+  validation.checkEmail(email);
+  age = validation.checkAge(age);
+  phoneNumber = validation.checkPhone(phoneNumber);
+  id = validation.checkId(id);
+  const user = getUserById(id);
+  let userEditInfo = {
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    age: age,
+    phoneNumber: phoneNumber,
+  };
+  const userCollection = await users();
+  const editStatus = await userCollection.updateOne(
+    { _id: ObjectId(id) },
+    { $set: userEditInfo }
+  );
+  if (!editStatus.matchedCount && !editStatus.modifiedCount)
+    throw "Edit failed";
 
-const editUser = () => {};
+  return await getUserById(id);
+};
 
-const getUserById = () => {};
-module.exports = { createUser };
+module.exports = { createUser, getUserById, editUser };
