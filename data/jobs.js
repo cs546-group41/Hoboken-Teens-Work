@@ -14,26 +14,25 @@ module.exports = {
 
 	searchJobs: async (jobSearchQuery) => {},
 
-	createJob: async (jobTitle, jobDescription, jobStreetName, jobAuthor) => {
-		const newJob = {
-			jobTitle: jobTitle,
-			jobDescription: jobDescription,
-			jobStreetName: jobStreetName,
-			jobAuthor: jobAuthor,
-			jobStatus: "open",
-			applicants: [],
-			hired: {},
-			comments: [],
-		};
-	},
-
-	removeJob: async (jobId) => {},
-
-	editJob: async (jobId, jobTitle, jobDescription, jobStreetName, jobAuthor) => {},
+const createJob = async (jobTitle, jobDescription, jobStreetName, jobAuthor) => {
+	const newJob = {
+		jobTitle: jobTitle,
+		jobDescription: jobDescription,
+		jobStreetName: jobStreetName,
+		jobAuthor: jobAuthor,
+		jobStatus: "open",
+		applicants: [],
+		hired: {},
+		comments: [],
+	};
+};
 
 	getAllResume: async (authorId, jobId) => {},
 
-	hireForJob: async (authorId, jobId, hiredUserId) => {},
+const editJob = async (jobId, jobTitle, jobDescription, jobStreetName, jobAuthor) => {};
 
-	fireFromJob: async (authorId, jobId, firedUserId) => {},
+module.exports = {
+	createJob,
+	removeJob,
+    editJob
 };
