@@ -61,7 +61,7 @@ function checkAge(age) {
   return age;
 }
 function checkPhone(phone) {
-  if (!phone) throw `Error: You must provide a phone number `;
+  if (!phone) return null;
   const regex = /[^0-9]/;
   phone = phone.trim();
   if (regex.test(phone)) throw "Phone number must contain only integer number";

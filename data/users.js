@@ -41,8 +41,6 @@ const createUser = async (
       age: age,
       phone: phone,
       hashedPassword: hashedPassword,
-      jobsPosted: [],
-      jobsHired: [],
       jobsApplied: [],
       jobsSaved: [],
       hiredForJobs: "",
@@ -73,7 +71,7 @@ const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
   age = validation.checkAge(age);
   phoneNumber = validation.checkPhone(phoneNumber);
   id = validation.checkId(id);
-  const user = getUserById(id);
+  const user = await getUserById(id);
   let userEditInfo = {
     firstName: firstName,
     lastName: lastName,
