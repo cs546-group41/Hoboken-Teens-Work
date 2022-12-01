@@ -56,6 +56,11 @@ const hireForJob = async (authorId, jobId, hiredUserId) => {};
 
 const fireFromJob = async (authorId, jobId, firedUserId) => {};
 
+const applyToJob = async() => {};
+
+const withdrawJobApplication = async() => {};
+
+
 module.exports = {
 	getAllJobs,
 	getJobById,
