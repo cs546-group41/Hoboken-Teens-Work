@@ -1,12 +1,13 @@
 const users = require("./data/users");
 const connection = require("./config/mongoConnection");
+const jobs = require("./data/jobs")
 
 let firstUser = undefined;
 
 async function main() {
   const db = await connection.dbConnection();
 
-  await db.dropDatabase();
+  // await db.dropDatabase();
   try {
     firstUser = await users.createUser(
       "Anh",
@@ -39,6 +40,17 @@ async function main() {
   } catch (e) {
     console.log(e);
   }
+
+  try {
+    const searchJob = await jobs.searchJobs("Pat")
+    console.log(searchJob)
+  } catch (e) {
+    console.log(e)
+  }
+
+
+
+
 
   await connection.closeConnection();
 }
