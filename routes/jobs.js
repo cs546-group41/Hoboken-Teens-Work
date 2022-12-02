@@ -5,10 +5,6 @@ const jobData = require('../data')
 const jobDataFile = jobData.jobs
 
 
-router.route("/").get(async (req, res) => {
-    res.render("homepage")
-});
-
 router.route("/searchJobs").post(async (req,res) => {
     try{
     const searchQuery = req.body.jobsInput
@@ -16,7 +12,7 @@ router.route("/searchJobs").post(async (req,res) => {
     const search = await jobDataFile.searchJobs(searchQuery)
     console.log(search)
     if(search){
-    res.status(200).render("jobsFound", {jobFound: search})
+    return res.render("jobsFound", {jobs: search})
     }
     
 }catch(e){

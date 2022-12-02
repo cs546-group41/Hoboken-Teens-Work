@@ -124,6 +124,14 @@ function checkJobStreetName(streetName) {
   return streetName;
 }
 
+function checkSearchQuery(searchQuery){
+	if(!searchQuery) throw "You must enter something in the search bar"
+	if(searchQuery.trim().length===0) throw "Only blank spaces are not allowed"
+	let reg = /^[A-Z a-z 0-9]*$/gm
+	if(!searchQuery.match(reg)) throw "Search can only contain letters and numbers"
+	return searchQuery.trim()
+}
+
 module.exports = {
 	checkString,
 	checkFirstName,
@@ -136,4 +144,5 @@ module.exports = {
   checkJobTitle,
   checkJobDescription,
   checkJobStreetName,
+  checkSearchQuery,
 };
