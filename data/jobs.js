@@ -15,7 +15,15 @@ const getAllJobs = async () => {
 
 const getJobById = async (jobId) => {};
 
-const searchJobs = async (jobSearchQuery) => {};
+const searchJobs = async (jobSearchQuery) => {
+	const jobSearchQuery1 = validation.checkSearchQuery(jobSearchQuery)
+ 	const jobSearchQueryLowerCase = jobSearchQuery1.toLowerCase()
+    const jobList = await jobs()
+    const searchJob1 = await jobList.find({jobTitle: {$regex: jobSearchQueryLowerCase}}).toArray()
+	if(searchJob1.length === 0) return "No job was found for the entered text"
+    return searchJob1
+};
+
 
 const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
 	jobTitle = validation.checkJobTitle(jobTitle);
