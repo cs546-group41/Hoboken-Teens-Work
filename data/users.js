@@ -8,8 +8,8 @@ const createUser = async (
   lastName,
   email,
   age,
-  phone,
-  hashedPassword
+  hashedPassword,
+  phone
 ) => {
   firstName = validation.checkString(firstName);
   lastName = validation.checkString(lastName);
@@ -28,8 +28,8 @@ const createUser = async (
       lastName: lastName,
       email: email,
       age: age,
-      phone: phone,
       hashedPassword: hashedPassword,
+      phone: phone,
       jobsPosted: [],
       jobsHired: [],
     };
@@ -39,8 +39,8 @@ const createUser = async (
       lastName: lastName,
       email: email,
       age: age,
-      phone: phone,
       hashedPassword: hashedPassword,
+      phone: phone,
       jobsApplied: [],
       jobsSaved: [],
       hiredForJobs: "",
