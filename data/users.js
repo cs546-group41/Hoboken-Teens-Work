@@ -48,7 +48,7 @@ const createUser = async (
   }
   const insertInfo = await userCollection.insertOne(myUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
-    throw "Could not add movie";
+    throw "Could not add user";
   const newId = insertInfo.insertedId.toString();
   const user = await getUserById(newId);
   user._id = user._id.toString();
@@ -71,7 +71,16 @@ const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
   age = validation.checkAge(age);
   phoneNumber = validation.checkPhone(phoneNumber);
   id = validation.checkId(id);
+
   const user = await getUserById(id);
+  let editFlag = 0;
+  if (firstName !== user.firstName) editFlag++;
+  if (lastName !== user.lastName) editFlag++;
+  if (email !== user.email) editFlag++;
+  if (age !== user.age) editFlag++;
+  if (phoneNumber !== user.phone) editFlag++;
+  if (editFlag < 1) throw "No changes were made";
+
   let userEditInfo = {
     firstName: firstName,
     lastName: lastName,
@@ -90,4 +99,13 @@ const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
   return await getUserById(id);
 };
 
-module.exports = { createUser, getUserById, editUser };
+const getAllJobsByUser = async (authorId) => {
+  const myUser = await getUserById(authorId);
+  return myUser.jobsPosted;
+};
+const getAllResume = async (authorId, jobId) => {};
+const hireForJob = async (authorId, jobId, applicantId) => {};
+const fireFromJob = async (authorId, jobId, applicantId) => {};
+const applyToJob = async (jobId, applicantId) => {};
+const withdrawJobApplication = async (jobId, applicantId) => {};
+module.exports = { createUser, getUserById, editUser, getAllJobsByUser };
