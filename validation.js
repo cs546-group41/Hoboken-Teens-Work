@@ -103,25 +103,34 @@ function checkJobTitle(title) {
 	if (typeof title !== "string") throw "Job title must be a string";
 	title = title.trim();
 	if (title.length === 0) throw "Job title cannot be empty spaces";
-	if (title.match("/[^\w\s]/g") || title.includes("_")) throw "Job title can only contain alphanumeric characters";
+	if (title.match("/[^ws]/g") || title.includes("_")) throw "Job title can only contain alphanumeric characters";
 	if (title.length < 3) throw "Job title must be at least 3 characters long";
 
 	return title;
 }
 
 function checkJobDescription(jobDescription) {
-  if(!jobDescription) throw "Must enter a job description";
-  if(typeof(jobDescription) !== "string") throw "Description must be a string";
-  jobDescription = jobDescription.trim();
+	if (!jobDescription) throw "Must enter a job description";
+	if (typeof jobDescription !== "string") throw "Description must be a string";
+	jobDescription = jobDescription.trim();
 	if (jobDescription.length === 0) throw "Description cannot be empty spaces";
 	if (jobDescription.split(" ").length < 5) throw "Description must have at least 5 words";
 
-  return jobDescription;
+	return jobDescription;
 }
 
 function checkJobStreetName(streetName) {
-  
-  return streetName;
+	return streetName;
+}
+
+function checkJobStatus(status) {
+	status = checkString(status);
+
+	if (["Open", "Finished"].includes(status)) {
+		return status;
+	} else {
+		throw "Invalid job status";
+	}
 }
 
 module.exports = {
@@ -133,7 +142,8 @@ module.exports = {
 	checkAge,
 	checkEmail,
 	checkPhone,
-  checkJobTitle,
-  checkJobDescription,
-  checkJobStreetName,
+	checkJobTitle,
+	checkJobDescription,
+	checkJobStreetName,
+	checkJobStatus,
 };
