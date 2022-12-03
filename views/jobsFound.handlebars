@@ -1,7 +1,14 @@
 <body>
     <h3>Your Search Related Jobs are</h3>
-    <h4>{{jobs.jobTitle}}</h4>
-    <h4>{{jobs.jobDescription}}</h4>
+    <ul>
+        {{#each jobs}}
+    <li>
+        {{jobs.jobTitle}}</a>
+    </li>
+    {{/each}}
+    </ul>
+    
+    
 
 </body>
 

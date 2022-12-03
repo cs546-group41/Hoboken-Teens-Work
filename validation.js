@@ -110,25 +110,25 @@ function checkJobTitle(title) {
 }
 
 function checkJobDescription(jobDescription) {
-  if(!jobDescription) throw "Must enter a job description";
-  if(typeof(jobDescription) !== "string") throw "Description must be a string";
-  jobDescription = jobDescription.trim();
+	if (!jobDescription) throw "Must enter a job description";
+	if (typeof (jobDescription) !== "string") throw "Description must be a string";
+	jobDescription = jobDescription.trim();
 	if (jobDescription.length === 0) throw "Description cannot be empty spaces";
 	if (jobDescription.split(" ").length < 5) throw "Description must have at least 5 words";
 
-  return jobDescription;
+	return jobDescription;
 }
 
 function checkJobStreetName(streetName) {
-  
-  return streetName;
+
+	return streetName;
 }
 
-function checkSearchQuery(searchQuery){
-	if(!searchQuery) throw "You must enter something in the search bar"
-	if(searchQuery.trim().length===0) throw "Only blank spaces are not allowed"
+function checkSearchQuery(searchQuery) {
+	if (!searchQuery) throw "You must enter something in the search bar"
+	if (searchQuery.trim().length === 0) throw "Only blank spaces are not allowed"
 	let reg = /^[A-Z a-z 0-9]*$/gm
-	if(!searchQuery.match(reg)) throw "Search can only contain letters and numbers"
+	if (!searchQuery.match(reg)) throw "Search can only contain letters and numbers"
 	return searchQuery.trim()
 }
 
@@ -141,8 +141,8 @@ module.exports = {
 	checkAge,
 	checkEmail,
 	checkPhone,
-  checkJobTitle,
-  checkJobDescription,
-  checkJobStreetName,
-  checkSearchQuery,
+	checkJobTitle,
+	checkJobDescription,
+	checkJobStreetName,
+	checkSearchQuery,
 };

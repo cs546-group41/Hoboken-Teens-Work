@@ -1,0 +1,13 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+nav{
+    list-style-type: none;
+}
+nav li{
+    display: inline;
+    letter-spacing: normal;
+    margin-right: 7px;
+    
+}
