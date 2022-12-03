@@ -20,6 +20,7 @@ function checkString(strVal) {
     throw `Error: input is not a valid value for as it only contains digits`;
   return strVal;
 }
+
 function checkFirstName(input) {
   if (input.length < 2) throw "First name must be atleast 2 characters";
   const regex = /[^A-z\s'"]/g;
@@ -29,6 +30,7 @@ function checkFirstName(input) {
   for (char of input) if (char === "'") count++;
   if (count > 1) throw "First name cannot have more than one apostrophe";
 }
+
 function checkLastName(input) {
   if (input.length < 2) throw "Last name must be atleast 2 characters";
 
@@ -43,6 +45,7 @@ function checkLastName(input) {
   for (char of input) if (char === "-") countHyphen++;
   if (countHyphen > 1) throw "Last name cannot have more than one countHyphen";
 }
+
 function checkEmail(email) {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     email = email.trim();
@@ -51,6 +54,7 @@ function checkEmail(email) {
     throw "Invalid email format";
   }
 }
+
 function checkAge(age) {
   if (!age) throw `Error: You must provide an age `;
 
@@ -60,6 +64,7 @@ function checkAge(age) {
   age = parseInt(age);
   return age;
 }
+
 function checkPhone(phone) {
   if (!phone) return null;
   const regex = /[^0-9]/;
@@ -68,6 +73,7 @@ function checkPhone(phone) {
   if (phone.length !== 10) throw "Phone number must have 10 digits";
   return phone;
 }
+
 function checkStringArray(arr) {
   let arrayInvalidFlag = false;
   if (!arr || !Array.isArray(arr)) throw `You must provide an array of `;
@@ -82,6 +88,7 @@ function checkStringArray(arr) {
     throw `One or more elements in  array is not a string or is an empty string`;
   return arr;
 }
+
 function checkPassword(strVal) {
   const oneUpper = /[A-Z]/;
   const oneNumber = /[0-9]/;
@@ -101,6 +108,34 @@ function checkPassword(strVal) {
     throw "Error: password must contain one special character ";
   return strVal;
 }
+
+function checkJobTitle(title) {
+  if (!title) throw "Must provide a job title";
+  if (typeof title !== "string") throw "Job title must be a string";
+  title = title.trim();
+  if (title.length === 0) throw "Job title cannot be empty spaces";
+  if (title.match("/[^ws]/g") || title.includes("_"))
+    throw "Job title can only contain alphanumeric characters";
+  if (title.length < 3) throw "Job title must be at least 3 characters long";
+
+  return title;
+}
+
+function checkJobDescription(jobDescription) {
+  if (!jobDescription) throw "Must enter a job description";
+  if (typeof jobDescription !== "string") throw "Description must be a string";
+  jobDescription = jobDescription.trim();
+  if (jobDescription.length === 0) throw "Description cannot be empty spaces";
+  if (jobDescription.split(" ").length < 5)
+    throw "Description must have at least 5 words";
+
+  return jobDescription;
+}
+
+function checkJobStreetName(streetName) {
+  return streetName;
+}
+
 module.exports = {
   checkString,
   checkFirstName,
@@ -110,4 +145,7 @@ module.exports = {
   checkAge,
   checkEmail,
   checkPhone,
+  checkJobTitle,
+  checkJobDescription,
+  checkJobStreetName,
 };
