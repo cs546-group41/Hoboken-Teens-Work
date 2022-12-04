@@ -104,9 +104,24 @@ const getAllJobsByUser = async (authorId) => {
   const myUser = await getUserById(authorId);
   return myUser.jobsPosted;
 };
+
+const checkUser = async (email, password) => {
+  const userCollection = await users()
+  const validatedEmail = validation.checkString(email)
+  const validatedPassword = validation.checkPassword(password)
+  let userFound = await userCollection.findOne({email: validatedEmail})
+  if(userFound === null) throw "Either the email or passwaord is invalid"
+  let userPassword = userFound.hashedPassword
+  let comparePassword = false
+  comparePassword = await bcrypt.compare(validatedPassword, userPassword)
+  if(comparePassword){
+    return {AuthenticatedUser: true}
+  }else throw "Either the email or password is invalid"
+}
+
 const getAllResume = async (authorId, jobId) => {};
 const hireForJob = async (authorId, jobId, applicantId) => {};
 const fireFromJob = async (authorId, jobId, applicantId) => {};
 const applyToJob = async (jobId, applicantId) => {};
 const withdrawJobApplication = async (jobId, applicantId) => {};
-module.exports = { createUser, getUserById, editUser, getAllJobsByUser };
+module.exports = { createUser, getUserById, editUser, getAllJobsByUser, checkUser };
