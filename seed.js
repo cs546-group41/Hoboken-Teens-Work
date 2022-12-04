@@ -13,9 +13,9 @@ async function main() {
       "Anh",
       "Le",
       "random@stevens.edu",
-      14,
-      "9178950083",
-      "Random2@#"
+      21,
+      "Random2@#",
+      "9178950083"
     );
     // console.log(firstUser);
   } catch (err) {
@@ -28,18 +28,24 @@ async function main() {
     console.log(e);
   }
   try {
-    const update = await users.editUser(
-      firstUser._id,
-      "Bob",
-      "David",
-      "random@stevens.edu",
-      100,
-      "9178950083"
-    );
-    console.log(update);
+    const result = await users.getAllJobsByUser(firstUser._id);
+    console.log(result);
   } catch (e) {
     console.log(e);
   }
+  // try {
+  //   const update = await users.editUser(
+  //     firstUser._id,
+  //     "Bob",
+  //     "David",
+  //     "random@stevens.edu",
+  //     100,
+  //     "9178950083"
+  //   );
+  //   console.log(update);
+  // } catch (e) {
+  //   console.log(e);
+  // }
 
   try {
     const searchJob = await jobs.searchJobs("Patio cleaning")
