@@ -5,12 +5,12 @@ const { ObjectId } = require("mongodb");
 const usersData = require("./users");
 
 const getAllJobs = async () => {
-	const jobsCollection = await jobs();
-	const jobsList = await jobsCollection.find({}).toArray();
+  const jobsCollection = await jobs();
+  const jobsList = await jobsCollection.find({}).toArray();
 
-	if (!jobsList) throw "Could not get all jobs";
+  if (!jobsList) throw "Could not get all jobs";
 
-	return jobsList;
+  return jobsList;
 };
 
 const getJobById = async (jobId) => {};
@@ -18,37 +18,44 @@ const getJobById = async (jobId) => {};
 const searchJobs = async (jobSearchQuery) => {};
 
 const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
-	jobTitle = validation.checkJobTitle(jobTitle);
-	jobDescription = validation.checkJobDescription(jobDescription);
-	jobStreetName = validation.checkJobStreetName(jobStreetName);
-	authorId = validation.checkId(authorId);
-	const jobAuthorPhoneNumber = null;
+  jobTitle = validation.checkJobTitle(jobTitle);
+  jobDescription = validation.checkJobDescription(jobDescription);
+  jobStreetName = validation.checkJobStreetName(jobStreetName);
+  authorId = validation.checkId(authorId);
+  const jobAuthorPhoneNumber = null;
 
-	const user = await usersData.getUserById(authorId);
-	if (user.phone) {
-		jobAuthorPhoneNumber = user.phone;
-	}
+  const user = await usersData.getUserById(authorId);
+  if (user.phone) {
+    jobAuthorPhoneNumber = user.phone;
+  }
 
-	const newJob = {
-		jobTitle: jobTitle,
-		jobDescription: jobDescription,
-		jobStreetName: jobStreetName,
-		jobAuthor: jobAuthor,
-		phone: jobAuthorPhoneNumber,
-		jobStatus: "open",
-		applicants: [],
-		hired: {},
-		comments: []
-	};
+  const newJob = {
+    jobTitle: jobTitle,
+    jobDescription: jobDescription,
+    jobStreetName: jobStreetName,
+    jobAuthor: jobAuthor,
+    phone: jobAuthorPhoneNumber,
+    jobStatus: "open",
+    applicants: [],
+    hired: {},
+    comments: [],
+  };
 
-	const jobsCollection = await jobs();
-	const insertJob = await jobsCollection.insertOne(newJob);
-	if (!insertJob.acknowledged || !insertJob.insertedId) throw "Could not add job";
+  const jobsCollection = await jobs();
+  const insertJob = await jobsCollection.insertOne(newJob);
+  if (!insertJob.acknowledged || !insertJob.insertedId)
+    throw "Could not add job";
 };
 
 const removeJob = async (jobId) => {};
 
-const editJob = async (jobId, jobTitle, jobDescription, jobStreetName, UserId) => {};
+const editJob = async (
+  jobId,
+  jobTitle,
+  jobDescription,
+  jobStreetName,
+  UserId
+) => {};
 
 const getAllResume = async (authorId, jobId) => {};
 
@@ -57,13 +64,13 @@ const hireForJob = async (authorId, jobId, hiredUserId) => {};
 const fireFromJob = async (authorId, jobId, firedUserId) => {};
 
 module.exports = {
-	getAllJobs,
-	getJobById,
-	searchJobs,
-	createJob,
-	removeJob,
-	editJob,
-	getAllResume,
-	hireForJob,
-	fireFromJob,
+  getAllJobs,
+  getJobById,
+  searchJobs,
+  createJob,
+  removeJob,
+  editJob,
+  getAllResume,
+  hireForJob,
+  fireFromJob,
 };
