@@ -16,7 +16,7 @@ router.route("/searchJobs").post(async (req, res) => {
         }
 
     } catch (e) {
-        return res.sendFile(path.resolve("static/notfound.html"))
+        return res.render("jobsNotFound")
     }
 })
 
