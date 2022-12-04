@@ -127,7 +127,7 @@ const editJob = async (jobId, authorId, jobTitle, jobDescription, jobStreetName,
 	const editedJob = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: jobToEdit });
 	if (!editedJob.matchedCount && !editedJob.modifiedCount) throw "Job could not be edited";
 
-	return await getUserById(id);
+	return await getJobById(jobId);
 };
 
 module.exports = {
