@@ -67,13 +67,13 @@ const removeJob = async (jobId) => {
 	jobId = validation.checkId(jobId);
 
 	const jobsCollection = await jobs();
-	const job = await jobsCollection.findOne({ _id: ObjectId(id) });
+	const job = await jobsCollection.findOne({ _id: ObjectId(jobId) });
 	if (!job) throw "No job with that ID";
 
 	const theJob = await getJobById(id);
 	const jobName = theJob.title;
 
-	const deleteJob = await jobsCollection.deleteOne({ _id: ObjectId(id) });
+	const deleteJob = await jobsCollection.deleteOne({ _id: ObjectId(jobId) });
 
 	if (deleteJob.deletedCount === 0) throw "Job could not be removed";
 
