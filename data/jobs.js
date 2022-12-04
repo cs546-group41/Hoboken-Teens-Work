@@ -55,17 +55,6 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
     hired: {},
     comments: [],
   };
-  const newJob = {
-    jobTitle: jobTitle,
-    jobDescription: jobDescription,
-    jobStreetName: jobStreetName,
-    jobAuthor: jobAuthor,
-    phone: jobAuthorPhoneNumber,
-    jobStatus: "open",
-    applicants: [],
-    hired: {},
-    comments: [],
-  };
 
   const jobsCollection = await jobs();
   const insertJob = await jobsCollection.insertOne(newJob);
