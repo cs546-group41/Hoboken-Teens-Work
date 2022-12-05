@@ -2,6 +2,7 @@ const mongoCollections = require("../config/mongoCollection");
 const users = mongoCollections.users;
 const validation = require("../validation");
 const { ObjectId } = require("mongodb");
+const jobs = require("./jobs");
 
 const createUser = async (
   firstName,
@@ -103,9 +104,65 @@ const getAllJobsByUser = async (authorId) => {
   const myUser = await getUserById(authorId);
   return myUser.jobsPosted;
 };
-const getAllResume = async (authorId, jobId) => {};
-const hireForJob = async (authorId, jobId, applicantId) => {};
-const fireFromJob = async (authorId, jobId, applicantId) => {};
-const applyToJob = async (jobId, applicantId) => {};
-const withdrawJobApplication = async (jobId, applicantId) => {};
-module.exports = { createUser, getUserById, editUser, getAllJobsByUser };
+const getAllApplicants = async (jobId) => {
+  jobId = validation.checkId(jobId);
+  const myJob = await jobs.getJobById(jobId);
+  return myJob;
+};
+const getResumeById = async (jobId, applicantId) => {
+  applicantId = validation.checkId(applicantId);
+  jobId = validation.checkId(jobId);
+  const myJob = await jobs.getJobById(jobId);
+  const applicants = myJob.applicants;
+
+  for (const applicant of applicants) {
+    if (applicant.applicantId === applicantId) return applicant.resume;
+  }
+  return "Cannot find resume";
+};
+
+const hireForJob = async (authorId, jobId, applicantId) => {
+  jobId = validation.checkId(jobId);
+  applicantId = validation.checkId(applicantId);
+  authorId = validation.checkId(authorId);
+  const myJob = await jobs.getJobById(jobId);
+  const myApplicant = await getUserById(applicantID);
+  myJob.hired = {
+    id: applicantID,
+    name: myApplicant.firstName + myApplicant.lastName,
+  };
+};
+const fireFromJob = async (authorId, jobId, applicantId) => {
+  jobId = validation.checkId(jobId);
+  applicantId = validation.checkId(applicantId);
+  authorId = validation.checkId(authorId);
+  const myJob = await jobs.getJobById(jobId);
+  myJob.hired = {};
+};
+const applyToJob = async (jobId, applicantId) => {
+  jobId = validation.checkId(jobId);
+  applicantId = validation.checkId(applicantId);
+  const myApplicant = getUserById(applicantId);
+  myApplicant.jobsApplied.push(jobId);
+};
+const withdrawJobApplication = async (jobId, applicantId) => {
+  jobId = validation.checkId(jobId);
+  applicantId = validation.checkId(applicantId);
+  const myApplicant = getUserById(applicantId);
+  for (const job of myApplicant.jobsApplied) {
+    if (job === jobId)
+      myApplicant.jobsApplied.splice(myApplicant.jobsApplied.indexOf(jobId), 1);
+  }
+};
+module.exports = {
+  createUser,
+  getUserById,
+  editUser,
+  getAllJobsByUser,
+  getAllApplicants,
+  getResumeById,
+  hireForJob,
+  fireFromJob,
+  applyToJob,
+  withdrawJobApplication,
+};
