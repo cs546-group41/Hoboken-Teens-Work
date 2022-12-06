@@ -1,0 +1,35 @@
+<h1>Job detail</h1>
+<p>jobTitle : {{jobDetail.jobTitle}}</p>
+<p>jobDescription: {{jobDetail.jobDescription}}</p>
+<p>jobStreetName : {{jobDetail.jobStreetName}}</p>
+<p>jobStatus : {{jobDetail.jobStatus}}</p>
+<p>Publish by: <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<p>Comments:</p>
+<ul>
+    {{#each jobDetail.comments}}
+    <li>
+        <p>{{comment}}</p>
+        <p>by</p><a href="/id/{{id}}">{{firstName}} {{lastName}}</a>
+        <p>commentDate</p>
+    </li>
+    {{/each}}
+</ul>
+
+{{#if login}}
+{{#if jobPublisher}}
+<p>applicants:</p>
+<ul>
+    {{#each jobDetail.applicants}}
+    <li>
+        <a href="/id/{{id}}">{{firstName}} {{lastName}}</a>
+    </li>
+    {{/each}}
+</ul>
+{{else}}
+<form action="/comment" method="post">
+    <label for="comment">Leave a comment: </label>
+    <input type="text" id="comment" name="comment" />
+    <input type="submit" value="submit">
+</form>
+{{/if}}
+{{/if}}

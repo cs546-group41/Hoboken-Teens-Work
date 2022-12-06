@@ -1,4 +1,15 @@
+const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
+
+const encryptPwd = (pwd, saltTimes = 10) => {
+	const hash = bcrypt.hashSync(pwd, saltTimes)
+	return hash
+}
+
+const validatePwd = (pwd, hash) => {
+	const match = bcrypt.compareSync(pwd, hash)
+	return match
+}
 
 function checkId(id) {
 	if (!id) throw `Error: You must provide an ID `;
@@ -110,18 +121,18 @@ function checkJobTitle(title) {
 }
 
 function checkJobDescription(jobDescription) {
-  if(!jobDescription) throw "Must enter a job description";
-  if(typeof(jobDescription) !== "string") throw "Description must be a string";
-  jobDescription = jobDescription.trim();
+	if (!jobDescription) throw "Must enter a job description";
+	if (typeof (jobDescription) !== "string") throw "Description must be a string";
+	jobDescription = jobDescription.trim();
 	if (jobDescription.length === 0) throw "Description cannot be empty spaces";
 	if (jobDescription.split(" ").length < 5) throw "Description must have at least 5 words";
 
-  return jobDescription;
+	return jobDescription;
 }
 
 function checkJobStreetName(streetName) {
-  
-  return streetName;
+
+	return streetName;
 }
 
 module.exports = {
@@ -133,7 +144,9 @@ module.exports = {
 	checkAge,
 	checkEmail,
 	checkPhone,
-  checkJobTitle,
-  checkJobDescription,
-  checkJobStreetName,
+	checkJobTitle,
+	checkJobDescription,
+	checkJobStreetName,
+	encryptPwd,
+	validatePwd,
 };

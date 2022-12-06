@@ -1,28 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
-</head>
-<body>
-    <main>
-        <nav>
-            <li>
-                <a href="#">Login</a>
-            </li>
-            <li>
-                <a href="#">Sign Up</a>
-            </li>
-        </nav>
-        <br><br>
-        <form action="/searchJobs" method="post" class="search-form">
-            <label for="jobsInput">Search</label><br>
-            <input type="text" id="jobsInput" name="jobsInput" placeholder="Search for jobs"> <br>
-            <br><br>
-            <input type="submit" class="button">
-        </form>
-    </main>
-</body>
-</html>
+<h1>search bar</h1>
+<form action="/searchJobs" method="post" class="search-form">
+    <label for="jobsInput">Search</label><br>
+    <input type="text" id="jobsInput" name="jobsInput" placeholder="Search for jobs"> <br>
+    <br><br>
+    <input type="submit" class="button">
+</form>
+
+<h1>jobList</h1>
+<ul>
+    {{#each jobs}}
+    <li>
+        <a href="/job/{{_id}}">{{jobTitle}}</a>
+    </li>
+    {{/each}}
+</ul>

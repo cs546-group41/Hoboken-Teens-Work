@@ -9,7 +9,7 @@ const createUser = async (
   email,
   age,
   phone,
-  hashedPassword
+  password
 ) => {
   firstName = validation.checkString(firstName);
   lastName = validation.checkString(lastName);
@@ -19,7 +19,8 @@ const createUser = async (
   validation.checkEmail(email);
   age = validation.checkAge(age);
   phone = validation.checkPhone(phone);
-  hashedPassword = validation.checkPassword(hashedPassword);
+  password = validation.checkPassword(password);
+  const hashedPassword = validation.encryptPwd(password)
   const userCollection = await users();
   let myUser = {};
   if (age >= 18) {
@@ -56,6 +57,8 @@ const createUser = async (
   user._id = user._id.toString();
   return user;
 };
+
+
 const getUserById = async (id) => {
   id = validation.checkId(id);
   const userCollection = await users();
@@ -63,6 +66,8 @@ const getUserById = async (id) => {
   if (!user) throw "User not found";
   return user;
 };
+
+
 const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
   firstName = validation.checkString(firstName);
   lastName = validation.checkString(lastName);
@@ -92,4 +97,14 @@ const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
   return await getUserById(id);
 };
 
-module.exports = { createUser, getUserById, editUser };
+const loginCheck = async (email, pwd) =>{
+  const userCollection = await users();
+  const user = await userCollection.findOne({ email: email });
+  if (!user) throw "The user does not exist!";
+  if (!validation.validatePwd(pwd, user.hashedPassword)) throw "The conbination of email and password does not exist!"
+  return user
+}
+
+
+
+module.exports = { createUser, getUserById, editUser, loginCheck };

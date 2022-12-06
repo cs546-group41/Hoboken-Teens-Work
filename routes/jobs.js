@@ -1,27 +1,40 @@
-const express = require('express')
-const router = express.Router()
-const path = require('path') 
-const jobData = require('../data')
-const jobDataFile = jobData.jobs
+const express = require('express');
+const router = express.Router();
+const data = require('../data')
+const users = data.users
+const jobs = data.jobs 
 
+router
+  .route('/')
+  .get(async (req, res) => {
+    res.redirect('/')
+  })
 
-router.route("/").get(async (req, res) => {
-    res.render("homepage")
-});
-
-router.route("/searchJobs").post(async (req,res) => {
-    try{
-    const searchQuery = req.body.jobsInput
-    console.log(searchQuery)
-    const search = await jobDataFile.searchJobs(searchQuery)
-    console.log(search)
-    if(search){
-    res.status(200).render("jobsFound", {jobFound: search})
+router
+  .route('/:id')
+  .get(async (req, res) => {
+    var loginUser = false
+    var jobPublisher = false
+    if (req.session.user){
+      loginUser=true
     }
-    
-}catch(e){
-    return res.sendFile(path.resolve("static/notfound.html"))
-}
-})
+    var jobDetail = {}
+    try{
+      jobDetail = await jobs.getJobById(req.params.id)
+    }catch(e){
+      return res.render("error",{errormsg:e})
+    }
+    if (req.session.user && req.session.user.id === req.params.id) {
+      jobPublisher = true    
+    }
+    res.render("jobDetail",{loginUser:loginUser, login:loginUser, user: req.session.user, jobPublisher: jobPublisher, jobDetail: jobDetail})    
+  })
+
+router
+  .route('/search')
+  .get(async (req, res) =>{
+    res.render('jobsFound')
+  })
+
 
 module.exports = router

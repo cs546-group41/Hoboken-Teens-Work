@@ -1,0 +1,45 @@
+{{#if selfReview}}
+<h1>you had logged in</h1>
+{{/if}}
+<p>name: {{data.firstName}} {{data.lastName}}</p>
+<p>email: {{data.email}}</p>
+<p>age: {{data.age}}</p>
+<p>phone: {{data.phone}}</p>
+{{#if adultUser}}
+<p>job posted:</p>
+{{#each data.jobsPosted}}
+<li>
+    <a href="/job/{{id}}">{{jobTitle}}</a>
+</li>
+{{/each}}
+{{#if selfReview}}
+<p>job Hired:</p>
+{{#each data.jobsHired}}
+<li>
+    <a href="/job/{{jobId}}">{{jobTitle}}</a>
+    <a herf="/user/{{hiredUserId}}">{{hiredUserName}}</a>
+</li>
+{{/each}}
+{{/if}}
+{{else}}
+<p>job applied:</p>
+{{#each data.jobsApplied}}
+<li>
+    <a href="/job/{{id}}">{{jobTitle}}</a>
+</li>
+{{/each}}
+<p>job saved:</p>
+{{#each data.jobsSaved}}
+<li>
+    <a href="/job/{{id}}">{{jobTitle}}</a>
+</li>
+{{/each}}
+{{#if selfReview}}
+<p>Hired jobs:</p>
+{{#each data.hiredForJobs}}
+<li>
+    <a href="/job/{{id}}">{{jobTitle}}</a>
+</li>
+{{/each}}
+{{/if}}
+{{/if}}

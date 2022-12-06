@@ -6,8 +6,28 @@ let firstUser = undefined;
 
 async function main() {
   const db = await connection.dbConnection();
-
+  try{
+    await jobs.createJob("test","this is a test job","main st","638add4a89d01f01e5dd77bb")
+  }catch(e){
+    console.log(e)
+  }
+  /*
+  try {
+    firstUser = await users.createUser(
+      "abc",
+      "bcd",
+      "ab@ab.edu",
+      14,
+      "9465312648",
+      "QWE123!@#"
+    );
+    // console.log(firstUser);
+  } catch (err) {
+    console.log(err);
+  }
+  */
   // await db.dropDatabase();
+  /*
   try {
     firstUser = await users.createUser(
       "Anh",
@@ -21,6 +41,8 @@ async function main() {
   } catch (err) {
     console.log(err);
   }
+  */
+  /* 
   try {
     const result = await users.getUserById(firstUser._id);
     // console.log(result);
@@ -50,8 +72,8 @@ async function main() {
 
 
 
-
-
+  */
+  ///
   await connection.closeConnection();
 }
 

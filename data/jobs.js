@@ -13,7 +13,12 @@ const getAllJobs = async () => {
 	return jobsList;
 };
 
-const getJobById = async (jobId) => {};
+const getJobById = async (jobId) => {
+	const jobsCollection = await jobs();
+	const job = await jobsCollection.findOne({ _id: ObjectId(jobId) });
+  	if (!job) throw "Job not found";
+  	return job;	
+};
 
 const searchJobs = async (jobSearchQuery) => {
 	
@@ -29,7 +34,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
 	jobDescription = validation.checkJobDescription(jobDescription);
 	jobStreetName = validation.checkJobStreetName(jobStreetName);
 	authorId = validation.checkId(authorId);
-	const jobAuthorPhoneNumber = null;
+	var jobAuthorPhoneNumber = null;
 
 	const user = await usersData.getUserById(authorId);
 	if (user.phone) {
@@ -40,8 +45,11 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
 		jobTitle: jobTitle,
 		jobDescription: jobDescription,
 		jobStreetName: jobStreetName,
-		jobAuthor: jobAuthor,
-		phone: jobAuthorPhoneNumber,
+		jobAuthor: {
+			id:authorId,
+			name:`${user.firstName} ${user.lastName}`,
+			phone: jobAuthorPhoneNumber
+		},
 		jobStatus: "open",
 		applicants: [],
 		hired: {},

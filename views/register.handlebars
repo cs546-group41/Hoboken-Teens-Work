@@ -1,0 +1,29 @@
+
+<p>this is register page</p>
+<form action="/register" method="post">
+
+    <label for="email">email address</label>
+    <input type="text" id="email" name="email" /><br></br>
+    <label for="password">password </label>
+    <input type="password" id="password" name="password" /><br></br>
+    <label for="password2">re-enter password </label>
+    <input type="password" name="password2" /><br></br>
+    <label for="firstname">first name </label>
+    <input type="text" id="firstname" name="firstname" /><br></br>
+    <label for="lastname">last name </label>
+    <input type="text" id="lastname" name="lastname" /><br></br>
+    <label for="age">age </label>
+    <input type="text" id="age" name="age" /><br></br>
+    <label for="phone">phone number </label>
+    <input type="text" id="phone" name="phone" /><br></br>
+    <input type="submit" value="Register">
+</form>
+
+<ul>
+    <li>Error Code(if exists):</li>
+    {{#each Error}}
+    <li>
+        <p>{{this}}</p>
+    </li>
+    {{/each}}
+</ul>
