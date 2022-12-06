@@ -1,8 +1,13 @@
 <h1>Post your job</h1>
-<form action="/postjob" method="post">
-    <label for="email">Email </label>
-    <input type="text" id="email" name="email" />
-    <label for="password">password </label>
-    <input type="password" id="password" name="password" />
-    <input type="submit" value="Login">
+<form action="/user/postjob" method="post">
+    <label for="jobTitle">jobTitle</label>
+    <input type="text" id="jobTitle" name="jobTitle" /><br></br>
+    <label for="jobDescription">jobDescription </label>
+    <input type="text" id="jobDescription" name="jobDescription" /><br></br>
+    <label for="jobStreetName">jobStreetName </label>
+    <input type="text" id="jobStreetName" name="jobStreetName" /><br></br>
+    <input type="submit" value="post">
 </form>
+
+<p>Error message:(if have any)</p>
+<p>{{errormsg}}</p>

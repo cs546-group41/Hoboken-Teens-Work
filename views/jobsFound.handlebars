@@ -1,1 +1,8 @@
 <h1>Search Result</h1>
+<ul>
+    {{#each jobs}}
+    <li>
+        <a href="/job/{{_id}}">{{jobTitle}}</a>
+    </li>
+    {{/each}}
+</ul>

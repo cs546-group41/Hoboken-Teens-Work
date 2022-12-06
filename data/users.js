@@ -22,6 +22,20 @@ const createUser = async (
   password = validation.checkPassword(password);
   const hashedPassword = validation.encryptPwd(password)
   const userCollection = await users();
+  const myUser = {
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    age: age,
+    phone: phone,
+    hashedPassword: hashedPassword,
+    jobsPosted: [],
+    jobsHired: [],
+    jobsApplied: [],
+    jobsSaved: [],
+    hiredForJobs: "",
+  };
+  /*
   let myUser = {};
   if (age >= 18) {
     myUser = {
@@ -48,7 +62,7 @@ const createUser = async (
       jobsSaved: [],
       hiredForJobs: "",
     };
-  }
+  }*/
   const insertInfo = await userCollection.insertOne(myUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw "Could not add movie";
@@ -105,6 +119,24 @@ const loginCheck = async (email, pwd) =>{
   return user
 }
 
+const getAllPostJobsById = async (id) => {
+  id = validation.checkId(id);
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(id) });
+  if (!user) throw "User not found";
+  var IDs = []
+  for (let i=0;i<user.jobsPosted.length;i++){
+    IDs.push(user.jobsPosted[i].id)
+  }
+  return IDs
+}
 
+const jobPosterCheck = async (jobId, id) => {
+    id = validation.checkId(id);
+    jobId = validation.checkId(jobId)
+    const IDS = await getAllPostJobsById(id)
+    if (IDS.indexOf(jobId)>-1) return true
+    return false
+}
 
-module.exports = { createUser, getUserById, editUser, loginCheck };
+module.exports = { createUser, getUserById, editUser, loginCheck, jobPosterCheck };

@@ -24,7 +24,7 @@ router
     }catch(e){
       return res.render("error",{errormsg:e})
     }
-    if (req.session.user && req.session.user.id === req.params.id) {
+    if (req.session.user && await users.jobPosterCheck(req.params.id, req.session.user.id)) {
       jobPublisher = true    
     }
     res.render("jobDetail",{loginUser:loginUser, login:loginUser, user: req.session.user, jobPublisher: jobPublisher, jobDetail: jobDetail})    
@@ -32,8 +32,19 @@ router
 
 router
   .route('/search')
-  .get(async (req, res) =>{
-    res.render('jobsFound')
+  .post(async (req, res) =>{
+    var login = false
+    var user = null
+    if (req.session.user){ 
+      login = true
+      user = req.session.user
+    }
+    try{
+      const jobSearch = await jobs.searchJobs(req.body.jobsInput)
+      return res.render("jobsFound",{login:login, user:user,jobs: jobSearch})
+    }catch(e){
+      return res.render('jobsFound', {errormsg:e})
+    }  
   })
 
 
