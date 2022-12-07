@@ -7,7 +7,7 @@ let firstUser = undefined;
 async function main() {
   const db = await connection.dbConnection();
 
-  // await db.dropDatabase();
+  await db.dropDatabase();
   try {
     firstUser = await users.createUser(
       "Anh",
@@ -23,7 +23,7 @@ async function main() {
   }
   try {
     const result = await users.getUserById(firstUser._id);
-    // console.log(result);
+    console.log(result);
   } catch (e) {
     console.log(e);
   }

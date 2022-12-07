@@ -7,8 +7,13 @@ const validation = require("../validation");
 
 router.route("/searchJobs")
     .post(async (req, res) => {
+        const searchQuery = req.body.jobsInput;
         try {
-            const searchQuery = req.body.jobsInput;
+            searchQuery = validation.checkSearchQuery(searchQuery);
+        } catch (e) {
+            return res.status(400).json({error: e});
+        }
+        try {
             console.log(searchQuery);
             const search = await jobsData.searchJobs(searchQuery);
             console.log(search);
@@ -17,7 +22,6 @@ router.route("/searchJobs")
             }
         } catch (e) {
             return res.status(404).sendFile(path.resolve("static/notfound.html"));
-            return;
         }
     });
 
