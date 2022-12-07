@@ -17,6 +17,10 @@ const getAllJobs = async () => {
 // Return individual job by its ID
 const getJobById = async (jobId) => {
   jobId = validation.checkId(jobId);
+  const jobsCollection = await jobs();
+  const findJob = await jobsCollection.findOne({_id: ObjectId(jobId)});
+  if(!findJob) throw "Job not found";
+  return findJob
 };
 
 // Search keywords for job titles or description in the entire database

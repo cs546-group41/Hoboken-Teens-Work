@@ -137,7 +137,6 @@ const applyToJob = async (jobId, applicantId) => {
 	const userCollection = await users();
 	const addToJobsApplied = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $push: { jobsApplied: jobId } });
 	if (!addToJobsApplied.matchedCount && !addToJobsApplied.modifiedCount) throw "Could not apply to job";
-	const job = jobsData.getJobById(jobId);
 	const applicantObject = {
 		applicantId: applicantId,
 		name: `${myApplicant.firstName} ${myApplicant.lastName}`,
@@ -145,9 +144,9 @@ const applyToJob = async (jobId, applicantId) => {
 	};
 	const jobsCollection = await jobs();
 	const addToAllApplicants = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $push: { applicannts: applicantObject } });
-  if(!addToAllApplicants.matchedCount && !addToAllApplicants.modifiedCount) throw "Could not apply to job";
+	if (!addToAllApplicants.matchedCount && !addToAllApplicants.modifiedCount) throw "Could not apply to job";
 
-  return true;
+	return true;
 };
 
 const withdrawJobApplication = async (jobId, applicantId) => {
