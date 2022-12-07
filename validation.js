@@ -1,23 +1,23 @@
 const { ObjectId } = require("mongodb");
 
 function checkId(id) {
-  if (!id) throw `Error: You must provide an ID `;
-  if (typeof id !== "string") throw `Error: ID must be a string`;
+  if (!id) throw `You must provide an ID `;
+  if (typeof id !== "string") throw `ID must be a string`;
   id = id.trim();
   if (id.length === 0)
-    throw `Error: ID cannot be an empty string or just spaces`;
-  if (!ObjectId.isValid(id)) throw `Error:invalid object ID`;
+    throw `ID cannot be an empty string or just spaces`;
+  if (!ObjectId.isValid(id)) throw `invalid object ID`;
   return id;
 }
 
 function checkString(strVal) {
-  if (!strVal) throw `Error: You must supply a string!`;
-  if (typeof strVal !== "string") throw `Error:Input  must be a string!`;
+  if (!strVal) throw `You must supply a string!`;
+  if (typeof strVal !== "string") throw `Input  must be a string!`;
   strVal = strVal.trim();
   if (strVal.length === 0)
-    throw `Error:Input cannot be an empty string or string with just spaces`;
+    throw `Input cannot be an empty string or string with just spaces`;
   if (!isNaN(strVal))
-    throw `Error: input is not a valid value for as it only contains digits`;
+    throw `input is not a valid value for as it only contains digits`;
   return strVal;
 }
 
@@ -56,7 +56,7 @@ function checkEmail(email) {
 }
 
 function checkAge(age) {
-  if (!age) throw `Error: You must provide an age `;
+  if (!age) throw `You must provide an age `;
 
   const regex = /[^0-9]/;
   if (regex.test(age)) throw "Age must be an integer number";
@@ -93,19 +93,19 @@ function checkPassword(strVal) {
   const oneUpper = /[A-Z]/;
   const oneNumber = /[0-9]/;
   const specialChar = /[^\w\s]/;
-  if (!strVal) throw `Error: You must supply a password!`;
-  if (typeof strVal !== "string") throw `Error: password must be a string!`;
+  if (!strVal) throw "You must supply a password!";
+  if (typeof strVal !== "string") throw "Password must be a string!";
   strVal = strVal.trim();
   if (strVal.length === 0)
-    throw `Error: password cannot be an empty string or string with just spaces`;
+    throw "Password cannot be an empty string or string with just spaces";
   if (strVal.length < 6)
-    throw "Error: password must at least 6 characters long";
-  if (strVal.includes(" ")) throw "Error: password must not contain space";
+    throw "Password must at least 6 characters long";
+  if (strVal.includes(" ")) throw "Password must not contain space";
   if (!oneUpper.test(strVal))
-    throw "Error: password must contain one upper case ";
-  if (!oneNumber.test(strVal)) throw "Error: password must contain one number ";
+    throw "Password must contain one upper case ";
+  if (!oneNumber.test(strVal)) throw "Password must contain one number ";
   if (!specialChar.test(strVal) && !strVal.includes("_"))
-    throw "Error: password must contain one special character ";
+    throw "Password must contain one special character ";
   return strVal;
 }
 
