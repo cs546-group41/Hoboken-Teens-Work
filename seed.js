@@ -48,7 +48,7 @@ async function main() {
   // }
 
   try {
-    const searchJob = await jobs.searchJobs("Patio cleaning")
+    const searchJob = await jobs.searchJobs("Por")
     console.log(searchJob)
   } catch (e) {
     console.log(e)
