@@ -1,0 +1,25 @@
+<main>
+ 
+<h1>{{jobTitle}}</h1>
+
+<p>{{jobDescription}}</p>
+
+<p>Status: {{jobStatus}}</p>
+
+<h2>Applicants</h2>
+
+<ul>
+  {{#each applicants}}
+    <li>
+      <a href="{{this.resumeUrl}}" download>{{this.name}}</a>
+      {{#if this.isHired}}
+        <button class="fire">Fire</button>
+      {{else}}
+        <button class="hire">Hire</button>
+      {{/if}}
+    </li>
+  {{/each}}
+</ul>
+
+
+</main>

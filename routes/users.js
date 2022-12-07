@@ -7,6 +7,7 @@ router
   .route("/")
   .get(async (req, res) => {
     //
+    res.render("applicant");
   })
   .post(async (req, res) => {
     try {
