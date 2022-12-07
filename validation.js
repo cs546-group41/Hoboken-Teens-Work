@@ -123,7 +123,9 @@ function checkJobStreetName(streetName) {
 	streetName = checkString(streetName);
 	if (["10th St", "11th St", "12th St", "13th St", "14th St", "15th St", "16th St", "1st St", "2nd St", "3rd St", "4th St", "5th St", "6th St", "7th St", "8th St", "9th St", "Adams St", "Bloomfield St", "Castle Point Ter", "Church Twrs", "Clinton St", "Constitution Ct", "Court St", "Elysian Park", "Firehouse Plz", "Garden St", "Grand St", "Harrison St", "Henderson St", "Hudson Pl", "Hudson St", "Independence Ct", "Jackson St", "Jefferson St", "Madison St", "Marine View Plz", "Marshall Dr", "Marshall St", "Maxwell Ln", "Monroe St", "Newark St", "Observer Hwy", "Park Ave", "Paterson Ave", "River St", "Shipyard Ln", "Sinatra Dr", "Washington St", "Willow Ave", "Willow Ter"].includes(streetName)) {
 		return streetName;
-	}
+	} else {
+    throw "Invalid street name";
+  }
 }
 
 function checkJobStatus(status) {
