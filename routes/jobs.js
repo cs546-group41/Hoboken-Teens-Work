@@ -25,7 +25,7 @@ router.route("/searchJobs")
         }
     });
 
-router.route("/createjob")
+router.route("/createJob")
     .post(async (req, res) => {
         const createJobData = req.body;
         const jobAuthorId = req.session.userId;
@@ -34,8 +34,7 @@ router.route("/createjob")
             createJobData.jobDescription = validation.checkJobDescription(createJobData.jobDescription);
             createJobData.jobStreetName = validation.checkJobStreetName(createJobData.jobStreetName);
         } catch (e) {
-            res.status(400).json({error: e});
-            return;
+            return res.status(400).json({error: e});
         }
 
         try {
@@ -45,13 +44,33 @@ router.route("/createjob")
                 res.json({ success: true, jobTitle: insertJob.jobTitle });
                 return;
             } else {
-                res.json({ success: false });
-                return;
+                return res.json({ success: false });
             }
         } catch (e) {
-            res.status(500).json({error: e});
-            return;
+            return res.status(500).json({error: e});
         }
     });
+
+    router.route("editJob")
+        .put(async(req, res) => {
+            const editJobBody = req.body;
+            const authorId = req.session.userId;
+            try {
+                if(!editJobBody) throw "No input provided";
+                editJobBody.jobId = validation.checkId(editJobBody.jobId);
+                editJobBody.jobTitle = validation.checkJobTitle(editJobBody.jobTitle);
+                editJobBody.jobDescription = validation.checkJobDescription(editJobBody.jobDescription);
+                editJobBody.jobStreetName = validation.checkJobStreetName(editJobBody.jobStreetName);
+                editJobBody.jobStatus = validation.checkJobStatus(editJobBody.jobStatus);
+              
+                if (editJobBody.phoneNumber) {
+                  phoneNumber = validation.checkPhone(editJobBody.phoneNumber);
+                } else {
+                  phoneNumber = null;
+                }
+            } catch (e) {
+                return res.status(400).json({error: e});
+            }
+        });
 
 module.exports = router;
