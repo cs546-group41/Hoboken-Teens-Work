@@ -1,14 +1,21 @@
-<p>this is login page</p>
-<form action="/login" method="post">
-    <label for="email">Email </label>
-    <input type="text" id="email" name="email" />
-    <label for="password">password </label>
-    <input type="password" id="password" name="password" />
-    <input type="submit" value="Login">
-</form>
+<form action="/login" id="login-form" method="post">
+			<label for="emailInput">Enter your email</label>
+			<input type="text" name="username" id="username" placeholder="Enter your email" />
+			<br /><br />
+			<label for="password">Enter your password</label>
+			<input type="text" name="password" id="password" placeholder="Enter your password" />
+			<br /><br />
+			<input type="submit" />
 
-<p>Error Code(if exists):</p>
-<li>
-    <p>{{errormsg}}</p>
-</li>
-    
+			<div class="form-group hidden" id="error-container">
+				<div class="alert alert-danger text-goes-here"></div>
+			</div>
+			<div class="form-group hidden" id="result-container">
+				<div class="alert alert-success text-goes-here"></div>
+			</div>
+
+		</form>
+		<br /><br />
+		{{#if error}} <h4>{{error}}</h4>{{/if}}
+		<a href="/register">Click here to register!</a>
+		<script src="/public/js/loginValidation.js"></script>

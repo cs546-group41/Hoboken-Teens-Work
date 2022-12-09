@@ -4,6 +4,7 @@ const loginRoute = require('./login');
 const homepageRoute = require('./homepage');
 const registerRoute = require('./register');
 const logoutRoute = require('./logout');
+const path = require("path");
 
 const constructorMethod = (app) => {
   

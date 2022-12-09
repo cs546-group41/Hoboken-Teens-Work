@@ -7,7 +7,6 @@ const users = data.users
 router
   .route('/')
   .get(async (req, res) => {
-    //code here for GET
     res.redirect('/index')
   })
 
