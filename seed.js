@@ -7,7 +7,7 @@ let firstUser = undefined;
 async function main() {
   const db = await connection.dbConnection();
 
-  // await db.dropDatabase();
+  await db.dropDatabase();
   try {
     firstUser = await users.createUser(
       "Anh",
@@ -23,7 +23,7 @@ async function main() {
   }
   try {
     const result = await users.getUserById(firstUser._id);
-    // console.log(result);
+    console.log(result);
   } catch (e) {
     console.log(e);
   }
@@ -48,7 +48,14 @@ async function main() {
   // }
 
   try {
-    const searchJob = await jobs.searchJobs("Por")
+    const newJob = await jobs.createJob("Car Wash", "Need a car wash urgently", "12th St", firstUser._id);
+    console.log(newJob);
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    const searchJob = await jobs.searchJobs("Car Wash")
     console.log(searchJob)
   } catch (e) {
     console.log(e)
