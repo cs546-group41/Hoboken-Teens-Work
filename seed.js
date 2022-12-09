@@ -48,7 +48,14 @@ async function main() {
   // }
 
   try {
-    const searchJob = await jobs.searchJobs("Por")
+    const newJob = await jobs.createJob("Car Wash", "Need a car wash urgently", "12th St", firstUser._id);
+    console.log(newJob);
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    const searchJob = await jobs.searchJobs("Car Wash")
     console.log(searchJob)
   } catch (e) {
     console.log(e)

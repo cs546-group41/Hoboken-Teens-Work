@@ -1,12 +1,13 @@
 const mongoCollections = require("../config/mongoCollection");
 const users = mongoCollections.users;
 const jobs = mongoCollections.jobs;
-const bcrypt = require('bcryptjs')
 const validation = require("../validation");
 const { ObjectId } = require("mongodb");
+const bcrypt = require('bcryptjs');
+const saltRounds = 12;
 const jobsData = require("./jobs");
 
-const createUser = async (firstName, lastName, email, age, hashedPassword, phone) => {
+const createUser = async (firstName, lastName, email, age, password, phone) => {
 	firstName = validation.checkString(firstName);
 	lastName = validation.checkString(lastName);
 	validation.checkFirstName(firstName);
@@ -15,7 +16,8 @@ const createUser = async (firstName, lastName, email, age, hashedPassword, phone
 	validation.checkEmail(email);
 	age = validation.checkAge(age);
 	phone = validation.checkPhone(phone);
-	hashedPassword = validation.checkPassword(hashedPassword);
+	password = validation.checkPassword(password);
+	const hashedPassword = await bcrypt.hash(password, saltRounds);
 	const userCollection = await users();
 	let myUser = {};
 	if (age >= 18) {
@@ -81,7 +83,7 @@ const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
 		lastName: lastName,
 		email: email,
 		age: age,
-		phoneNumber: phoneNumber,
+		phone: phoneNumber,
 	};
 	const userCollection = await users();
 	const editStatus = await userCollection.updateOne({ _id: ObjectId(id) }, { $set: userEditInfo });

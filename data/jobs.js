@@ -1,8 +1,8 @@
 const mongoCollections = require("../config/mongoCollection");
 const jobs = mongoCollections.jobs;
+const users = mongoCollections.users;
 const validation = require("../validation");
 const { ObjectId } = require("mongodb");
-const usersData = require("./users");
 
 // Return all jobs in the database
 const getAllJobs = async () => {
@@ -39,9 +39,10 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
   jobDescription = validation.checkJobDescription(jobDescription);
   jobStreetName = validation.checkJobStreetName(jobStreetName);
   authorId = validation.checkId(authorId);
-  const jobAuthorPhoneNumber = null;
+  let jobAuthorPhoneNumber = null;
 
-  const user = await usersData.getUserById(authorId);
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({_id: ObjectId(authorId)});
   if (user.phone) {
     jobAuthorPhoneNumber = user.phone;
   }
@@ -50,7 +51,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
     jobTitle: jobTitle,
     jobDescription: jobDescription,
     jobStreetName: jobStreetName,
-    jobAuthor: jobAuthor,
+    jobAuthor: `${user.firstName} ${user.lastName}`,
     phone: jobAuthorPhoneNumber,
     jobStatus: "open",
     applicants: [],

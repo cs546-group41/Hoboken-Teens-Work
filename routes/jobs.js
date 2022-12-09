@@ -51,7 +51,7 @@ router.route("/createJob")
         }
     });
 
-    router.route("editJob")
+    router.route("/editJob")
         .put(async(req, res) => {
             const editJobBody = req.body;
             const authorId = req.session.userId;
@@ -68,6 +68,8 @@ router.route("/createJob")
                 } else {
                   phoneNumber = null;
                 }
+
+                
             } catch (e) {
                 return res.status(400).json({error: e});
             }
