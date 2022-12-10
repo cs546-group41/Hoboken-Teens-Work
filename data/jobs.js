@@ -1,5 +1,6 @@
 const mongoCollections = require("../config/mongoCollection");
 const jobs = mongoCollections.jobs;
+const users = mongoCollections.users;
 const validation = require("../validation");
 const { ObjectId } = require("mongodb");
 const usersData = require("./users");
@@ -17,14 +18,12 @@ const getAllJobs = async () => {
 
 
 const getJobById = async (jobId) => {
-	
-	const jobsCollection = await jobs();
-	jobId = validation.checkId(jobId);
-	const job = await jobsCollection.findOne({ _id: ObjectId(jobId) });
-  	if (!job) throw "Job not found";
-  	return job;	
-
-}
+  jobId = validation.checkId(jobId);
+  const jobsCollection = await jobs();
+  const findJob = await jobsCollection.findOne({_id: ObjectId(jobId)});
+  if(!findJob) throw "Job not found";
+  return findJob
+};
 
 // Search keywords for job titles or description in the entire database
 const searchJobs = async (jobSearchQuery) => {
@@ -39,11 +38,11 @@ const searchJobs = async (jobSearchQuery) => {
 
 // Create a new job posting
 const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
-	jobTitle = validation.checkJobTitle(jobTitle);
-	jobDescription = validation.checkJobDescription(jobDescription);
-	jobStreetName = validation.checkJobStreetName(jobStreetName);
-	authorId = validation.checkId(authorId);
-	const jobAuthorPhoneNumber = null;
+  jobTitle = validation.checkJobTitle(jobTitle);
+  jobDescription = validation.checkJobDescription(jobDescription);
+  jobStreetName = validation.checkJobStreetName(jobStreetName);
+  authorId = validation.checkId(authorId);
+  let jobAuthorPhoneNumber = null;
 
 	const user = await usersData.getUserById(authorId);
 	if (user.phone) {

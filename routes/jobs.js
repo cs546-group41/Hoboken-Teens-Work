@@ -4,48 +4,70 @@ const data = require('../data')
 const users = data.users
 const jobs = data.jobs 
 
-router
-  .route('/')
-  .get(async (req, res) => {
-    res.redirect('/')
-  })
 
-router
-  .route('/:id')
-  .get(async (req, res) => {
-    var loginUser = false
-    var jobPublisher = false
-    if (req.session.user){
-      loginUser=true
-    }
-    var jobDetail = {}
-    try{
-      jobDetail = await jobs.getJobById(req.params.id)
-    }catch(e){
-      return res.render("error",{errormsg:e})
-    }
-    if (req.session.user && await users.jobPosterCheck(req.params.id, req.session.user.id)) {
-      jobPublisher = true    
-    }
-    res.render("jobDetail",{loginUser:loginUser, login:loginUser, user: req.session.user, jobPublisher: jobPublisher, jobDetail: jobDetail})    
-  })
+router.route("/searchJobs").post(async (req, res) => {
+    try {
+        const searchQuery = req.body.jobsInput
+        console.log(searchQuery)
+        const search = await jobDataFile.searchJobs(searchQuery)
+        console.log(search)
+        if (search) {
+            return res.render("jobsFound", { jobs: search })
+        }
 
-router
-  .route('/search')
-  .post(async (req, res) =>{
-    var login = false
-    var user = null
-    if (req.session.user){ 
-      login = true
-      user = req.session.user
+    } catch (e) {
+        return res.render("jobsNotFound")
     }
-    try{
-      const jobSearch = await jobs.searchJobs(req.body.jobsInput)
-      return res.render("jobsFound",{login:login, user:user,jobs: jobSearch})
-    }catch(e){
-      return res.render('jobsFound', {errormsg:e})
-    }  
-  })
+})
 
+router.route("/createJob")
+    .post(async (req, res) => {
+        const createJobData = req.body;
+        const jobAuthorId = req.session.userId;
+        try {
+            createJobData.jobTitle = validation.checkJobTitle(createJobData.jobTitle);
+            createJobData.jobDescription = validation.checkJobDescription(createJobData.jobDescription);
+            createJobData.jobStreetName = validation.checkJobStreetName(createJobData.jobStreetName);
+        } catch (e) {
+            return res.status(400).json({error: e});
+        }
+
+        try {
+            const {jobTitle, jobDescription, jobStreetName} = createJobData;
+            const insertJob = jobsData.createJob(jobTitle, jobDescription, jobStreetName, jobAuthorId);
+            if (insertJob) {
+                res.json({ success: true, jobTitle: insertJob.jobTitle });
+                return;
+            } else {
+                return res.json({ success: false });
+            }
+        } catch (e) {
+            return res.status(500).json({error: e});
+        }
+    });
+
+    router.route("/editJob")
+        .put(async(req, res) => {
+            const editJobBody = req.body;
+            const authorId = req.session.userId;
+            try {
+                if(!editJobBody) throw "No input provided";
+                editJobBody.jobId = validation.checkId(editJobBody.jobId);
+                editJobBody.jobTitle = validation.checkJobTitle(editJobBody.jobTitle);
+                editJobBody.jobDescription = validation.checkJobDescription(editJobBody.jobDescription);
+                editJobBody.jobStreetName = validation.checkJobStreetName(editJobBody.jobStreetName);
+                editJobBody.jobStatus = validation.checkJobStatus(editJobBody.jobStatus);
+              
+                if (editJobBody.phoneNumber) {
+                  phoneNumber = validation.checkPhone(editJobBody.phoneNumber);
+                } else {
+                  phoneNumber = null;
+                }
+
+                
+            } catch (e) {
+                return res.status(400).json({error: e});
+            }
+        });
 
 module.exports = router
