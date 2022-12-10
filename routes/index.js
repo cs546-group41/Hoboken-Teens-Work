@@ -10,7 +10,11 @@ const constructorMethod = (app) => {
   
   //server side check request
   app.use(function (req, res, next) {
-    console.log(`${new Date().toUTCString()} ${req.method} ${req.originalUrl} Authenticate user: ${req.session.user!==undefined}`)
+    var id = ""
+    if (req.session.user){
+      id = req.session.user.id
+    }
+    console.log(`${new Date().toUTCString()} ${req.method} ${req.originalUrl} user: ${id}`)
     next();
   })
 
@@ -20,11 +24,15 @@ const constructorMethod = (app) => {
   app.use('/user', userRoute);
   app.use('/job', jobRoute);
   app.use('/register', registerRoute);
-  app.use('/logout', logoutRoute)
+  app.use('/logout', logoutRoute);
+  
+  app.use('/about', (req, res) =>{
+    res.sendFile(path.resolve("static/About.html"))
+  });
 
   //any differernt route will by redirect to index page
   app.use('*', (req, res) => {
-    res.redirect("/index");
+    res.redirect("/index")
   });
 
 };

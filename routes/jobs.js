@@ -2,72 +2,184 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data')
 const users = data.users
-const jobs = data.jobs 
-
+const jobs = data.jobs
+const comments = data.comments
+const validation = require("../validation")
 
 router.route("/searchJobs").post(async (req, res) => {
+  var title = "Search Results"
+  if (req.session.user !== undefined) {
     try {
-        const searchQuery = req.body.jobsInput
-        console.log(searchQuery)
-        const search = await jobDataFile.searchJobs(searchQuery)
-        console.log(search)
-        if (search) {
-            return res.render("jobsFound", { jobs: search })
-        }
-
+      await users.getUserById(req.session.user.id)
     } catch (e) {
-        return res.render("jobsNotFound")
+      req.session.destroy()
     }
+  }
+  if (!req.session.user) {
+    res.status(403)
+    return res.render("error", {
+      title: "Error",
+      login: false,
+      errormsg: "You Need to Login first to use the Search Function!"
+    })
+  }
+  var errormsg = ""
+  var searchResults = null
+  try {
+    searchResults = await jobs.searchJobs(req.body.jobsInput)
+  } catch (e) {
+    title = "Job Not Found!"
+    errormsg = e
+  }
+  res.render("searchResults", {
+    title: title,
+    login: true,
+    loginUserData: req.session.user,
+    searchResults: searchResults,
+    errormsg: errormsg
+  })
 })
 
 router.route("/createJob")
-    .post(async (req, res) => {
-        const createJobData = req.body;
-        const jobAuthorId = req.session.userId;
-        try {
-            createJobData.jobTitle = validation.checkJobTitle(createJobData.jobTitle);
-            createJobData.jobDescription = validation.checkJobDescription(createJobData.jobDescription);
-            createJobData.jobStreetName = validation.checkJobStreetName(createJobData.jobStreetName);
-        } catch (e) {
-            return res.status(400).json({error: e});
-        }
+  .get(async (req, res) => {
+    if (req.session.user !== undefined) {
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+      }
+    }
+    if (!req.session.user) return res.redirect('/index')
+    res.render("createJob", {
+      title: "Creating New Job",
+      login: true,
+      loginUserData: req.session.user,
+      phone: req.session.user.phone
+    })
+  })
+  .post(async (req, res) => {
+    if (req.session.user !== undefined) {
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+      }
+    }
+    const createJobData = req.body;
+    const jobAuthorId = req.session.user.id;
+    try {
+      createJobData.jobTitle = validation.checkJobTitle(createJobData.jobTitle);
+      createJobData.jobDescription = validation.checkJobDescription(createJobData.jobDescription);
+      createJobData.jobStreetName = validation.checkJobStreetName(createJobData.jobStreetName);
+    } catch (e) {
+      res.status(400)
+      return res.render("createJob", {
+        title: "Creating New Job",
+        login: true,
+        loginUserData: req.session.user,
+        phone: req.session.user.phone,
+        errmsg: e
+      })
+    }
 
-        try {
-            const {jobTitle, jobDescription, jobStreetName} = createJobData;
-            const insertJob = jobsData.createJob(jobTitle, jobDescription, jobStreetName, jobAuthorId);
-            if (insertJob) {
-                res.json({ success: true, jobTitle: insertJob.jobTitle });
-                return;
-            } else {
-                return res.json({ success: false });
-            }
-        } catch (e) {
-            return res.status(500).json({error: e});
-        }
-    });
+    try {
+      const { jobTitle, jobDescription, jobStreetName } = createJobData;
+      jobs.createJob(jobTitle, jobDescription, jobStreetName, jobAuthorId);
+      return res.redirect(`/user/${req.session.user.id}`)
+    } catch (e) {
+      res.status(500);
+      res.render("createJob", {
+        title: "Creating New Job",
+        login: true,
+        loginUserData: req.session.user,
+        phone: req.session.user.phone,
+        errmsg: e
+      })
+    }
+  });
 
-    router.route("/editJob")
-        .put(async(req, res) => {
-            const editJobBody = req.body;
-            const authorId = req.session.userId;
-            try {
-                if(!editJobBody) throw "No input provided";
-                editJobBody.jobId = validation.checkId(editJobBody.jobId);
-                editJobBody.jobTitle = validation.checkJobTitle(editJobBody.jobTitle);
-                editJobBody.jobDescription = validation.checkJobDescription(editJobBody.jobDescription);
-                editJobBody.jobStreetName = validation.checkJobStreetName(editJobBody.jobStreetName);
-                editJobBody.jobStatus = validation.checkJobStatus(editJobBody.jobStatus);
-              
-                if (editJobBody.phoneNumber) {
-                  phoneNumber = validation.checkPhone(editJobBody.phoneNumber);
-                } else {
-                  phoneNumber = null;
-                }
+router.route("/editJob")
+  .put(async (req, res) => {
+    const editJobBody = req.body;
+    const authorId = req.session.userId;
+    try {
+      if (!editJobBody) throw "No input provided";
+      editJobBody.jobId = validation.checkId(editJobBody.jobId);
+      editJobBody.jobTitle = validation.checkJobTitle(editJobBody.jobTitle);
+      editJobBody.jobDescription = validation.checkJobDescription(editJobBody.jobDescription);
+      editJobBody.jobStreetName = validation.checkJobStreetName(editJobBody.jobStreetName);
+      editJobBody.jobStatus = validation.checkJobStatus(editJobBody.jobStatus);
 
-                
-            } catch (e) {
-                return res.status(400).json({error: e});
-            }
-        });
+      if (editJobBody.phoneNumber) {
+        phoneNumber = validation.checkPhone(editJobBody.phoneNumber);
+      } else {
+        phoneNumber = null;
+      }
+
+
+    } catch (e) {
+      return res.status(400).json({ error: e });
+    }
+  });
+
+router
+  .route("/addComment")
+  .post(async (req, res) => {
+    if (!req.session) return res.status(401).json({results: "Unauthorized User Request."})
+    if (req.session.user !== undefined) {
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+        return res.status(401).json({results: "Unauthorized User Request."})
+      }
+    }
+    try{
+      await comments.createComment(req.body.jobId, req.session.user.id , req.session.user.fullname, req.body.comment)
+      res.status(200).json({results:"Success!"})
+    }catch(e){
+      res.status(400).json({results:"Failed to add comment!"})
+    }
+  })
+
+router
+  .route('/:id')
+  .get(async (req, res) => {
+    if (req.session.user !== undefined) {
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+      }
+    }
+    var login = false
+    if (req.session.user) {
+      login = true
+    }
+    var jobDetail = null
+    try {
+      jobDetail = await jobs.getJobById(req.params.id)
+    } catch (e) {
+      return res.render("error", {
+        title: "Error",
+        login: login,
+        errormsg: e
+      })
+    }
+    if (req.session.user && await users.jobPosterCheck(req.params.id, req.session.user.id)) {
+      return res.render("applicants", {
+        title: `Posted Job Detail - ${jobDetail.title}`,
+        login: true,
+        loginUserData: req.session.user,
+        jobDetail: jobDetail
+      })
+    }
+    res.render("individualJob", {
+      title: `Job Detail - ${jobDetail.title}`,
+      login: login,
+      loginUserData: req.session.user,
+      jobDetail: jobDetail
+    })
+  })
 
 module.exports = router

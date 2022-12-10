@@ -171,4 +171,6 @@ module.exports = {
 	checkJobStreetName,
 	checkJobStatus,
 	checkSearchQuery,
+	encryptPwd,
+	validatePwd
 };

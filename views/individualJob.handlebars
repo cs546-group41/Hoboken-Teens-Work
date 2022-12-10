@@ -4,6 +4,7 @@
 <p>jobStreetName : {{jobDetail.jobStreetName}}</p>
 <p>jobStatus : {{jobDetail.jobStatus}}</p>
 <p>Publish by: <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<p>Contact Phone Number: {{jobDetail.jobAuthor.phone}}</p>
 <p>Comments:</p>
 <ul>
     {{#each jobDetail.comments}}
@@ -16,21 +17,18 @@
 </ul>
 
 {{#if login}}
-{{#if jobPublisher}}
-<p>applicants:</p>
-<ul>
-    {{#each jobDetail.applicants}}
-    <li>
-        <a href="/id/{{id}}">{{firstName}} {{lastName}}</a>
-    </li>
-    {{/each}}
-</ul>
-{{else}}
-<form action="/comment" method="post">
+<p>Leave a comment:</p>
+<form action="/addComment" method="post" id="add-comment">
     <label for="comment">Leave a comment: </label>
     <input type="text" id="comment" name="comment" />
     <input type="submit" value="submit">
-</form>
-
+</form><br></br>
+<button onclick="saveJob()">Save this Job</button>
+{{#if jobOpen}}
+    <form action="/user/applyJob">
+        <input type="file" id="resume" name="resume">
+        <input type="submit">
+    </form>
 {{/if}}
 {{/if}}
+<script src="/public/js/jobOperations.js"></script>

@@ -13,11 +13,11 @@
     <p>job posted:</p>
     {{#each data.jobsPosted}}
         <li>
-            <a href="/job/{{id}}">{{jobTitle}}</a>
+            <a href="/job/{{id}}">{{jobTitle}}</a> <a type="button" onclick='deleteJob(this,"{{id}}")'>Delete</a>
         </li>
     {{/each}}
     {{#if login}}
-        <a href="/user/{{data._id}}/postjob">Post a Job!</a>
+        <a href="/job/createJob">Post a Job!</a>
         {{#if selfReview}}
             <p>job Hired:</p>
                 {{#each data.jobsHired}}
@@ -28,19 +28,7 @@
                 {{/each}}
         {{/if}}
     {{/if}}
-{{else}}
-    <p>job applied:</p>
-    {{#each data.jobsApplied}}
-        <li>
-            <a href="/job/{{id}}">{{jobTitle}}</a>
-        </li>
-    {{/each}}
-    <p>job saved:</p>
-    {{#each data.jobsSaved}}
-        <li>
-            <a href="/job/{{id}}">{{jobTitle}}</a>
-        </li>
-    {{/each}}
+{{else}}    
     {{#if selfReview}}
         <p>Hired jobs:</p>
         {{#each data.hiredForJobs}}
@@ -50,3 +38,4 @@
         {{/each}}
     {{/if}}
 {{/if}}
+<script src="/public/js/userOperations.js"></script>

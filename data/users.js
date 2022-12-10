@@ -97,11 +97,13 @@ const getAllJobsByUser = async (authorId) => {
   const myUser = await getUserById(authorId);
   return myUser.jobsPosted;
 };
+
 const getAllApplicants = async (jobId) => {
 	jobId = validation.checkId(jobId);
 	const myJob = await jobsData.getJobById(jobId);
-	return myJob;
+	return myJob.applicants;
 };
+
 const getResumeById = async (jobId, applicantId) => {
 	applicantId = validation.checkId(applicantId);
 	jobId = validation.checkId(jobId);
@@ -184,6 +186,26 @@ const loginCheck = async (email, pwd) =>{
   return user
 }
 
+const getAllPostJobsById = async (id) => {
+  id = validation.checkId(id);
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(id) });
+  if (!user) throw "User not found";
+  var IDs = []
+  for (let i=0;i<user.jobsPosted.length;i++){
+    IDs.push(user.jobsPosted[i].id)
+  }
+  return IDs
+}
+
+const jobPosterCheck = async (jobId, id) => {
+  id = validation.checkId(id);
+  jobId = validation.checkId(jobId)
+  const IDS = await getAllPostJobsById(id)
+  if (IDS.indexOf(jobId)>-1) return true
+  return false
+}
+
 
 module.exports = {
   createUser,
@@ -197,5 +219,6 @@ module.exports = {
   applyToJob,
   withdrawJobApplication,
   checkUser,
-  loginCheck
+  loginCheck,
+  jobPosterCheck
 };

@@ -10,10 +10,15 @@
 
 <body>
     <nav>
-        
+        <!-- the link will be change to a pic -->
+        <li>
+            <a href="/">Homepage</a>
+        </li>
+        {{#if hideLogin}}
+        {{else}}
         {{#if login}}
         <p>current status: login</p>
-        <a href="/user/{{user.id}}">{{user.fullName}}</a><br></br>
+        <a href="/user/{{loginUserData.id}}">{{loginUserData.fullName}}</a><br></br>
         <a href="/logout">Click to logout</a>
         {{else}}
         <p>current status: not login</p>
@@ -24,10 +29,7 @@
             <a href="/register">Sign Up</a>
         </li>
         {{/if}}
-
-        <li>
-            <a href="/">Homepage</a>
-        </li>
+        {{/if}}
     </nav>
     {{{body}}}
 </body>

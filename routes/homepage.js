@@ -8,14 +8,16 @@ router
   .route('/')
   .get(async (req, res) => {
     //check aithentication 
+    const title = "Hoboken Teens Work"
     var login = false
+    var loginUserData = null
     if (req.session.user!==undefined){
       //if have cookie, auto login
-      console.log("pass authentication")
       try{
         //check the if the id is valid
         await users.getUserById(req.session.user.id)
         login = true
+        loginUserData = req.session.user
       }catch(e){
         //if the cookie stored id is not valid, delete the cookie 
         req.session.destroy()
@@ -23,13 +25,19 @@ router
     }
     //recieve data from jobsDatabase
     var jobData = {}
+    var errormsg = ""
     try{
       jobData = await jobs.getAllJobs()
     }catch(e){
       //fail to get data from database
+      errormsg = e
     }
-    if (req.session.user) return res.render("homepage", {login:login, user:req.session.user ,jobs: jobData})
-    res.render("homepage", {login:login, jobs: jobData})
+    res.render("homepage", {
+      title: title,
+      login:login,
+      loginUserData:loginUserData, 
+      jobList: jobData, 
+      errormsg: errormsg})
   })
 
 module.exports = router
