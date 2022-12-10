@@ -5,17 +5,13 @@
 			<input type="text" name="username" id="username" placeholder="Enter your email" />
 			<br /><br />
 			<label for="password">Enter your password</label>
-			<input type="text" name="password" id="password" placeholder="Enter your password" />
+			<input type="password" name="password" id="password" placeholder="Enter your password" />
 			<br /><br />
 			<input type="submit" />
 
 			<div class="form-group hidden" id="error-container">
 				<div class="alert alert-danger text-goes-here"></div>
 			</div>
-			<div class="form-group hidden" id="result-container">
-				<div class="alert alert-success text-goes-here"></div>
-			</div>
-
 		</form>
 		<br /><br />
 		{{#if error}} <h4>{{error}}</h4>{{/if}}
