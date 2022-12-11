@@ -9,9 +9,7 @@ const usersData = require("./users");
 const getAllJobs = async () => {
   const jobsCollection = await jobs();
   const jobsList = await jobsCollection.find({}).toArray();
-
   if (!jobsList) throw "Could not get all jobs";
-
   return jobsList;
 };
 
@@ -162,7 +160,23 @@ const editJob = async (
   return await getJobById(jobId);
 };
 
-
+const changeStatus = async (jobId, id)=>{
+  jobId = validation.checkId(jobId);
+  id = validation.checkId(id);
+  const jobsCollection = await jobs();
+  const jobData = await jobsCollection.findOne({ _id: ObjectId(jobId) });
+  if (jobData.jobAuthor.id != id) throw "Unauthorized Operation"
+  const curStatus = jobData.jobStatus
+  if (curStatus==="open"){
+    const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: "closed" } })
+    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!"
+    return "open"
+  }else{
+    const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: "open" } })
+    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!"
+    return "closed"
+  }
+}
 
 module.exports = {
   getAllJobs,
@@ -171,4 +185,5 @@ module.exports = {
   createJob,
   removeJob,
   editJob,
+  changeStatus
 };

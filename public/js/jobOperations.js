@@ -43,7 +43,4 @@ function saveJob(id,saved) {
 }
 
 
-//change job status function
-function changeStatus(){
 
-}
