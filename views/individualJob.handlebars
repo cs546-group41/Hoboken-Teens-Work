@@ -33,10 +33,10 @@
 {{/if}}
 
 {{#if jobDetail.jobStatus}}
-    <form action="/user/applyJob">
+    <form id="resumeUpload" enctype="multipart/form-data">
         <p>Upload your Resume</p>
-        <input type="file" id="resume" name="resume">
-        <input type="submit">
+        <input type="file" id="resumePDF" accept="pdf"/>
+        <button>Upload</button>
     </form>
 {{/if}}
 {{/if}}
