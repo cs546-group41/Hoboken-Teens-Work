@@ -107,14 +107,14 @@ const editJob = async (
   jobTitle,
   jobDescription,
   jobStreetName,
-  jobStatus,
+  //jobStatus,
   phoneNumber
 ) => {
   jobId = validation.checkId(jobId);
   jobTitle = validation.checkJobTitle(jobTitle);
   jobDescription = validation.checkJobDescription(jobDescription);
   jobStreetName = validation.checkJobStreetName(jobStreetName);
-  jobStatus = validation.checkJobStatus(jobStatus);
+  //jobStatus = validation.checkJobStatus(jobStatus);
   authorId = validation.checkId(authorId);
 
   if (phoneNumber) {
@@ -128,7 +128,7 @@ const editJob = async (
   let jobToEdit = null;
   if (author.age >= 18 && author.jobsPosted) {
     for (job of author.jobsPosted) {
-      if (job === jobId) {
+      if (job.id === jobId) {
         jobToEdit = getJobById(jobId);
       }
     }
@@ -140,7 +140,7 @@ const editJob = async (
   if (jobTitle !== jobToEdit.jobTitle) editFlag++;
   if (jobDescription !== jobToEdit.jobDescription) editFlag++;
   if (jobStreetName !== jobToEdit.jobStreetName) editFlag++;
-  if (jobStatus !== jobToEdit.jobStreetName) editFlag++;
+  //if (jobStatus !== jobToEdit.jobStreetName) editFlag++;
   if (phoneNumber !== jobToEdit.phone) editFlag++;
 
   if (editFlag < 1) throw "No changes were made";
@@ -149,8 +149,7 @@ const editJob = async (
     jobTitle: jobTitle,
     jobDescription: jobDescription,
     jobStreetName: jobStreetName,
-    jobAuthor: jobAuthor,
-    phone: jobAuthorPhoneNumber,
+    phone: phoneNumber,
   };
   const jobsCollection = await jobs();
   const editedJob = await jobsCollection.updateOne(

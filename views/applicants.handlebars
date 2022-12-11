@@ -2,7 +2,9 @@
 
 <p>{{jobDetail.jobDescription}}</p>
 
-<p>Status: {{jobDetail.jobStatus}}</p>
+<p>Status: {{jobDetail.jobStatus}} <button onclick="changeStatus()">Change Status</button></p>
+
+<a href="/job/{{jobDetail._id}}/editJob">Edit job</a>
 
 <h2>Applicants</h2>
 
