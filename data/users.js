@@ -7,50 +7,48 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 12;
 const jobsData = require("./jobs");
 
-const createUser = async (firstName, lastName, email, age, password, phone) => {
-	firstName = validation.checkString(firstName);
-	lastName = validation.checkString(lastName);
-	validation.checkFirstName(firstName);
-	validation.checkLastName(lastName);
-	email = validation.checkString(email);
-	validation.checkEmail(email);
-	age = validation.checkAge(age);
-	phone = validation.checkPhone(phone);
-	password = validation.checkPassword(password);
-	const hashedPassword = await bcrypt.hash(password, saltRounds);
-	const userCollection = await users();
-	let myUser = {};
-	if (age >= 18) {
-		myUser = {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			age: age,
-			hashedPassword: hashedPassword,
-			phone: phone,
-			jobsPosted: [],
-			jobsHired: [],
-		};
-	} else {
-		myUser = {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			age: age,
-			hashedPassword: hashedPassword,
-			phone: phone,
-			jobsApplied: [],
-			jobsSaved: [],
-			hiredForJobs: "",
-		};
-	}
-	const insertInfo = await userCollection.insertOne(myUser);
-	if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add user";
-	const newId = insertInfo.insertedId.toString();
-	const user = await getUserById(newId);
-	user._id = user._id.toString();
-	return user;
+const createUser = async (
+  firstName,
+  lastName,
+  email,
+  age,
+  phone,
+  password
+) => {
+  firstName = validation.checkString(firstName);
+  lastName = validation.checkString(lastName);
+  validation.checkFirstName(firstName);
+  validation.checkLastName(lastName);
+  email = validation.checkString(email);
+  validation.checkEmail(email);
+  age = validation.checkAge(age);
+  phone = validation.checkPhone(phone);
+  password = validation.checkPassword(password);
+  const hashedPassword = validation.encryptPwd(password)
+  const userCollection = await users();
+  const myUser = {
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    age: age,
+    phone: phone,
+    hashedPassword: hashedPassword,
+    jobsPosted: [],
+    jobsHired: [],
+    jobsApplied: [],
+    jobsSaved: [],
+    hiredForJobs: "",
+  };
+  const insertInfo = await userCollection.insertOne(myUser);
+  if (!insertInfo.acknowledged || !insertInfo.insertedId)
+    throw "Could not add user";
+  const newId = insertInfo.insertedId.toString();
+  const user = await getUserById(newId);
+  user._id = user._id.toString();
+  return user;
 };
+
+
 const getUserById = async (id) => {
 	id = validation.checkId(id);
 	const userCollection = await users();
@@ -58,6 +56,8 @@ const getUserById = async (id) => {
 	if (!user) throw "User not found";
 	return user;
 };
+
+
 const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
 	firstName = validation.checkString(firstName);
 	lastName = validation.checkString(lastName);
@@ -93,14 +93,17 @@ const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
 };
 
 const getAllJobsByUser = async (authorId) => {
-	const myUser = await getUserById(authorId);
-	return myUser.jobsPosted;
+  authorId = validation.checkId(authorId);
+  const myUser = await getUserById(authorId);
+  return myUser.jobsPosted;
 };
+
 const getAllApplicants = async (jobId) => {
 	jobId = validation.checkId(jobId);
 	const myJob = await jobsData.getJobById(jobId);
-	return myJob;
+	return myJob.applicants;
 };
+
 const getResumeById = async (jobId, applicantId) => {
 	applicantId = validation.checkId(applicantId);
 	jobId = validation.checkId(jobId);
@@ -175,8 +178,82 @@ const checkUser = async (email, password) => {
   }else throw "Either the email or password is invalid"
 }
 
+const loginCheck = async (email, pwd) =>{
+  const userCollection = await users();
+  const user = await userCollection.findOne({ email: email });
+  if (!user) throw "The user does not exist!";
+  if (!validation.validatePwd(pwd, user.hashedPassword)) throw "The conbination of email and password does not exist!"
+  return user
+}
 
+/*************Post Job functions********** */
 
+const getAllPostJobsById = async (id) => {
+  id = validation.checkId(id);
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(id) });
+  if (!user) throw "User not found";
+  var IDs = []
+  for (let i=0;i<user.jobsPosted.length;i++){
+    IDs.push(user.jobsPosted[i].id)
+  }
+  return IDs
+}
+
+const jobPosterCheck = async (jobId, id) => {
+  id = validation.checkId(id);
+  jobId = validation.checkId(jobId)
+  const IDS = await getAllPostJobsById(id)
+  if (IDS.indexOf(jobId)>-1) return true
+  return false
+}
+
+//*************Save job functions */
+
+const getAllSavedJob = async(id) => {
+  id = validation.checkId(id);
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(id)});
+  return user.jobsSaved
+}
+
+const saveJob = async(jobId, id) =>{
+  id = validation.checkId(id);
+  jobId = validation.checkId(jobId)
+  const jobData = await jobsData.getJobById(jobId)
+  const jobShort = {
+    id: jobData._id.toString(),
+    title: jobData.jobTitle
+  }
+  const userCollection = await users();
+	const saveJob = await userCollection.updateOne({ _id: ObjectId(id) }, { $push: { jobsSaved: jobShort } });
+  if (!saveJob.matchedCount && !saveJob.modifiedCount) throw "Save job failed!";
+  return jobShort
+}
+
+const unSaveJob = async(jobId, id) =>{
+  id = validation.checkId(id);
+  jobId = validation.checkId(jobId)
+  const userCollection = await users();
+	const unSaveJob = await userCollection.updateOne({ _id: ObjectId(id) }, { $pull: { jobsSaved: {id: jobId} } });
+  if (!unSaveJob.matchedCount && !unSaveJob.modifiedCount) throw "UnSave job failed!";
+}
+
+const isJobSaved = async(jobId, id) =>{
+  id = validation.checkId(id);
+  jobId = validation.checkId(jobId);
+  const jobList = await getAllSavedJob(id)
+  if (!jobList || jobList.length===0) return false
+  if (jobList.find(item => item.id === jobId)) return true
+  return false
+}
+
+/**********apply job function************* */
+const getAllAppliedJobs = async(id)=>{
+  id = validation.checkId(id);
+  const user = await getUserById(id)
+  return user.jobsApplied
+}
 
 module.exports = {
   createUser,
@@ -190,4 +267,11 @@ module.exports = {
   applyToJob,
   withdrawJobApplication,
   checkUser,
+  loginCheck,
+  jobPosterCheck,
+  getAllSavedJob,
+  saveJob,
+  unSaveJob,
+  isJobSaved,
+  getAllAppliedJobs,
 };

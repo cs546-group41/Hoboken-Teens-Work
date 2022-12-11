@@ -1,6 +1,3 @@
-
-
-
 const checkUser = async (email, password) => {
     const userCollection = await users()
     const validatedEmail = validation.checkString(email)

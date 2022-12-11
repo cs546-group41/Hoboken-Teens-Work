@@ -1,4 +1,15 @@
+const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
+
+const encryptPwd = (pwd, saltTimes = 10) => {
+	const hash = bcrypt.hashSync(pwd, saltTimes)
+	return hash
+}
+
+const validatePwd = (pwd, hash) => {
+	const match = bcrypt.compareSync(pwd, hash)
+	return match
+}
 
 function checkId(id) {
 	if (!id) throw `You must provide an ID `;
@@ -160,4 +171,6 @@ module.exports = {
 	checkJobStreetName,
 	checkJobStatus,
 	checkSearchQuery,
+	encryptPwd,
+	validatePwd
 };

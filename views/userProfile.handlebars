@@ -1,0 +1,41 @@
+{{#if login}}
+{{#if selfReview}}
+<h1>you had logged in</h1>
+{{/if}}
+{{/if}}
+
+<p>name: {{data.firstName}} {{data.lastName}}</p>
+<p>email: {{data.email}}</p>
+<p>age: {{data.age}}</p>
+<p>phone: {{data.phone}}</p>
+
+{{#if adultUser}}
+    <p>job posted:</p>
+    {{#each data.jobsPosted}}
+        <li>
+            <a href="/job/{{id}}">{{jobTitle}}</a> <a type="button" onclick='deleteJob(this,"{{id}}")'>Delete</a>
+        </li>
+    {{/each}}
+    {{#if login}}
+        <a href="/job/createJob">Post a Job!</a>
+        {{#if selfReview}}
+            <p>job Hired:</p>
+                {{#each data.jobsHired}}
+                    <li>
+                        <a href="/job/{{jobId}}">{{jobTitle}}</a>
+                        <a herf="/user/{{hiredUserId}}">{{hiredUserName}}</a>
+                    </li>
+                {{/each}}
+        {{/if}}
+    {{/if}}
+{{else}}    
+    {{#if selfReview}}
+        <p>Hired jobs:</p>
+        {{#each data.hiredForJobs}}
+            <li>
+                <a href="/job/{{id}}">{{jobTitle}}</a>
+            </li>
+        {{/each}}
+    {{/if}}
+{{/if}}
+<script src="/public/js/userOperations.js"></script>
