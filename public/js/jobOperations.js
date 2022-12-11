@@ -1,5 +1,5 @@
+//add comment js funciton
 const addCommentForm = document.getElementById("add-comment")
-
 addCommentForm.addEventListener('submit', (event) => {
     event.preventDefault();
     var xhttp = new XMLHttpRequest();
@@ -20,6 +20,8 @@ addCommentForm.addEventListener('submit', (event) => {
     xhttp.send(`jobId=${this.jobId.value}&comment=${this.comment.value}`);
 });
 
+
+//save job js function
 function saveJob(id,saved) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "saveJob", true);
@@ -38,4 +40,10 @@ function saveJob(id,saved) {
     }
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(`jobId=${id}&saved=${saved}`);
+}
+
+
+//change job status function
+function changeStatus(){
+
 }

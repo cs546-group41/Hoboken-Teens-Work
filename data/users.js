@@ -58,14 +58,19 @@ const getUserById = async (id) => {
 };
 
 
-const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
+const editUser = async (
+  id, 
+  firstName, 
+  lastName,
+  // email, age, 
+  phoneNumber) => {
 	firstName = validation.checkString(firstName);
 	lastName = validation.checkString(lastName);
 	validation.checkFirstName(firstName);
 	validation.checkLastName(lastName);
-	email = validation.checkString(email);
-	validation.checkEmail(email);
-	age = validation.checkAge(age);
+	//email = validation.checkString(email);
+	//validation.checkEmail(email);
+	//age = validation.checkAge(age);
 	phoneNumber = validation.checkPhone(phoneNumber);
 	id = validation.checkId(id);
 
@@ -73,16 +78,16 @@ const editUser = async (id, firstName, lastName, email, age, phoneNumber) => {
 	let editFlag = 0;
 	if (firstName !== user.firstName) editFlag++;
 	if (lastName !== user.lastName) editFlag++;
-	if (email !== user.email) editFlag++;
-	if (age !== user.age) editFlag++;
+	//if (email !== user.email) editFlag++;
+	//if (age !== user.age) editFlag++;
 	if (phoneNumber !== user.phone) editFlag++;
 	if (editFlag < 1) throw "No changes were made";
 
 	let userEditInfo = {
 		firstName: firstName,
 		lastName: lastName,
-		email: email,
-		age: age,
+		//email: email,
+		//age: age,
 		phone: phoneNumber,
 	};
 	const userCollection = await users();
