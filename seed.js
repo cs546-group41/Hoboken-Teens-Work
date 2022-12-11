@@ -1,6 +1,7 @@
 const users = require("./data/users");
 const connection = require("./config/mongoConnection");
-const jobs = require("./data/jobs")
+const jobs = require("./data/jobs");
+const { ObjectId } = require("mongodb");
 
 let firstUser = undefined;
 
@@ -48,16 +49,12 @@ async function main() {
   // }
 
   try {
-    const searchJob = await jobs.searchJobs("Patio cleaning")
-    console.log(searchJob)
+    const searchJob = await jobs.searchJobs("Patio cleaning");
+    console.log(searchJob);
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
-
-
-
-
-
+  console.log(ObjectId());
   await connection.closeConnection();
 }
 
