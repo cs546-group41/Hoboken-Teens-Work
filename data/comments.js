@@ -18,6 +18,7 @@ const createComment = async (jobId, commentorId, comment) => {
   const newComment = {_id: ObjectId(), authorId: commentorId, name: myCommentor.firstName + myCommentor.lastName, comment: comment, commentDate: new Date().toLocaleString() };
   myJob.comments.push(newComment);
   return myJob;
+};
 
 const deleteComment = async (jobId, commentorId, commentId) => {
   if (!jobId) throw "Must provide a Job ID";
