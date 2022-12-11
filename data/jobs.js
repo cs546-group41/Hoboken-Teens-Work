@@ -80,7 +80,6 @@ const removeJob = async (jobId) => {
   const jobName = theJob.title;
 
 	const deleteJob = await jobsCollection.deleteOne({ _id: ObjectId(jobId) });
-
   if (deleteJob.deletedCount === 0) throw "Job could not be removed";
 
   return `The Job: "${jobName}" has been successfully removed`;
