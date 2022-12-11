@@ -1,25 +1,25 @@
-function checkUserclientSideEmail(email){
+function checkUserclientSideEmail(email) {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-		email = email.trim();
-		return email;
-	} else {
-		throw "Invalid email format";
-	}
+        email = email.trim();
+        return email;
+    } else {
+        throw "Invalid email format";
+    }
 }
-function checkUserClientSidePassword(strVal){
+function checkUserClientSidePassword(strVal) {
     const oneUpper = /[A-Z]/;
-	const oneNumber = /[0-9]/;
-	const specialChar = /[^\w\s]/;
-	if (!strVal) throw "You must supply a password!";
-	if (typeof strVal !== "string") throw "Password must be a string!";
-	strVal = strVal.trim();
-	if (strVal.length === 0) throw "Password cannot be an empty string or string with just spaces";
-	if (strVal.length < 6) throw "Password must at least 6 characters long";
-	if (strVal.includes(" ")) throw "Password must not contain space";
-	if (!oneUpper.test(strVal)) throw "Password must contain one upper case ";
-	if (!oneNumber.test(strVal)) throw "Password must contain one number ";
-	if (!specialChar.test(strVal) && !strVal.includes("_")) throw "Password must contain one special character ";
-	return strVal;
+    const oneNumber = /[0-9]/;
+    const specialChar = /[^\w\s]/;
+    if (!strVal) throw "You must supply a password!";
+    if (typeof strVal !== "string") throw "Password must be a string!";
+    strVal = strVal.trim();
+    if (strVal.length === 0) throw "Password cannot be an empty string or string with just spaces";
+    if (strVal.length < 6) throw "Password must at least 6 characters long";
+    if (strVal.includes(" ")) throw "Password must not contain space";
+    if (!oneUpper.test(strVal)) throw "Password must contain one upper case ";
+    if (!oneNumber.test(strVal)) throw "Password must contain one number ";
+    if (!specialChar.test(strVal) && !strVal.includes("_")) throw "Password must contain one special character ";
+    return strVal;
 }
 
 
@@ -35,27 +35,21 @@ if (staticForm) {
 
     staticForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        try{
-            // resultContainer.classList.add('hidden')
+        try {
             errorContainer.classList.add('hidden')
             const usernameInputElem = usernameInput.value;
-            console.log(usernameInputElem)
 
             const passwordInputElem = passwordInput.value;
-            console.log(passwordInputElem)
 
 
             const validatedEmail = checkUserclientSideEmail(usernameInputElem)
-            console.log(validatedEmail)
             const validatedPassword = checkUserClientSidePassword(passwordInputElem)
 
-            if(validatedEmail){
+            if (validatedEmail && validatedPassword) {
                 errorContainer.style.display = "none"
             }
-            if(validatedPassword){
-                errorContainer.style.display = "none"
-            }
-        }catch(e){
+            
+        } catch (e) {
             errorTextElem.textContent = "Error: " + e
             errorContainer.style.display = "block"
         }

@@ -14,12 +14,15 @@
 			<input type="text" name="ageInput" id="ageInput" placeholder="Enter your age" />
 			<br /><br />
 			<label for="phoneNumberInput">Enter your phone number</label>
-			<input type="text" name="ageInput" id="ageInput" placeholder="Enter your phone number" />
+			<input type="text" name="ageInput" id="phoneNumberInput" placeholder="Enter your phone number" />
 			<br /><br />
 			<label for="passwordInput">Create a password</label>
 			<input type="password" name="passwordInput" id="passwordInput" placeholder="Enter your password" />
 			<br /><br />
 			<input type="submit" value="Submit" />
+			<div class="form-group hidden" id="error-container">
+				<div class="alert alert-danger text-goes-here"></div>
+			</div>
 		</form>
 		<br /><br /><br /><br />
 		{{#if error}} <h4>{{error}}</h4>{{/if}}

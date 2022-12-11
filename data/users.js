@@ -163,7 +163,7 @@ const withdrawJobApplication = async (jobId, applicantId) => {
 const checkUser = async (email, password) => {
   
   const userCollection = await users()
-  const validatedEmail = validation.checkString(email)
+  const validatedEmail = validation.checkEmail(email)
   const validatedPassword = validation.checkPassword(password)
   let userFound = await userCollection.findOne({email: validatedEmail})
   if(userFound === null) throw "Either the email or passwaord is invalid"
