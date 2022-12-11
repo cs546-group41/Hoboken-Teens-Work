@@ -31,7 +31,7 @@ const searchJobs = async (jobSearchQuery) => {
   const jobList = await jobs()
   const searchJobs = await jobList.find({ jobTitle: { $regex: jobSearchQuery, $options: "i" } }).toArray()
   if (searchJobs.length === 0) throw "No job was found for the entered text"
-  return searchJob1
+  return searchJobs
 
 };
 
