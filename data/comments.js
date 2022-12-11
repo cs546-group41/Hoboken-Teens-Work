@@ -35,6 +35,6 @@ const deleteComment = async (jobId, commentorId, commentId) => {
 };
 
 module.exports = {
-    createComment,
-    deleteComment
+  createComment,
+  deleteComment,
 };
