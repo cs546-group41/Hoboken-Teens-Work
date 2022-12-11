@@ -186,6 +186,8 @@ const loginCheck = async (email, pwd) =>{
   return user
 }
 
+/*************Post Job functions********** */
+
 const getAllPostJobsById = async (id) => {
   id = validation.checkId(id);
   const userCollection = await users();
@@ -206,6 +208,52 @@ const jobPosterCheck = async (jobId, id) => {
   return false
 }
 
+//*************Save job functions */
+
+const getAllSavedJob = async(id) => {
+  id = validation.checkId(id);
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(id)});
+  return user.jobsSaved
+}
+
+const saveJob = async(jobId, id) =>{
+  id = validation.checkId(id);
+  jobId = validation.checkId(jobId)
+  const jobData = await jobsData.getJobById(jobId)
+  const jobShort = {
+    id: jobData._id.toString(),
+    title: jobData.jobTitle
+  }
+  const userCollection = await users();
+	const saveJob = await userCollection.updateOne({ _id: ObjectId(id) }, { $push: { jobsSaved: jobShort } });
+  if (!saveJob.matchedCount && !saveJob.modifiedCount) throw "Save job failed!";
+  return jobShort
+}
+
+const unSaveJob = async(jobId, id) =>{
+  id = validation.checkId(id);
+  jobId = validation.checkId(jobId)
+  const userCollection = await users();
+	const unSaveJob = await userCollection.updateOne({ _id: ObjectId(id) }, { $pull: { jobsSaved: {id: jobId} } });
+  if (!unSaveJob.matchedCount && !unSaveJob.modifiedCount) throw "UnSave job failed!";
+}
+
+const isJobSaved = async(jobId, id) =>{
+  id = validation.checkId(id);
+  jobId = validation.checkId(jobId);
+  const jobList = await getAllSavedJob(id)
+  if (!jobList || jobList.length===0) return false
+  if (jobList.find(item => item.id === jobId)) return true
+  return false
+}
+
+/**********apply job function************* */
+const getAllAppliedJobs = async(id)=>{
+  id = validation.checkId(id);
+  const user = await getUserById(id)
+  return user.jobsApplied
+}
 
 module.exports = {
   createUser,
@@ -220,5 +268,10 @@ module.exports = {
   withdrawJobApplication,
   checkUser,
   loginCheck,
-  jobPosterCheck
+  jobPosterCheck,
+  getAllSavedJob,
+  saveJob,
+  unSaveJob,
+  isJobSaved,
+  getAllAppliedJobs,
 };

@@ -20,6 +20,7 @@ const createComment = async (jobId, commentorId, fullname, comment) => {
     }
     const jobUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $push: { comments: newComment } })
     if (jobUpdate.modifiedCount === 0) throw "Add Comment failed!"
+    return newComment
 };
 
 const deleteComment = async (jobId, commentorId, commentId) => {

@@ -125,21 +125,54 @@ router.route("/editJob")
 router
   .route("/addComment")
   .post(async (req, res) => {
-    if (!req.session) return res.status(401).json({results: "Unauthorized User Request."})
+    if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." })
     if (req.session.user !== undefined) {
       try {
         await users.getUserById(req.session.user.id)
       } catch (e) {
         req.session.destroy()
-        return res.status(401).json({results: "Unauthorized User Request."})
+        return res.status(401).json({ results: "Unauthorized User Request." })
       }
     }
-    try{
-      await comments.createComment(req.body.jobId, req.session.user.id , req.session.user.fullname, req.body.comment)
-      res.status(200).json({results:"Success!"})
-    }catch(e){
-      res.status(400).json({results:"Failed to add comment!"})
+    try {
+      const comment = await comments.createComment(req.body.jobId, req.session.user.id, req.session.user.fullName, req.body.comment)
+      res.status(200).json({ results: comment })
+    } catch (e) {
+      res.status(400).json({ results: e })
     }
+  })
+
+router
+  .route("/saveJob")
+  .post(async (req, res) => {
+    if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." })
+    if (req.session.user !== undefined) {
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+        return res.status(401).json({ results: "Unauthorized User Request." })
+      }
+    }
+    try {
+      if (await users.isJobSaved(req.body.jobId, req.session.user.id)) {
+        await users.unSaveJob(req.body.jobId, req.session.user.id)
+        res.status(200).json({ results: "unSaveJob" })
+      }
+      else {
+        await users.saveJob(req.body.jobId, req.session.user.id)
+        res.status(200).json({ results: "saveJob" })
+      }
+    } catch (e) {
+      console.log(e)
+      res.status(400).json({ results: e })
+    }
+  })
+
+router
+  .route('/apply')
+  .post(async (req, res) => {
+
   })
 
 router
@@ -153,8 +186,10 @@ router
       }
     }
     var login = false
+    var saved = false
     if (req.session.user) {
       login = true
+      saved = await users.isJobSaved(req.params.id, req.session.user.id)
     }
     var jobDetail = null
     try {
@@ -168,17 +203,19 @@ router
     }
     if (req.session.user && await users.jobPosterCheck(req.params.id, req.session.user.id)) {
       return res.render("applicants", {
-        title: `Posted Job Detail - ${jobDetail.title}`,
+        title: `Posted Job Detail - ${jobDetail.jobTitle}`,
         login: true,
         loginUserData: req.session.user,
-        jobDetail: jobDetail
+        jobDetail: jobDetail,
+        saved:saved
       })
     }
     res.render("individualJob", {
-      title: `Job Detail - ${jobDetail.title}`,
+      title: `Job Detail - ${jobDetail.jobTitle}`,
       login: login,
       loginUserData: req.session.user,
-      jobDetail: jobDetail
+      jobDetail: jobDetail,
+      saved:saved
     })
   })
 
