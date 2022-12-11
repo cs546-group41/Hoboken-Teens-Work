@@ -44,9 +44,19 @@ router
     try {
       const userData = await users.getUserById(req.params.id)
       if (userData.age < 21) adultUser = false
-      return res.render('userProfile', { selfReview: selfReview, adultUser: adultUser, user: req.session.user, login: login, data: userData })
+      return res.render('userProfile', { 
+        title: `Personal Info - ${userData.firstName} ${userData.lastName}`,
+        login: login,
+        loginUserData: req.session.user,
+        selfReview: selfReview, 
+        adultUser: adultUser, 
+        curUser: userData})
     } catch (e) {
-      return res.render('userProfile', { notFound: true, login: true })
+      return res.render('error', { 
+        title: `User Not Found`,
+        login: login,
+        loginUserData: req.session.user,
+        errormsg: "User Not Found"})
     }
   })
 
