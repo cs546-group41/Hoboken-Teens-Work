@@ -86,6 +86,49 @@ router
     }
   })
 
-
+  router
+  .route('/:id/editUser')
+  .get(async (req, res) => {
+    if (!req.session.user) return res.redirect('/index')
+    if (req.session.user.id !== req.params.id) return res.redirect('/index')
+    var userData = null
+    try {
+      userData = await users.getUserById(req.session.user.id)
+      return res.render('editProfile', {
+        title: `Edit Profile - ${req.session.user.fullName}`,
+        login: true,
+        loginUserData: req.session.user,
+        presetUser: userData
+      })
+    } catch (e) {
+      return res.render('error', {
+        title: `Error`,
+        login: true,
+        loginUserData: req.session.user,
+        errormsg: "e"
+      })
+    }
+  })
+  .post(async (req, res) => {
+    if (!req.session.user) return res.redirect('/index')
+    if (req.session.user.id !== req.params.id) return res.redirect('/index')
+    try{
+      await users.editUser(
+        req.params.id, 
+        req.body.firstNameInput,
+        req.body.lastNameInput,
+        req.body.phoneInput,
+        req.body.passwordInput)
+      res.redirect(`/user/${req.params.id}`)
+    }catch(e){
+      res.render("createJob", {
+        title: `Edit Profile - ${req.session.user.fullName}`,
+        login: true,
+        loginUserData: req.session.user,
+        presetUser: userData,
+        errmsg: e
+      })
+    }
+  })
 
 module.exports = router

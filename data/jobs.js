@@ -9,9 +9,7 @@ const usersData = require("./users");
 const getAllJobs = async () => {
   const jobsCollection = await jobs();
   const jobsList = await jobsCollection.find({}).toArray();
-
   if (!jobsList) throw "Could not get all jobs";
-
   return jobsList;
 };
 
@@ -107,14 +105,14 @@ const editJob = async (
   jobTitle,
   jobDescription,
   jobStreetName,
-  jobStatus,
+  //jobStatus,
   phoneNumber
 ) => {
   jobId = validation.checkId(jobId);
   jobTitle = validation.checkJobTitle(jobTitle);
   jobDescription = validation.checkJobDescription(jobDescription);
   jobStreetName = validation.checkJobStreetName(jobStreetName);
-  jobStatus = validation.checkJobStatus(jobStatus);
+  //jobStatus = validation.checkJobStatus(jobStatus);
   authorId = validation.checkId(authorId);
 
   if (phoneNumber) {
@@ -128,7 +126,7 @@ const editJob = async (
   let jobToEdit = null;
   if (author.age >= 18 && author.jobsPosted) {
     for (job of author.jobsPosted) {
-      if (job === jobId) {
+      if (job.id === jobId) {
         jobToEdit = getJobById(jobId);
       }
     }
@@ -140,7 +138,7 @@ const editJob = async (
   if (jobTitle !== jobToEdit.jobTitle) editFlag++;
   if (jobDescription !== jobToEdit.jobDescription) editFlag++;
   if (jobStreetName !== jobToEdit.jobStreetName) editFlag++;
-  if (jobStatus !== jobToEdit.jobStreetName) editFlag++;
+  //if (jobStatus !== jobToEdit.jobStreetName) editFlag++;
   if (phoneNumber !== jobToEdit.phone) editFlag++;
 
   if (editFlag < 1) throw "No changes were made";
@@ -149,8 +147,7 @@ const editJob = async (
     jobTitle: jobTitle,
     jobDescription: jobDescription,
     jobStreetName: jobStreetName,
-    jobAuthor: jobAuthor,
-    phone: jobAuthorPhoneNumber,
+    phone: phoneNumber,
   };
   const jobsCollection = await jobs();
   const editedJob = await jobsCollection.updateOne(
@@ -163,7 +160,23 @@ const editJob = async (
   return await getJobById(jobId);
 };
 
-
+const changeStatus = async (jobId, id)=>{
+  jobId = validation.checkId(jobId);
+  id = validation.checkId(id);
+  const jobsCollection = await jobs();
+  const jobData = await jobsCollection.findOne({ _id: ObjectId(jobId) });
+  if (jobData.jobAuthor.id != id) throw "Unauthorized Operation"
+  const curStatus = jobData.jobStatus
+  if (curStatus==="open"){
+    const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: "closed" } })
+    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!"
+    return "open"
+  }else{
+    const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: "open" } })
+    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!"
+    return "closed"
+  }
+}
 
 module.exports = {
   getAllJobs,
@@ -172,4 +185,5 @@ module.exports = {
   createJob,
   removeJob,
   editJob,
+  changeStatus
 };

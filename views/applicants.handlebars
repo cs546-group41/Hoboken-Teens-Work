@@ -2,7 +2,9 @@
 
 <p>{{jobDetail.jobDescription}}</p>
 
-<p>Status: {{jobDetail.jobStatus}}</p>
+<p>Status: <p id="jobStatus">{{jobDetail.jobStatus}}</p> <button onclick="changeStatus('{{jobDetail._id}}')">Change Status</button></p>
+
+<a href="/job/{{jobDetail._id}}/editJob">Edit job</a>
 
 <h2>Applicants</h2>
 
@@ -18,3 +20,4 @@
     </li>
   {{/each}}
 </ul>
+<script src="/public/js/jobPosterOperations.js"></script>

@@ -98,29 +98,7 @@ router.route("/createJob")
     }
   });
 
-router.route("/editJob")
-  .put(async (req, res) => {
-    const editJobBody = req.body;
-    const authorId = req.session.userId;
-    try {
-      if (!editJobBody) throw "No input provided";
-      editJobBody.jobId = validation.checkId(editJobBody.jobId);
-      editJobBody.jobTitle = validation.checkJobTitle(editJobBody.jobTitle);
-      editJobBody.jobDescription = validation.checkJobDescription(editJobBody.jobDescription);
-      editJobBody.jobStreetName = validation.checkJobStreetName(editJobBody.jobStreetName);
-      editJobBody.jobStatus = validation.checkJobStatus(editJobBody.jobStatus);
 
-      if (editJobBody.phoneNumber) {
-        phoneNumber = validation.checkPhone(editJobBody.phoneNumber);
-      } else {
-        phoneNumber = null;
-      }
-
-
-    } catch (e) {
-      return res.status(400).json({ error: e });
-    }
-  });
 
 router
   .route("/addComment")
@@ -218,5 +196,78 @@ router
       saved:saved
     })
   })
+
+  router.route("/:id/editJob")
+  .get(async (req, res) => {
+    //check if login in and if is the author of the job, if not redirect to the job detail page
+    if (!req.session.user) return res.redirect(`jobs/${req.params.id}`)
+    var jobDetail = null
+    try{
+      jobDetail = await jobs.getJobById(req.params.id)
+      if (jobDetail.jobAuthor.id!=req.session.user.id){console.log(1); res.redirect(`jobs/${req.params.id}`)}
+    }catch(e){
+      return res.redirect("/index")
+    }
+    res.render("createJob", {
+      title: "Editing Job",
+      login: true,
+      loginUserData: req.session.user,
+      presetJob: jobDetail
+    })
+  })
+  .post(async (req, res) => {
+    //check if login in and if is the author of the job, if not redirect to the job detail page
+    if (!req.session.user) return res.redirect(`jobs/${req.params.id}`)
+    var jobDetail = null
+    try{
+      jobDetail = await jobs.getJobById(req.params.id)
+      if (jobDetail.jobAuthor.id!=req.session.user.id) res.redirect(`jobs/${req.params.id}`)
+    }catch(e){
+      return res.redirect("/index")
+    }
+    //edit job part
+    try {
+      //validation need to put in client side
+      await jobs.editJob(
+        req.params.id, 
+        req.session.user.id, 
+        req.body.jobTitle, 
+        req.body.jobDescription, 
+        req.body.jobStreetName,
+        req.body.phone)
+      res.redirect(`/job/${req.params.id}`)
+    } catch (e) {
+      //add status code here
+      //res.status()
+      res.render("createJob", {
+        title: "Editing Job",
+        login: true,
+        loginUserData: req.session.user,
+        presetJob: jobDetail,
+        errmsg: e
+      })
+    }
+  });
+
+  router.route("/:id/changeStatus")
+  .post(async (req, res) => {
+    //check if login in and if is the author of the job, if not redirect to the job detail page
+    if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." })
+    if (req.session.user !== undefined) {
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+        return res.status(401).json({ results: "Unauthorized User Request." })
+      }
+    }
+    try {
+      var result = await jobs.changeStatus(req.params.id, req.session.user.id)
+      res.status(200).json({ results: result })
+    } catch (e) {
+      console.log(e)
+      res.status(400).json({ results: e })
+    }
+  });
 
 module.exports = router
