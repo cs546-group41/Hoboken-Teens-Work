@@ -10,6 +10,12 @@ const createComment = async(jobId, commentorId, comment) => {
     if(!jobId) throw "Must provide a Job ID";
     if(!commentorId) throw "Must provide user ID of commentor";
     if(!comment) throw "Must provide a comment";
+
+    jobId = validation.checkId(jobId);
+    commentorId = validation.checkId(commentorId);
+    comment = validation.checkString(comment);
+
+    const newCommentId = new ObjectId()
 };
 
 const deleteComment = async(jobId, commentorId, commentId) => {
