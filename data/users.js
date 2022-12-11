@@ -255,6 +255,10 @@ const getAllAppliedJobs = async(id)=>{
   return user.jobsApplied
 }
 
+const appliedJob = async() =>{
+  
+}
+
 module.exports = {
   createUser,
   getUserById,
