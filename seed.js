@@ -1,5 +1,6 @@
 const users = require("./data/users");
 const connection = require("./config/mongoConnection");
+const jobs = require("./data/jobs")
 
 let firstUser = undefined;
 
@@ -12,9 +13,9 @@ async function main() {
       "Anh",
       "Le",
       "random@stevens.edu",
-      14,
-      "9178950083",
-      "Random2@#"
+      21,
+      "Random2@#",
+      "9178950083"
     );
     // console.log(firstUser);
   } catch (err) {
@@ -22,23 +23,47 @@ async function main() {
   }
   try {
     const result = await users.getUserById(firstUser._id);
-    // console.log(result);
+    console.log(result);
   } catch (e) {
     console.log(e);
   }
   try {
-    const update = await users.editUser(
-      firstUser._id,
-      "Bob",
-      "David",
-      "random@stevens.edu",
-      100,
-      "9178950083"
-    );
-    console.log(update);
+    const result = await users.getAllJobsByUser(firstUser._id);
+    console.log(result);
   } catch (e) {
     console.log(e);
   }
+  // try {
+  //   const update = await users.editUser(
+  //     firstUser._id,
+  //     "Bob",
+  //     "David",
+  //     "random@stevens.edu",
+  //     100,
+  //     "9178950083"
+  //   );
+  //   console.log(update);
+  // } catch (e) {
+  //   console.log(e);
+  // }
+
+  try {
+    const newJob = await jobs.createJob("Car Wash", "Need a car wash urgently", "12th St", firstUser._id);
+    console.log(newJob);
+  } catch (e) {
+    console.log(e);
+  }
+
+  try {
+    const searchJob = await jobs.searchJobs("Car Wash")
+    console.log(searchJob)
+  } catch (e) {
+    console.log(e)
+  }
+
+
+
+
 
   await connection.closeConnection();
 }
