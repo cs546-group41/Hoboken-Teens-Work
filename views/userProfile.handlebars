@@ -36,12 +36,15 @@
     {{/if}}
 {{else}}    
     {{#if selfReview}}
-        <p>Hired jobs:</p>
-        {{#each curUser.hiredForJobs}}
-            <li>
-                <a href="/job/{{id}}">{{jobTitle}}</a>
-            </li>
-        {{/each}}
+        {{#if login}}
+            <p>Hired jobs:</p>
+            {{#each curUser.hiredForJobs}}
+                <li>
+                    <a href="/job/{{id}}">{{jobTitle}}</a>
+                </li>
+            {{/each}}
+            <a href="/user/{{curUser._id}}/savedJob">Check Saved Jobs</a>
+        {{/if}}
     {{/if}}
 {{/if}}
 <script src="/public/js/userOperations.js"></script>

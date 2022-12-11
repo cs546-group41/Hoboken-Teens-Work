@@ -14,18 +14,18 @@ router
   .route("/deleteJob/:id")
   .delete(async (req, res) => {
     if (!req.session.user) {
-      res.status(401).json({result:"failed"})
-      return 
+      res.status(401).json({ result: "failed" })
+      return
     }
     try {
       const jobInfo = await jobs.getJobById(req.params.id)
       if (jobInfo.jobAuthor.id != req.session.user.id) throw "Unauthorized opration"
       await jobs.removeJob(req.params.id)
-      res.status(200).json({result:"success"})
-      return 
+      res.status(200).json({ result: "success" })
+      return
     } catch (e) {
       console.log(e)
-      res.status(404).json({result:"failed"})
+      res.status(404).json({ result: "failed" })
       return
     }
   })
@@ -44,19 +44,45 @@ router
     try {
       const userData = await users.getUserById(req.params.id)
       if (userData.age < 21) adultUser = false
-      return res.render('userProfile', { 
+      return res.render('userProfile', {
         title: `Personal Info - ${userData.firstName} ${userData.lastName}`,
         login: login,
         loginUserData: req.session.user,
-        selfReview: selfReview, 
-        adultUser: adultUser, 
-        curUser: userData})
+        selfReview: selfReview,
+        adultUser: adultUser,
+        curUser: userData
+      })
     } catch (e) {
-      return res.render('error', { 
+      return res.render('error', {
         title: `User Not Found`,
         login: login,
         loginUserData: req.session.user,
-        errormsg: "User Not Found"})
+        errormsg: "User Not Found"
+      })
+    }
+  })
+
+router
+  .route('/:id/savedJob')
+  .get(async (req, res) => {
+    //code here for GET
+    if (!req.session.user) return res.redirect('/index')
+    if (req.session.user.id !== req.params.id) return res.redirect('/index')
+    try {
+      const userData = await users.getUserById(req.session.user.id)
+      return res.render('savedJobs', {
+        title: `Saved Jobs - ${userData.firstName} ${userData.lastName}`,
+        login: true,
+        loginUserData: req.session.user,
+        curUser: userData
+      })
+    } catch (e) {
+      return res.render('error', {
+        title: `Saved Jobs - Not Found`,
+        login: true,
+        loginUserData: req.session.user,
+        errormsg: "Current No Saved Jobs"
+      })
     }
   })
 
