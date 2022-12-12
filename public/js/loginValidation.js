@@ -22,6 +22,20 @@ function checkUserClientSidePassword(strVal) {
     return strVal;
 }
 
+const checkUser = async (email, password) => {
+    const userCollection = await users()
+    const validatedEmail = validation.checkString(email)
+    const validatedPassword = validation.checkPassword(password)
+    let userFound = await userCollection.findOne({ email: validatedEmail })
+    if (userFound === null) throw "Either the email or passwaord is invalid"
+    let userPassword = userFound.hashedPassword
+    let comparePassword = false
+    comparePassword = await bcrypt.compare(validatedPassword, userPassword)
+    if (comparePassword) {
+        return { AuthenticatedUser: true }
+    } else throw "Either the email or password is invalid"
+}
+
 
 const staticForm = document.getElementById("login-form")
 

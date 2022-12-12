@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const session = require('express-session')
 const static = express.static(__dirname + "/public");
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
@@ -10,6 +11,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+
+app.use(session({
+  name: 'finalProject',
+  secret: 'Group41',
+  resave: false,
+  saveUninitialized: true
+}))
 
 configRoutes(app);
 

@@ -1,5 +1,4 @@
-<body>
-	<main>
+<main>
 		<br><br>
 		<form action="jobs/searchJobs" method="post" class="search-form" id="search-form">
 			<label for="jobsInput">Search</label><br>
@@ -11,6 +10,13 @@
 				<div class="alert alert-danger text-goes-here"></div>
 			</div>
 		</form>
+    <h1>jobList</h1>
+    <ul>
+      {{#each jobList}}
+      <li>
+        <a href="/job/{{_id}}">{{jobTitle}}</a>
+      </li>
+      {{/each}}
+    </ul>
 		<script src="/public/js/searchbarValidation.js"></script>
 	</main>
-</body>

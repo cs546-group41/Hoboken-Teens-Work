@@ -1,0 +1,9 @@
+<h1>Search Result</h1>
+<ul>
+    {{#each searchResults}}
+    <li>
+        <p>Job Title:<a href="/job/{{_id}}">{{jobTitle}}</a></p><br>
+        <p>Job Detail:{{jobDescription}}</p> <br>
+    </li>
+    {{/each}}
+</ul>
