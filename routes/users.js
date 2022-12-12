@@ -1,96 +1,134 @@
-//require express and express router as shown in lecture code
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const userData = require("../data/users");
-const validation = require("../validation");
+const data = require('../data')
+const users = data.users
+const jobs = data.jobs
+
 router
-  .route("/")
+  .route('/')
   .get(async (req, res) => {
-    //
-    res.render("applicant");
+    res.redirect('/index')
+  })
+
+router
+  .route("/deleteJob/:id")
+  .delete(async (req, res) => {
+    if (!req.session.user) {
+      res.status(401).json({ result: "failed" })
+      return
+    }
+    try {
+      const jobInfo = await jobs.getJobById(req.params.id)
+      if (jobInfo.jobAuthor.id != req.session.user.id) throw "Unauthorized opration"
+      await jobs.removeJob(req.params.id)
+      res.status(200).json({ result: "success" })
+      return
+    } catch (e) {
+      console.log(e)
+      res.status(404).json({ result: "failed" })
+      return
+    }
+  })
+
+router
+  .route('/:id')
+  .get(async (req, res) => {
+    //code here for GET
+    var login = false
+    var selfReview = true
+    var adultUser = true
+    if (req.session.user) login = true
+    if (login && req.session.user.id !== req.params.id) {
+      selfReview = false
+    }
+    try {
+      const userData = await users.getUserById(req.params.id)
+      if (userData.age < 21) adultUser = false
+      return res.render('userProfile', {
+        title: `Personal Info - ${userData.firstName} ${userData.lastName}`,
+        login: login,
+        loginUserData: req.session.user,
+        selfReview: selfReview,
+        adultUser: adultUser,
+        curUser: userData
+      })
+    } catch (e) {
+      return res.render('error', {
+        title: `User Not Found`,
+        login: login,
+        loginUserData: req.session.user,
+        errormsg: "User Not Found"
+      })
+    }
+  })
+
+router
+  .route('/:id/savedJob')
+  .get(async (req, res) => {
+    //code here for GET
+    if (!req.session.user) return res.redirect('/index')
+    if (req.session.user.id !== req.params.id) return res.redirect('/index')
+    try {
+      const userData = await users.getUserById(req.session.user.id)
+      return res.render('savedJobs', {
+        title: `Saved Jobs - ${userData.firstName} ${userData.lastName}`,
+        login: true,
+        loginUserData: req.session.user,
+        curUser: userData
+      })
+    } catch (e) {
+      return res.render('error', {
+        title: `Saved Jobs - Not Found`,
+        login: true,
+        loginUserData: req.session.user,
+        errormsg: "Current No Saved Jobs"
+      })
+    }
+  })
+
+  router
+  .route('/:id/editUser')
+  .get(async (req, res) => {
+    if (!req.session.user) return res.redirect('/index')
+    if (req.session.user.id !== req.params.id) return res.redirect('/index')
+    var userData = null
+    try {
+      userData = await users.getUserById(req.session.user.id)
+      return res.render('editProfile', {
+        title: `Edit Profile - ${req.session.user.fullName}`,
+        login: true,
+        loginUserData: req.session.user,
+        presetUser: userData
+      })
+    } catch (e) {
+      return res.render('error', {
+        title: `Error`,
+        login: true,
+        loginUserData: req.session.user,
+        errormsg: "e"
+      })
+    }
   })
   .post(async (req, res) => {
-    try {
-      const user = await req.body;
-      console.log(user);
-      user.firstName = validation.checkString(user.firstName);
-      user.lastName = validation.checkString(user.lastName);
-      validation.checkFirstName(user.firstName);
-      validation.checkLastName(user.lastName);
-      user.email = validation.checkString(user.email);
-      validation.checkEmail(user.email);
-      user.age = validation.checkAge(user.age);
-      user.phoneNumber = validation.checkPhone(user.phoneNumber);
-      user.hashedPassword = validation.checkPassword(user.hashedPassword);
-
-      const result = await userData.createUser(
-        user.firstName,
-        user.lastName,
-        user.email,
-        user.age,
-        user.phoneNumber,
-        user.hashedPassword
-      );
-      res.status(200).json(result);
-    } catch (e) {
-      console.log(e);
-      return res.status(400).json(e);
-    }
-  });
-
-router
-  .route("/:userId")
-  .get(async (req, res) => {
-    try {
-      req.params.userId = validation.checkId(req.params.userId);
-    } catch (e) {
-      return res.status(400).json({ error: e });
-    }
-    try {
-      const user = await userData.getUserById(req.params.userId);
-      res.status(200).json(user);
-    } catch (e) {
-      return res.status(404).json({ error: "User not found" });
+    if (!req.session.user) return res.redirect('/index')
+    if (req.session.user.id !== req.params.id) return res.redirect('/index')
+    try{
+      await users.editUser(
+        req.params.id, 
+        req.body.firstNameInput,
+        req.body.lastNameInput,
+        req.body.phoneInput,
+        req.body.passwordInput)
+      res.redirect(`/user/${req.params.id}`)
+    }catch(e){
+      res.render("createJob", {
+        title: `Edit Profile - ${req.session.user.fullName}`,
+        login: true,
+        loginUserData: req.session.user,
+        presetUser: userData,
+        errmsg: e
+      })
     }
   })
-  .put(async (req, res) => {
-    let user = req.body;
-    try {
-      user.firstName = validation.checkString(user.firstName);
-      user.lastName = validation.checkString(user.lastName);
-      user.validation.checkFirstName(user.firstName);
-      user.validation.checkLastName(user.lastName);
-      user.email = validation.checkString(user.email);
-      user.validation.checkEmail(user.email);
-      user.age = validation.checkAge(user.age);
-      user.phone = validation.checkPhone(user.phone);
-    } catch (e) {
-      return res.status(400).json({ error: e });
-    }
 
-    try {
-      req.params.userId = validation.checkId(req.params.userId);
-    } catch (e) {
-      return res.status(400).json({ error: e });
-    }
-
-    try {
-      await userData.getUserById(req.params.userId);
-    } catch (e) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    try {
-      const updatedUser = await userData.editUser(
-        user.firstName,
-        user.lastName,
-        user.email,
-        user.age,
-        user.phone
-      );
-      res.json(updatedUser);
-    } catch (e) {
-      res.status(400).send(e);
-    }
-  });
-
-module.exports = router;
+module.exports = router

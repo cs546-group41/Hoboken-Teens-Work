@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="utf-8">
     <title>{{title}}</title>
@@ -8,17 +9,34 @@
 </head>
 
 <body>
-    <div class="nav-links">
-        <nav>
-            <li>
-                <a href="#">Login</a>
-            </li>
-            <li>
-                <a href="#">Sign Up</a>
-            </li>
-        </nav>
-    </div>
+    <nav>
+        <!-- the link will be change to a pic -->
+        <li>
+            <a href="/">Homepage</a>
+        </li>
+        {{#if hideLogin}}
+        {{else}}
+        {{#if login}}
+        <p>current status: login</p>
+        <a href="/user/{{loginUserData.id}}">{{loginUserData.fullName}}</a><br></br>
+        <a href="/logout">Click to logout</a>
+        {{else}}
+        <p>current status: not login</p>
+        <li>
+            <a href="/login">Login</a>
+        </li>
+        <li>
+            <a href="/register">Sign Up</a>
+        </li>
+        {{/if}}
+        {{/if}}
+    </nav>
     {{{body}}}
+
+    <footer>
+        <a href="/about">Link to team introduction</a>
+    </footer>
+
 </body>
 
 </html>
