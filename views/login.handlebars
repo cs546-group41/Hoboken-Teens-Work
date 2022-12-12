@@ -1,23 +1,22 @@
-<form action="/login" id="login-form" method="post">
-    <label for="emailInput">Enter your email</label>
-    <input type="text" name="emailInput" id="emailInput" placeholder="Enter your email" />
-    <br /><br />
-    <label for="password">Enter your password</label>
-    <input type="text" name="passwordInput" id="passwordInput" placeholder="Enter your password" />
-    <br /><br />
-    <input type="submit" />
+<main>
+  <form action="/login" id="login-form" method="post">
+		<label for="emailInput">Enter your email</label>
+    <input type="text" name="emailInput" id="emailInput" placeholder="Enter your email">
+		<br><br>
+		<label for="passwordInput">Enter your password</label>
+    <input type="text" name="passwordInput" id="passwordInput" placeholder="Enter your password">
+		<br><br>
+		<input type="submit">
 
-    <div class="form-group hidden" id="error-container">
-        <div class="alert alert-danger text-goes-here"></div>
-    </div>
+		<div class="form-group hidden" id="error-container">
+			<div class="alert alert-danger text-goes-here"></div>
+		</div>
     <div class="form-group hidden" id="result-container">
-        <div class="alert alert-success text-goes-here"></div>
+      <div class="alert alert-success text-goes-here"></div>
     </div>
-
-</form>
-<br /><br />
-{{#if error}} <h4>{{error}}</h4>{{/if}}
-<a href="/register">Click here to register!</a>
-<!--
-<script src="/public/js/loginValidation.js"></script>
--->
+	</form>
+	<br><br>
+	{{#if error}} <h4>{{error}}</h4>{{/if}}
+	<a href="/register">Click here to register!</a>
+	<script src="/public/js/loginValidation.js"></script>
+</main>

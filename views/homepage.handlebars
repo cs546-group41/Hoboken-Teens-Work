@@ -1,16 +1,22 @@
-<h1>search bar</h1>
-<form action="/job/searchJobs" method="post" class="search-form">
-    <label for="jobsInput">Search</label><br>
-    <input type="text" id="jobsInput" name="jobsInput" placeholder="Search for jobs"> <br>
-    <br><br>
-    <input type="submit" class="button">
-</form>
-
-<h1>jobList</h1>
-<ul>
-    {{#each jobList}}
-    <li>
+<main>
+		<br><br>
+		<form action="jobs/searchJobs" method="post" class="search-form" id="search-form">
+			<label for="jobsInput">Search</label><br>
+			<input type="text" id="jobsInput" name="jobsInput" placeholder="Search for jobs">
+			<br>
+			<br><br>
+			<input type="submit" class="button">
+			<div class="form-group hidden" id="error-container">
+				<div class="alert alert-danger text-goes-here"></div>
+			</div>
+		</form>
+    <h1>jobList</h1>
+    <ul>
+      {{#each jobList}}
+      <li>
         <a href="/job/{{_id}}">{{jobTitle}}</a>
-    </li>
-    {{/each}}
-</ul>
+      </li>
+      {{/each}}
+    </ul>
+		<script src="/public/js/searchbarValidation.js"></script>
+	</main>
