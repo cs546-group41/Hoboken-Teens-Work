@@ -1,15 +1,5 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { ObjectId } = require("mongodb");
-
-const encryptPwd = (pwd, saltTimes = 10) => {
-	const hash = bcrypt.hashSync(pwd, saltTimes)
-	return hash
-}
-
-const validatePwd = (pwd, hash) => {
-	const match = bcrypt.compareSync(pwd, hash)
-	return match
-}
 
 function checkId(id) {
 	if (!id) throw `You must provide an ID `;
@@ -30,6 +20,7 @@ function checkString(strVal) {
 }
 
 function checkFirstName(input) {
+	input = checkString(input);
 	if (input.length < 2) throw "First name must be atleast 2 characters";
 	const regex = /[^A-z\s'"]/g;
 	if (regex.test(input) || input.includes("_")) throw "First name must not contain special characters";
@@ -39,8 +30,8 @@ function checkFirstName(input) {
 }
 
 function checkLastName(input) {
+	input = checkString(input);
 	if (input.length < 2) throw "Last name must be atleast 2 characters";
-
 	const regex = /[^A-z\s'\-"]/g;
 	if (regex.test(input) || input.includes("_")) throw "Last name must not contain special characters";
 	let countApostrophe = 0;
@@ -52,6 +43,7 @@ function checkLastName(input) {
 }
 
 function checkEmail(email) {
+	email = checkString(email);
 	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
 		email = email.trim();
 		return email;
@@ -151,10 +143,21 @@ function checkJobStatus(status) {
 
 function checkSearchQuery(searchQuery) {
 	if (!searchQuery) throw "You must enter something in the search bar";
-	if (searchQuery.trim().length === 0) throw "Only blank spaces are not allowed";
+	searchQuery = searchQuery.trim();
+	if (searchQuery.length === 0) throw "Only blank spaces are not allowed";
 	let reg = /^[A-Z a-z 0-9]*$/gm;
 	if (!searchQuery.match(reg)) throw "Search can only contain letters and numbers";
-	return searchQuery.trim();
+	return searchQuery;
+}
+
+const encryptPwd = (pwd, saltTimes = 12) => {
+	const hash = bcrypt.hashSync(pwd, saltTimes)
+	return hash
+}
+
+const validatePwd = (pwd, hash) => {
+	const match = bcrypt.compareSync(pwd, hash)
+	return match
 }
 
 module.exports = {

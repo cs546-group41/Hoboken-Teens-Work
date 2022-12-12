@@ -3,7 +3,6 @@ const jobs = mongoCollections.jobs;
 const users = mongoCollections.users;
 const validation = require("../validation");
 const { ObjectId } = require("mongodb");
-const usersData = require("./users");
 
 // Return all jobs in the database
 const getAllJobs = async () => {
@@ -25,11 +24,11 @@ const getJobById = async (jobId) => {
 // Search keywords for job titles or description in the entire database
 const searchJobs = async (jobSearchQuery) => {
 
-  jobSearchQuery = validation.checkSearchQuery(jobSearchQuery)
-  const jobList = await jobs()
-  const searchJobs = await jobList.find({ jobTitle: { $regex: jobSearchQuery, $options: "i" } }).toArray()
-  if (searchJobs.length === 0) throw "No job was found for the entered text"
-  return searchJobs
+  jobSearchQuery = validation.checkSearchQuery(jobSearchQuery);
+  const jobList = await jobs();
+  const searchJobs = await jobList.find({ jobTitle: { $regex: jobSearchQuery, $options: "i" } }).toArray();
+  if (searchJobs.length === 0) throw "No job was found for the entered text";
+  return searchJobs;
 
 };
 
@@ -53,7 +52,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
     jobAuthor: {
       id: authorId,
       name: `${user.firstName} ${user.lastName}`,
-      phone: user.phone
+      phone: jobAuthorPhoneNumber
     },
     jobStatus: "open",
     applicants: [],
