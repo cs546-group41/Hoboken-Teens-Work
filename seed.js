@@ -1,13 +1,14 @@
 const users = require("./data/users");
 const connection = require("./config/mongoConnection");
 const jobs = require("./data/jobs");
+const comments = require("./data/comments")
 const { ObjectId } = require("mongodb");
 
 let firstUser = undefined;
 
 async function main() {
 	const db = await connection.dbConnection();
-	await db.dropDatabase();
+	// await db.dropDatabase();
 
 	// try{
 	//   await jobs.createJob("test","this is a test job","12th St","638add4a89d01f01e5dd77bb")
@@ -69,4 +70,30 @@ async function main() {
 	await connection.closeConnection();
 }
 
+try{
+	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
+
+}catch(e){
+	console.log(e)
+}
+
+try{
+	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
+
+}catch(e){
+	console.log(e)
+}
+
+try{
+	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
+
+}catch(e){
+	console.log(e)
+}
+
+try{
+	const comment = comments.createComment("6397b8d4e42368c1ce92e2ec","6397b8a78447e7598af73398","Siddharth", "I would like to do this job")
+}catch(e){
+	console.log(e)
+}
 main();

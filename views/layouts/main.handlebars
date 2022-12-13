@@ -11,8 +11,8 @@
 <body>
     <nav>
         <!-- the link will be change to a pic -->
-        <li>
-            <a href="/">Homepage</a>
+        <li class="none">
+            <a href="/" class="homepageLoginAndSignup">Homepage</a>
         </li>
         {{#if hideLogin}}
         {{else}}
@@ -22,17 +22,18 @@
         <a href="/logout">Click to logout</a>
         {{else}}
         <p>current status: not login</p>
-        <li>
-            <a href="/login">Login</a>
+        <li class="none">
+            <a class="homepageLoginAndSignup" href="/login">Login</a>
         </li>
-        <li>
-            <a href="/register">Sign Up</a>
+        <li class="none">
+            <a class="homepageLoginAndSignup" href="/register">Sign Up</a>
         </li>
         {{/if}}
         {{/if}}
     </nav>
     {{{body}}}
 
+    <br><br>
     <footer>
         <a href="/about">Link to team introduction</a>
     </footer>

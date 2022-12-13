@@ -1,9 +1,19 @@
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: #222831;
   }
   
   input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  input[type=password], select, textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -83,4 +93,133 @@ nav{
     padding: 8px 12px;
     position: relative;
     
+}
+.homepageUl{
+  color: #f2f2f2;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+
+}
+.homepageJobsInput{
+  text-align: center;
+}
+.homepageLi{
+  justify-content: center;
+  width: 100%;
+  background-color: #393E46;
+  text-align: center;
+  margin: 15px;
+  text-decoration:solid;
+  padding: 50px 35px;
+  border-radius: 14px;
+  font-size: 30px;
+  list-style: none;
+  
+}
+
+.joblistTitle{
+  color: #00ADB5;
+  text-decoration: none;
+  background-color: #393E46 ;
+}
+.joblistDescription{
+  font-size: 20px;
+  color: #EEEEEE;
+  text-decoration: none;
+  background-color: #393E46;
+
+}
+
+.homepageH1{
+  text-align: center;
+  margin: 15px;
+  color: white;
+ 
+}
+
+.homepageLoginAndSignup{
+  background-color: white;
+  color: black;
+  border: 2px solid rgb(0, 0, 0);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  
+}
+.homepageLoginAndSignup:hover{
+  color: white;
+  background-color: black;
+}
+.homepageLoginAndSignup li {
+  list-style: none;
+}
+.none{
+  list-style: none;
+}
+
+
+
+footer{
+  text-align: center;
+  position: absolute;
+  align-items: center;
+  width: 100%;
+}
+
+.IndividualJobsH1{
+text-align: center;
+color: white;
+margin-top: 30px;
+margin-bottom: 20px;
+}
+.individualJobs{
+  justify-content: center;
+  width: 50%;
+  background-color: #222831;
+  text-align: justify;
+  text-decoration:solid;
+  padding: 5px;
+  font-size: 30px;
+  list-style: none;
+  color: #f2f2f2;
+  margin: auto;
+  margin-bottom: 15px;
+}
+.comments{
+  justify-content: center;
+  width: 100%;
+  background-color: #222831;
+  text-align: center;
+  margin: 15px;
+  text-decoration:solid;
+  /* text-align: left; */
+  padding: 50px 35px;
+  border-radius: 14px;
+  font-size: 30px;
+  list-style: none;
+
+  color: #f2f2f2;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+.comment-list{
+  justify-content: center;
+  background-color: #393E46;
+  margin: 15px;
+  text-decoration:none;
+  padding: 50px 35px;
+  border-radius: 14px;
+  font-size: 30px;
+  list-style: none;
+  color: #f2f2f2;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+.comment-listLi{
+  list-style: none;
+  text-align: justify;
 }
