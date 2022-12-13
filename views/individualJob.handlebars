@@ -1,20 +1,26 @@
-<h1>Job detail</h1>
-<p>jobTitle : {{jobDetail.jobTitle}}</p>
-<p>jobDescription: {{jobDetail.jobDescription}}</p>
-<p>jobStreetName : {{jobDetail.jobStreetName}}</p>
-<p>jobStatus : {{jobDetail.jobStatus}}</p>
-<p>Publish by: <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<h1 class="IndividualJobsH1">Job detail</h1>
+<div class="individualJobs">
+<p>job : {{jobDetail.jobTitle}}</p>
+<p>Description: {{jobDetail.jobDescription}}</p>
+<p>job StreetName : {{jobDetail.jobStreetName}}</p>
+<p>job Status : {{jobDetail.jobStatus}}</p>
+<p>Published by: <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
 <p>Contact Phone Number: {{jobDetail.jobAuthor.phone}}</p>
+</div>
+<div class="comments">
 <p>Comments:</p>
+<br><br>
 <ul id="comment-list">
     {{#each jobDetail.comments}}
-    <li>
+    <li class="comment-listLi">
         <p>By: <a href="/id/{{authorId}}">{{name}}</a></p>
         <p>{{comment}}</p>
         <p>On: {{commentDate}}</p>
+        <br>
     </li>
     {{/each}}
 </ul>
+</div>
 
 {{#if login}}
 <form action="/addComment" method="post" id="add-comment">

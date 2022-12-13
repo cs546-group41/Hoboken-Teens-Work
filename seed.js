@@ -15,7 +15,7 @@ let newComment = undefined;
 
 async function main() {
 	const db = await connection.dbConnection();
-	await db.dropDatabase();
+	// await db.dropDatabase();
 
 	console.log("Create Users");
 
@@ -130,4 +130,30 @@ async function main() {
 	await connection.closeConnection();
 }
 
+try{
+	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
+
+}catch(e){
+	console.log(e)
+}
+
+try{
+	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
+
+}catch(e){
+	console.log(e)
+}
+
+try{
+	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
+
+}catch(e){
+	console.log(e)
+}
+
+try{
+	const comment = comments.createComment("6397b8d4e42368c1ce92e2ec","6397b8a78447e7598af73398","Siddharth", "I would like to do this job")
+}catch(e){
+	console.log(e)
+}
 main();

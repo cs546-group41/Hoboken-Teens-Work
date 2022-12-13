@@ -40,9 +40,9 @@ const checkUser = async (email, password) => {
 const staticForm = document.getElementById("login-form")
 
 if (staticForm) {
-    const usernameInput = document.getElementById("username")
+    const usernameInput = document.getElementById("emailInput")
 
-    const passwordInput = document.getElementById("password")
+    const passwordInput = document.getElementById("passwordInput")
 
     const errorContainer = document.getElementById('error-container')
     const errorTextElem = document.getElementsByClassName('text-goes-here')[0];
