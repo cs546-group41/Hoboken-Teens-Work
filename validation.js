@@ -11,11 +11,11 @@ function checkId(id) {
 }
 
 function checkString(strVal) {
-	if (!strVal) throw `You must supply a string!`;
-	if (typeof strVal !== "string") throw `Input  must be a string!`;
+	if (!strVal) throw "You must supply a string!";
+	if (typeof strVal !== "string") throw "Input  must be a string!";
 	strVal = strVal.trim();
-	if (strVal.length === 0) throw `Input cannot be an empty string or string with just spaces`;
-	if (!isNaN(strVal)) throw `input is not a valid value for as it only contains digits`;
+	if (strVal.length === 0) throw "Input cannot be an empty string or string with just spaces";
+	if (!isNaN(strVal)) throw "input is not a valid value for as it only contains digits";
 	return strVal;
 }
 
@@ -27,6 +27,7 @@ function checkFirstName(input) {
 	let count = 0;
 	for (char of input) if (char === "'") count++;
 	if (count > 1) throw "First name cannot have more than one apostrophe";
+	return input;
 }
 
 function checkLastName(input) {
@@ -40,6 +41,7 @@ function checkLastName(input) {
 	let countHyphen = 0;
 	for (char of input) if (char === "-") countHyphen++;
 	if (countHyphen > 1) throw "Last name cannot have more than one countHyphen";
+	return input;
 }
 
 function checkEmail(email) {
@@ -53,12 +55,12 @@ function checkEmail(email) {
 }
 
 function checkAge(age) {
-	if (!age) throw `You must provide an age `;
+	if (!age) throw "You must provide an age";
 
 	const regex = /[^0-9]/;
 	if (regex.test(age)) throw "Age must be an integer number";
-	if (age > 118 || age < 0) throw "Age must be <= 118 and >= 0";
 	age = parseInt(age);
+	if (age > 118 || age < 13) throw "Age must be <= 118 and >= 13";
 	return age;
 }
 
@@ -68,22 +70,23 @@ function checkPhone(phone) {
 	phone = phone.trim();
 	if (regex.test(phone)) throw "Phone number must contain only integer number";
 	if (phone.length !== 10) throw "Phone number must have 10 digits";
+	if(!parseInt(phone)) throw "Phone must be a 10 digits number";
 	return phone;
 }
 
-function checkStringArray(arr) {
-	let arrayInvalidFlag = false;
-	if (!arr || !Array.isArray(arr)) throw `You must provide an array of `;
-	for (i in arr) {
-		if (typeof arr[i] !== "string" || arr[i].trim().length === 0) {
-			arrayInvalidFlag = true;
-			break;
-		}
-		arr[i] = arr[i].trim();
-	}
-	if (arrayInvalidFlag) throw `One or more elements in  array is not a string or is an empty string`;
-	return arr;
-}
+// function checkStringArray(arr) {
+// 	let arrayInvalidFlag = false;
+// 	if (!arr || !Array.isArray(arr)) throw `You must provide an array of `;
+// 	for (i in arr) {
+// 		if (typeof arr[i] !== "string" || arr[i].trim().length === 0) {
+// 			arrayInvalidFlag = true;
+// 			break;
+// 		}
+// 		arr[i] = arr[i].trim();
+// 	}
+// 	if (arrayInvalidFlag) throw `One or more elements in  array is not a string or is an empty string`;
+// 	return arr;
+// }
 
 function checkPassword(strVal) {
 	const oneUpper = /[A-Z]/;

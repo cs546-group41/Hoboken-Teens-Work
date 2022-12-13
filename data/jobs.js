@@ -28,6 +28,9 @@ const searchJobs = async (jobSearchQuery) => {
   const jobList = await jobs();
   const searchJobs = await jobList.find({ jobTitle: { $regex: jobSearchQuery, $options: "i" } }).toArray();
   if (searchJobs.length === 0) throw "No job was found for the entered text";
+  for(job of searchJobs) {
+    job._id = job._id.toString();
+  }
   return searchJobs;
 
 };
@@ -57,7 +60,8 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
     jobStatus: "open",
     applicants: [],
     hired: {},
-    comments: []
+    comments: [],
+    jobCreationDate: new Date().toLocaleString("en-US")
   };
 
   const jobsCollection = await jobs();
@@ -69,7 +73,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
     jobTitle: jobTitle
   }
   const userUpdate = await userCollection.updateOne({ _id: ObjectId(authorId) }, { $push: { jobsPosted: newJobShortInfo } })
-  if (userUpdate.modifiedCount === 0) throw "Update user info failed!"
+  if (userUpdate.modifiedCount === 0) throw "Update user info failed!";
   return insertJob;
 
 };
