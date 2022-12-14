@@ -1,0 +1,23 @@
+<h1>{{jobDetail.jobTitle}}</h1>
+
+<p>{{jobDetail.jobDescription}}</p>
+
+<p>Status: <p id="jobStatus">{{jobDetail.jobStatus}}</p> <button onclick="changeStatus('{{jobDetail._id}}')">Change Status</button></p>
+
+<a href="/job/{{jobDetail._id}}/editJob">Edit job</a>
+
+<h2>Applicants</h2>
+
+<ul>
+  {{#each jobDetail.applicants}}
+    <li>
+      <a href="/user/{{applicantId}}">{{name}}</a> <a href="{{resume}}">View Resume</a>
+      {{#if this.isHired}}
+        <button class="fire">Fire</button>
+      {{else}}
+        <button class="hire">Hire</button>
+      {{/if}}
+    </li>
+  {{/each}}
+</ul>
+<script src="/public/js/jobPosterOperations.js"></script>

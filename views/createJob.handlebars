@@ -2,16 +2,20 @@
     <h4 style=" display: flex;
    align-items: center;
    justify-content: center;
-   flex-direction: column;">Create Job</h4>
+   flex-direction: column;">{{#if presetJob}}Edit Job{{else}}Create Job{{/if}}</h4>
 </div>
 <div class="container">
-  <form action="/">
+    {{#if presetJob}}
+      <form action="/job/{{presetJob._id}}/editJob" method="post">
+    {{else}}
+      <form action="/job/createJob" method="post">
+    {{/if}}
     <div class="row">
       <div class="col-25">
-        <label for="jTitle">Job Title</label>
+        <label for="jobTitle">Job Title</label>
       </div>
       <div class="col-75">
-        <input type="text" id="jTitle" name="jobTitle" placeholder="Enter Job Title">
+        <input type="text" id="jobTitle" name="jobTitle" placeholder="Enter Job Title" value="{{presetJob.jobTitle}}">
       </div>
     </div>
     <div class="row">
@@ -19,28 +23,28 @@
         <label for="jobDescription">Job Description</label>
       </div>
       <div class="col-75">
-        <input type="text" id="jobDescription" name="jobDescription" placeholder="Enter Job Description">
+        <input type="text" id="jobDescription" name="jobDescription" placeholder="Enter Job Description" value="{{presetJob.jobDescription}}" >
       </div>
     </div>
     <div class="row">
       <div class="col-25">
-        <label for="JobStreetName">Job Street Name</label>
+        <label for="jobStreetName">Job Street Name</label>
       </div>
       <div class="col-75">
-        <input type="text" id="JobStreetName" name="JobStreetName" placeholder="Enter Job Street Name">
+        <input type="text" id="jobStreetName" name="jobStreetName" placeholder="Enter Job Street Name" value="{{presetJob.jobStreetName}}" >
       </div>
     </div>
-   <div class="row">
+    <div class="row">
       <div class="col-25">
-        <label for="JobAuthor">Job Author</label>
+        <label for="phone">Phone Number</label>
       </div>
       <div class="col-75">
-        <input type="text" id="JobAuthor" name="JobAuthor" placeholder="Enter Job Author Name">
+        <input type="text" id="phone" name="phone" placeholder="Enter phone number" value="{{presetJob.jobAuthor.phone}}" >
       </div>
     </div>
-
     <div class="row" style="margin-top: 10px;">
       <input  type="submit" value="Submit">
     </div>
   </form>
 </div>
+<p>Error msg:{{errmsg}}</p>

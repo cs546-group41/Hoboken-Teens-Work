@@ -1,10 +1,25 @@
 <main>
-	<br><br>
-	<form action="jobs/searchJobs" method="post" class="search-form">
-		<label for="jobsInput">Search</label><br>
-		<input type="text" id="jobsInput" name="jobsInput" placeholder="Search for jobs">
-		<br>
 		<br><br>
-		<input type="submit" class="button">
-	</form>
-</main>
+		<form action="jobs/searchJobs" method="post" class="search-form" id="search-form">
+			<label for="jobsInput" class="homepageJobsInput">Search</label><br>
+			<input type="text" id="jobsInput" name="jobsInput" placeholder="Search for jobs">
+			<br>
+			<br><br>
+			<input type="submit" class="button">
+			<div class="form-group hidden" id="error-container">
+				<div class="alert alert-danger text-goes-here"></div>
+			</div>
+		</form>
+		<br><br>
+    <h1 class="homepageH1">Available Jobs in Hoboken right now!</h1>
+    <ul class="homepageUl">
+      {{#each jobList}}
+      <li class="homepageLi">
+        <a href="/job/{{_id}}" class="joblistTitle">{{jobTitle}}</a>
+		<br>
+		<a href="/job/{{_id}}" class="joblistDescription"> {{jobDescription}}</a>
+      </li>
+      {{/each}}
+    </ul>
+		<script src="/public/js/searchbarValidation.js"></script>
+	</main>

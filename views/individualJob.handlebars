@@ -1,0 +1,49 @@
+<h1 class="IndividualJobsH1">Job detail</h1>
+<div class="individualJobs">
+<p>job : {{jobDetail.jobTitle}}</p>
+<p>Description: {{jobDetail.jobDescription}}</p>
+<p>job StreetName : {{jobDetail.jobStreetName}}</p>
+<p>job Status : {{jobDetail.jobStatus}}</p>
+<p>Published by: <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<p>Contact Phone Number: {{jobDetail.jobAuthor.phone}}</p>
+</div>
+<div class="comments">
+<p>Comments:</p>
+<br><br>
+<ul id="comment-list">
+    {{#each jobDetail.comments}}
+    <li class="comment-listLi">
+        <p>By: <a href="/id/{{authorId}}">{{name}}</a></p>
+        <p>{{comment}}</p>
+        <p>On: {{commentDate}}</p>
+        <br>
+    </li>
+    {{/each}}
+</ul>
+</div>
+
+{{#if login}}
+<form action="/addComment" method="post" id="add-comment">
+    <label for="comment">Leave a comment: </label>
+    <input type="text" id="comment" name="comment" />
+    <input type="text" id="jobId" name="comment" value="{{jobDetail._id}}" style="display: none;"/>
+    <input type="submit" value="submit">
+</form><br></br>
+
+{{#if saved}}
+<button id="save-job-saved" onclick='saveJob("{{jobDetail._id}}", true)' >Saved!</button>
+<button id="save-job-unsave" onclick='saveJob("{{jobDetail._id}}", false)' style="display: none;" >Save This Job</button>
+{{else}}
+<button id="save-job-saved" onclick='saveJob("{{jobDetail._id}}", true)' style="display: none;">Saved!</button>
+<button id="save-job-unsave" onclick='saveJob("{{jobDetail._id}}", false)' >Save This Job</button>
+{{/if}}
+
+{{#if jobDetail.jobStatus}}
+    <form id="resumeUpload" enctype="multipart/form-data">
+        <p>Upload your Resume</p>
+        <input type="file" id="resumePDF" accept="pdf"/>
+        <button>Upload</button>
+    </form>
+{{/if}}
+{{/if}}
+<script src="/public/js/jobOperations.js"></script>

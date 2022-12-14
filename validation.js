@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs");
 const { ObjectId } = require("mongodb");
 
 function checkId(id) {
@@ -10,26 +11,28 @@ function checkId(id) {
 }
 
 function checkString(strVal) {
-	if (!strVal) throw `You must supply a string!`;
-	if (typeof strVal !== "string") throw `Input  must be a string!`;
+	if (!strVal) throw "You must supply a string!";
+	if (typeof strVal !== "string") throw "Input  must be a string!";
 	strVal = strVal.trim();
-	if (strVal.length === 0) throw `Input cannot be an empty string or string with just spaces`;
-	if (!isNaN(strVal)) throw `input is not a valid value for as it only contains digits`;
+	if (strVal.length === 0) throw "Input cannot be an empty string or string with just spaces";
+	if (!isNaN(strVal)) throw "input is not a valid value for as it only contains digits";
 	return strVal;
 }
 
 function checkFirstName(input) {
+	input = checkString(input);
 	if (input.length < 2) throw "First name must be atleast 2 characters";
 	const regex = /[^A-z\s'"]/g;
 	if (regex.test(input) || input.includes("_")) throw "First name must not contain special characters";
 	let count = 0;
 	for (char of input) if (char === "'") count++;
 	if (count > 1) throw "First name cannot have more than one apostrophe";
+	return input;
 }
 
 function checkLastName(input) {
+	input = checkString(input);
 	if (input.length < 2) throw "Last name must be atleast 2 characters";
-
 	const regex = /[^A-z\s'\-"]/g;
 	if (regex.test(input) || input.includes("_")) throw "Last name must not contain special characters";
 	let countApostrophe = 0;
@@ -38,9 +41,11 @@ function checkLastName(input) {
 	let countHyphen = 0;
 	for (char of input) if (char === "-") countHyphen++;
 	if (countHyphen > 1) throw "Last name cannot have more than one countHyphen";
+	return input;
 }
 
 function checkEmail(email) {
+	email = checkString(email);
 	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
 		email = email.trim();
 		return email;
@@ -50,12 +55,12 @@ function checkEmail(email) {
 }
 
 function checkAge(age) {
-	if (!age) throw `You must provide an age `;
+	if (!age) throw "You must provide an age";
 
 	const regex = /[^0-9]/;
 	if (regex.test(age)) throw "Age must be an integer number";
-	if (age > 118 || age < 0) throw "Age must be <= 118 and >= 0";
 	age = parseInt(age);
+	if (age > 118 || age < 13) throw "Age must be <= 118 and >= 13";
 	return age;
 }
 
@@ -65,22 +70,23 @@ function checkPhone(phone) {
 	phone = phone.trim();
 	if (regex.test(phone)) throw "Phone number must contain only integer number";
 	if (phone.length !== 10) throw "Phone number must have 10 digits";
+	if(!parseInt(phone)) throw "Phone must be a 10 digits number";
 	return phone;
 }
 
-function checkStringArray(arr) {
-	let arrayInvalidFlag = false;
-	if (!arr || !Array.isArray(arr)) throw `You must provide an array of `;
-	for (i in arr) {
-		if (typeof arr[i] !== "string" || arr[i].trim().length === 0) {
-			arrayInvalidFlag = true;
-			break;
-		}
-		arr[i] = arr[i].trim();
-	}
-	if (arrayInvalidFlag) throw `One or more elements in  array is not a string or is an empty string`;
-	return arr;
-}
+// function checkStringArray(arr) {
+// 	let arrayInvalidFlag = false;
+// 	if (!arr || !Array.isArray(arr)) throw `You must provide an array of `;
+// 	for (i in arr) {
+// 		if (typeof arr[i] !== "string" || arr[i].trim().length === 0) {
+// 			arrayInvalidFlag = true;
+// 			break;
+// 		}
+// 		arr[i] = arr[i].trim();
+// 	}
+// 	if (arrayInvalidFlag) throw `One or more elements in  array is not a string or is an empty string`;
+// 	return arr;
+// }
 
 function checkPassword(strVal) {
 	const oneUpper = /[A-Z]/;
@@ -140,10 +146,21 @@ function checkJobStatus(status) {
 
 function checkSearchQuery(searchQuery) {
 	if (!searchQuery) throw "You must enter something in the search bar";
-	if (searchQuery.trim().length === 0) throw "Only blank spaces are not allowed";
+	searchQuery = searchQuery.trim();
+	if (searchQuery.length === 0) throw "Only blank spaces are not allowed";
 	let reg = /^[A-Z a-z 0-9]*$/gm;
 	if (!searchQuery.match(reg)) throw "Search can only contain letters and numbers";
-	return searchQuery.trim();
+	return searchQuery;
+}
+
+const encryptPwd = (pwd, saltTimes = 12) => {
+	const hash = bcrypt.hashSync(pwd, saltTimes)
+	return hash
+}
+
+const validatePwd = (pwd, hash) => {
+	const match = bcrypt.compareSync(pwd, hash)
+	return match
 }
 
 module.exports = {
@@ -160,4 +177,6 @@ module.exports = {
 	checkJobStreetName,
 	checkJobStatus,
 	checkSearchQuery,
+	encryptPwd,
+	validatePwd
 };
