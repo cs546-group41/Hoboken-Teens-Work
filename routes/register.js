@@ -21,8 +21,8 @@ router
         req.body.lastNameInput,
         req.body.emailInput,
         req.body.ageInput,
-        req.body.phoneInput,
-        req.body.passwordInput
+        req.body.passwordInput,
+        req.body.phoneInput
       );
       res.redirect('login')
     } catch (e) {
