@@ -1,8 +1,5 @@
 <div>
-    <h4 style=" display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-direction: column;">{{#if presetJob}}Edit Job{{else}}Create Job{{/if}}</h4>
+    <h4>{{#if presetJob}}Edit Job{{else}}Create Job{{/if}}</h4>
 </div>
 <div class="container">
     {{#if presetJob}}
@@ -42,8 +39,8 @@
         <input type="text" id="phone" name="phone" placeholder="Enter phone number" value="{{presetJob.jobAuthor.phone}}" >
       </div>
     </div>
-    <div class="row" style="margin-top: 10px;">
-      <input  type="submit" >
+    <div class="row">
+      <input  type="submit" value="Submit">
     </div>
   </form>
 </div>
