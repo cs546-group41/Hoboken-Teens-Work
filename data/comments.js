@@ -3,35 +3,39 @@ const jobs = mongoCollections.jobs;
 const validation = require("../validation");
 const { ObjectId } = require("mongodb");
 const jobsData = require("./jobs");
-const userData = require("./users")
+const userData = require("./users");
 
-const createComment = async (jobId, commentorId, fullname, comment) => {
-    if (!jobId) throw "Must provide a Job ID";
-    if (!commentorId) throw "Must provide user ID of commentor";
+
+// Create a new comment
+const createComment = async (jobId, authorId, fullname, comment) => {
+    jobId = validation.checkId(jobId);
+    authorId = validation.checkId(authorId);
     if (!comment) throw "Must provide a comment";
-    const jobsCollection = await jobs()
-    await jobsData.getJobById(jobId)
-    await userData.getUserById(commentorId)
+    const jobsCollection = await jobs();
+    await jobsData.getJobById(jobId);
+    await userData.getUserById(authorId);
     const newComment = {
-        authorId: commentorId,
+        authorId: authorId,
         name: fullname,
         comment: comment,
-        commentDate: new Date().toUTCString()
+        commentDate: new Date().toLocaleString("en-US")
     }
-    const jobUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $push: { comments: newComment } })
-    if (jobUpdate.modifiedCount === 0) throw "Add Comment failed!"
+    const jobUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $push: { comments: newComment } });
+    if (jobUpdate.modifiedCount === 0) throw "Add Comment failed!";
     return newComment
 };
 
-const deleteComment = async (jobId, commentorId, commentId) => {
-    if (!jobId) throw "Must provide a Job ID";
-    if (!commentorId) throw "Must provide user ID of commentor";
-    if (!commentId) throw "Must provide ID of comment to be deleted";
-    const jobsCollection = await jobs()
-    await jobsData.getJobById(jobId)
-    await userData.getUserById(commentorId)
-    const jobUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $pull: { comments: {authorId:commentorId} } })
-    if (jobUpdate.modifiedCount === 0) throw "Delete Comment failed!"
+
+// Delete an existing comment
+const deleteComment = async (jobId, authorId, commentId) => {
+    jobId = validation.checkId(jobId);
+    authorId = validation.checkId(authorId);
+    commentId = validation.checkId(commentId);
+    const jobsCollection = await jobs();
+    await jobsData.getJobById(jobId);
+    await userData.getUserById(authorId);
+    const jobUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $pull: { comments: {authorId:authorId} } });
+    if (jobUpdate.modifiedCount === 0) throw "Delete Comment failed!";
 };
 
 module.exports = {
