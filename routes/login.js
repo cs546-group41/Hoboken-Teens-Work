@@ -25,6 +25,7 @@ router
   .post(async (req, res) => {
     //if the input match the data in the database, then will store a cookie otherwise re-render the page with error msg
     try {
+      console.log(req.body.emailInput);
       const user = await users.loginCheck(req.body.emailInput, req.body.passwordInput)
       req.session.user = { fullName: `${user.firstName} ${user.lastName}`, id: user._id }
       return res.redirect("/index")

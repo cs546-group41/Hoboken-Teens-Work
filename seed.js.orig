@@ -11,14 +11,27 @@ async function main() {
   await db.dropDatabase();
   try {
     firstUser = await users.createUser(
-      "Anh",
-      "Le",
-      "random@stevens.edu",
-      21,
-      "Random2@#",
-      "9178950083"
+      "Rishi",
+      "Kiran",
+      "rishi@stevens.edu",
+      23,
+      "Rishi@26",
+      "5513285221"
     );
     // console.log(firstUser);
+  } catch (err) {
+    console.log(err);
+  }
+    try {
+    firstUser = await users.createUser(
+      "Navin",
+      "Reddy",
+      "random1@stevens.edu",
+      23,
+      "Rishi@26",
+      "9951998279"
+    );
+
   } catch (err) {
     console.log(err);
   }

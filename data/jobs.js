@@ -45,6 +45,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
 
   const usersCollection = await users();
   const user = await usersCollection.findOne({_id: ObjectId(authorId)});
+  console.log(user);
   if (user.phone) {
     jobAuthorPhoneNumber = user.phone;
   }
