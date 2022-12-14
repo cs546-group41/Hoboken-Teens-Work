@@ -5,7 +5,8 @@ const validation = require("../validation");
 const { ObjectId } = require("mongodb");
 const jobsData = require("./jobs");
 
-const createUser = async (firstName, lastName, email, age, phone, password) => {
+// Create new User
+const createUser = async (firstName, lastName, email, age, password, phone) => {
 	firstName = validation.checkFirstName(firstName);
 	lastName = validation.checkLastName(lastName);
 	email = validation.checkString(email);
@@ -15,19 +16,33 @@ const createUser = async (firstName, lastName, email, age, phone, password) => {
 	password = validation.checkPassword(password);
 	const hashedPassword = validation.encryptPwd(password);
 	const userCollection = await users();
-	const myUser = {
-		firstName: firstName,
-		lastName: lastName,
-		email: email,
-		age: age,
-		phone: phone,
-		hashedPassword: hashedPassword,
-		jobsPosted: [],
-		jobsHired: [],
-		jobsApplied: [],
-		jobsSaved: [],
-		hiredForJobs: "",
-	};
+	let myUser = null;
+
+	if (age < 18) {
+		myUser = {
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			age: age,
+			phone: phone,
+			hashedPassword: hashedPassword,
+			jobsApplied: [],
+			jobsSaved: [],
+			hiredForJobs: [],
+		};
+	} else {
+		myUser = {
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			age: age,
+			phone: phone,
+			hashedPassword: hashedPassword,
+			jobsPosted: [],
+			jobsHired: [],
+		};
+	}
+
 	const insertInfo = await userCollection.insertOne(myUser);
 	if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add user";
 	const newId = insertInfo.insertedId.toString();
@@ -45,20 +60,11 @@ const getUserById = async (id) => {
 	return user;
 };
 
-const editUser = async (
-	id,
-	firstName,
-	lastName,
-	// email, age,
-	phoneNumber
-) => {
+const editUser = async (id, firstName, lastName, phoneNumber) => {
 	firstName = validation.checkString(firstName);
 	lastName = validation.checkString(lastName);
 	validation.checkFirstName(firstName);
 	validation.checkLastName(lastName);
-	//email = validation.checkString(email);
-	//validation.checkEmail(email);
-	//age = validation.checkAge(age);
 	phoneNumber = validation.checkPhone(phoneNumber);
 	id = validation.checkId(id);
 
@@ -66,16 +72,12 @@ const editUser = async (
 	let editFlag = 0;
 	if (firstName !== user.firstName) editFlag++;
 	if (lastName !== user.lastName) editFlag++;
-	//if (email !== user.email) editFlag++;
-	//if (age !== user.age) editFlag++;
 	if (phoneNumber !== user.phone) editFlag++;
 	if (editFlag < 1) throw "No changes were made";
 
 	let userEditInfo = {
 		firstName: firstName,
 		lastName: lastName,
-		//email: email,
-		//age: age,
 		phone: phoneNumber,
 	};
 	const userCollection = await users();
@@ -83,12 +85,6 @@ const editUser = async (
 	if (!editStatus.matchedCount && !editStatus.modifiedCount) throw "Edit failed";
 
 	return await getUserById(id);
-};
-
-const getAllJobsByUser = async (authorId) => {
-	authorId = validation.checkId(authorId);
-	const myUser = await getUserById(authorId);
-	return myUser.jobsPosted;
 };
 
 const getAllApplicants = async (jobId) => {
@@ -114,9 +110,9 @@ const hireForJob = async (authorId, jobId, applicantId) => {
 	applicantId = validation.checkId(applicantId);
 	authorId = validation.checkId(authorId);
 	const myJob = await jobsData.getJobById(jobId);
-	const myApplicant = await getUserById(applicantID);
+	const myApplicant = await getUserById(applicantId);
 	myJob.hired = {
-		id: applicantID,
+		id: applicantId,
 		name: myApplicant.firstName + myApplicant.lastName,
 	};
 };
@@ -181,6 +177,13 @@ const getAllPostJobsById = async (id) => {
 	return IDs;
 };
 
+// const getAllJobsByUser = async (authorId) => {
+// 	authorId = validation.checkId(authorId);
+// 	const myUser = await getUserById(authorId);
+// 	if(!myUser) throw "User not found";
+// 	return myUser.jobsPosted;
+// };
+
 const jobPosterCheck = async (jobId, id) => {
 	id = validation.checkId(id);
 	jobId = validation.checkId(jobId);
@@ -191,6 +194,7 @@ const jobPosterCheck = async (jobId, id) => {
 
 //*************Save job functions */
 
+// Return all jobs bookmarked by the user
 const getAllSavedJob = async (id) => {
 	id = validation.checkId(id);
 	const userCollection = await users();
@@ -198,6 +202,8 @@ const getAllSavedJob = async (id) => {
 	return user.jobsSaved;
 };
 
+
+// Bookmark a job
 const saveJob = async (jobId, id) => {
 	id = validation.checkId(id);
 	jobId = validation.checkId(jobId);
@@ -212,6 +218,8 @@ const saveJob = async (jobId, id) => {
 	return jobShort;
 };
 
+
+// Remove bookmark from a job
 const unSaveJob = async (jobId, id) => {
 	id = validation.checkId(id);
 	jobId = validation.checkId(jobId);
@@ -230,6 +238,8 @@ const isJobSaved = async (jobId, id) => {
 };
 
 /**********apply job function************* */
+
+// Return array of IDs of jobs applied to by the user
 const getAllAppliedJobs = async (id) => {
 	id = validation.checkId(id);
 	const user = await getUserById(id);
@@ -242,7 +252,6 @@ module.exports = {
 	createUser,
 	getUserById,
 	editUser,
-	getAllJobsByUser,
 	getAllApplicants,
 	getResumeById,
 	hireForJob,
@@ -250,10 +259,11 @@ module.exports = {
 	applyToJob,
 	withdrawJobApplication,
 	loginCheck,
+	getAllPostJobsById,
 	jobPosterCheck,
 	getAllSavedJob,
 	saveJob,
 	unSaveJob,
 	isJobSaved,
-	getAllAppliedJobs,
+	getAllAppliedJobs
 };
