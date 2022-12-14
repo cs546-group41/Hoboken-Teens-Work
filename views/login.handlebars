@@ -1,5 +1,5 @@
-<main>
-  <form action="/login" id="login-form" method="post">
+<div>
+<form  id="login-form" >
 		<label for="emailInput">Enter your email</label>
     <input type="text" name="emailInput" id="emailInput" placeholder="Enter your email">
 		<br><br>
@@ -18,5 +18,7 @@
 	<br><br>
 	{{#if error}} <h4>{{error}}</h4>{{/if}}
 	<a href="/register">Click here to register!</a>
+</div>
+  
 	<script src="/public/js/loginValidation.js"></script>
-</main>
+
