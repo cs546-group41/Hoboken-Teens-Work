@@ -18,7 +18,7 @@
 		<label for="passwordInput">Create a password</label>
 		<input type="password" name="passwordInput" id="passwordInput" placeholder="Enter your password">
 		<br><br>
-		<input type="submit" value="Submit">
+		<button id="submit-btn" type="submit">Submit</button>
 		<div class="form-group hidden" id="error-container">
 		  <div class="alert alert-danger text-goes-here"></div>
 		</div>
@@ -26,5 +26,6 @@
 	<br><br><br><br>
 	{{#if error}} <h4>{{error}}</h4>{{/if}}
 	<a href="/">Already have an account? Click here to login</a>
-	<script src="/public/js/signUpValidation.js"></script>
+	<script src="/public/js/signUpValidation.js">
+	</script>
 </main>
