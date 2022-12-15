@@ -1,4 +1,4 @@
-<div>
+
 <form  action="/register" id="registration-form" method="post">
 		<label for="firstNameInput">Enter your first name</label>
 		<input type="text" name="firstNameInput" id="firstNameInput" placeholder="Enter your first name">
@@ -23,11 +23,11 @@
 		  <div class="alert alert-danger text-goes-here"></div>
 		</div>
 	</form>
-</div>
+
 	
 	<br><br><br><br>
 	{{#if errormsg}} <h4>Error : {{errormsg}}</h4>{{/if}}
 	<br>
 	<a href="/">Already have an account? Click here to login</a>
-	{{!-- <script src="/public/js/signUpValidation.js"></script> --}}
+	<script src="/public/js/signUpValidation.js"></script>
 </main>
