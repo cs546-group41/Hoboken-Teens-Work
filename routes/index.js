@@ -14,7 +14,7 @@ const constructorMethod = (app) => {
     if (req.session.user){
       id = req.session.user.id
     }
-    console.log(`${new Date().toUTCString()} ${req.method} ${req.originalUrl} user: ${id}`)
+    console.log(`${new Date().toLocaleString("en-US")} ${req.method} ${req.originalUrl} user: ${id}`);
     next();
   })
 
@@ -27,7 +27,7 @@ const constructorMethod = (app) => {
   app.use('/logout', logoutRoute);
   
   app.use('/about', (req, res) =>{
-    res.sendFile(path.resolve("static/About.html"))
+    res.sendFile(path.resolve("static/About.html"));
   });
 
   //any differernt route will by redirect to index page

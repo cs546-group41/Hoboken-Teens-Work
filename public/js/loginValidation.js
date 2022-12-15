@@ -37,35 +37,36 @@ const checkUser = async (email, password) => {
 }
 
 
-const staticForm = document.getElementById("login-form")
 
-if (staticForm) {
-    const usernameInput = document.getElementById("emailInput")
+   const staticForm = document.getElementById("login-form");
+   staticForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    try {
+        const usernameInput = document.getElementById("emailInput")
 
-    const passwordInput = document.getElementById("passwordInput")
+        const passwordInput = document.getElementById("passwordInput")
+    
+        const errorContainer = document.getElementById('error-container')
+       // const errorTextElem = document.getElementsByClassName('text-goes-here')[0];
 
-    const errorContainer = document.getElementById('error-container')
-    const errorTextElem = document.getElementsByClassName('text-goes-here')[0];
+        errorContainer.classList.add('hidden')
+        const usernameInputElem = usernameInput.value;
 
-    staticForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        try {
-            errorContainer.classList.add('hidden')
-            const usernameInputElem = usernameInput.value;
-
-            const passwordInputElem = passwordInput.value;
+        const passwordInputElem = passwordInput.value;
 
 
-            const validatedEmail = checkUserclientSideEmail(usernameInputElem)
-            const validatedPassword = checkUserClientSidePassword(passwordInputElem)
+        const validatedEmail = checkUserclientSideEmail(usernameInputElem)
+        const validatedPassword = checkUserClientSidePassword(passwordInputElem)
 
-            if (validatedEmail && validatedPassword) {
-                errorContainer.style.display = "none"
-            }
-            
-        } catch (e) {
-            errorTextElem.textContent = "Error: " + e
-            errorContainer.style.display = "block"
+        if (validatedEmail && validatedPassword) {
+            errorContainer.style.display = "none"
         }
-    })
-}
+        
+    } catch (e) {
+        errorTextElem.textContent = "Error: " + e
+        errorContainer.style.display = "block"
+    }
+})
+
+
+

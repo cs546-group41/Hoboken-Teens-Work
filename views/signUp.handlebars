@@ -1,5 +1,5 @@
-<main>
-	<form id="registration-form" action="/register" method="post">
+<div>
+<form  action="/register" id="registration-form" method="post">
 		<label for="firstNameInput">Enter your first name</label>
 		<input type="text" name="firstNameInput" id="firstNameInput" placeholder="Enter your first name">
 		<br><br>
@@ -13,18 +13,21 @@
 		<input type="text" name="ageInput" id="ageInput" placeholder="Enter your age">
 		<br><br>
 		<label for="phoneNumberInput">Enter your phone number</label>
-		<input type="text" name="ageInput" id="phoneNumberInput" placeholder="Enter your phone number">
+		<input type="text" name="phoneNumberInput" id="phoneNumberInput" placeholder="Enter your phone number">
 		<br><br>
 		<label for="passwordInput">Create a password</label>
 		<input type="password" name="passwordInput" id="passwordInput" placeholder="Enter your password">
 		<br><br>
-		<input type="submit" value="Submit">
+		<button type="submit" form="registration-form" class="btn btn-default">Submit</button>
 		<div class="form-group hidden" id="error-container">
 		  <div class="alert alert-danger text-goes-here"></div>
 		</div>
 	</form>
+</div>
+	
 	<br><br><br><br>
-	{{#if error}} <h4>{{error}}</h4>{{/if}}
+	{{#if errormsg}} <h4>Error : {{errormsg}}</h4>{{/if}}
+	<br>
 	<a href="/">Already have an account? Click here to login</a>
-	<script src="/public/js/signUpValidation.js"></script>
+	{{!-- <script src="/public/js/signUpValidation.js"></script> --}}
 </main>

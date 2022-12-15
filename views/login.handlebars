@@ -1,20 +1,25 @@
-<main>
-  <form action="/login" id="login-form" method="post">
+<div>
+<form  action="/login" id="login-form" method="post">
 		<label for="emailInput">Enter your email</label>
     <input type="text" name="emailInput" id="emailInput" placeholder="Enter your email">
 		<br><br>
 		<label for="passwordInput">Enter your password</label>
     <input type="password" name="passwordInput" id="passwordInput" placeholder="Enter your password">
 		<br><br>
-		<input type="submit">
+		<button type="submit" form="login-form" class="btn btn-default">Login</button>
 
-		<div class="form-group hidden" id="error-container">
+		{{!-- <div class="form-group hidden" id="error-container">
 			<div class="alert alert-danger text-goes-here"></div>
 		</div>
-    
+    <div class="form-group hidden" id="result-container">
+      <div class="alert alert-success text-goes-here"></div>
+    </div> --}}
 	</form>
 	<br><br>
-	{{#if error}} <h4>{{error}}</h4>{{/if}}
+	{{#if errormsg}} <h4>Error : {{errormsg}}</h4>{{/if}}
+	<br>
 	<a href="/register">Click here to register!</a>
-	<script src="/public/js/loginValidation.js"></script>
-</main>
+</div>
+  
+	{{!-- <script src="/public/js/loginValidation.js"></script> --}}
+

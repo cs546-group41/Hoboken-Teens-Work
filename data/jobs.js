@@ -45,6 +45,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
 
   const usersCollection = await users();
   const user = await usersCollection.findOne({_id: ObjectId(authorId)});
+  console.log(user);
   if (user.phone) {
     jobAuthorPhoneNumber = user.phone;
   }
@@ -71,8 +72,8 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
   const newJobShortInfo = {
     id: insertJob.insertedId.toString(),
     jobTitle: jobTitle
-  }
-  const userUpdate = await userCollection.updateOne({ _id: ObjectId(authorId) }, { $push: { jobsPosted: newJobShortInfo } })
+  };
+  const userUpdate = await userCollection.updateOne({ _id: ObjectId(authorId) }, { $push: { jobsPosted: newJobShortInfo } });
   if (userUpdate.modifiedCount === 0) throw "Update user info failed!";
   return insertJob;
 
@@ -95,7 +96,7 @@ const removeJob = async (jobId) => {
   if (deleteJob.deletedCount === 0) throw "Job could not be removed";
 
   const userCollection = await users();
-  const userUpdate = await userCollection.updateOne({ _id: ObjectId(theJob.jobAuthor.id) }, { $pull: { jobsPosted: {id:jobId} } })
+  const userUpdate = await userCollection.updateOne({ _id: ObjectId(theJob.jobAuthor.id) }, { $pull: { jobsPosted: {id:jobId} } });
   if (userUpdate.modifiedCount === 0) throw "Update user info failed!"
   return `The Job: "${jobName}" has been successfully removed`;
 
@@ -168,16 +169,16 @@ const changeStatus = async (jobId, id)=>{
   id = validation.checkId(id);
   const jobsCollection = await jobs();
   const jobData = await jobsCollection.findOne({ _id: ObjectId(jobId) });
-  if (jobData.jobAuthor.id != id) throw "Unauthorized Operation"
-  const curStatus = jobData.jobStatus
+  if (jobData.jobAuthor.id != id) throw "Unauthorized Operation";
+  const curStatus = jobData.jobStatus;
   if (curStatus==="open"){
-    const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: "closed" } })
-    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!"
-    return "open"
+    const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: "finished" } });
+    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!";
+    return "open";
   }else{
     const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: "open" } })
-    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!"
-    return "closed"
+    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!";
+    return "finished";
   }
 }
 
