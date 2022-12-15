@@ -199,7 +199,7 @@ router
 
   router.route("/:id/editJob")
   .get(async (req, res) => {
-    //check if login in and if is the author of the job, if not redirect to the job detail page
+    //check if logged in and if it is the author of the job, if not redirect to the job detail page
     if (!req.session.user) return res.redirect(`jobs/${req.params.id}`)
     var jobDetail = null
     try{
@@ -228,14 +228,24 @@ router
     //edit job part
     try {
       //validation need to put in client side
-      await jobs.editJob(
-        req.params.id, 
-        req.session.user.id, 
-        req.body.jobTitle, 
-        req.body.jobDescription, 
-        req.body.jobStreetName,
-        req.body.phone)
+      if(req.body.phone === "N/A") {
+        await jobs.editJob(
+          req.params.id, 
+          req.session.user.id, 
+          req.body.jobTitle, 
+          req.body.jobDescription, 
+          req.body.jobStreetName);
+      } else {
+        await jobs.editJob(
+          req.params.id, 
+          req.session.user.id, 
+          req.body.jobTitle, 
+          req.body.jobDescription, 
+          req.body.jobStreetName,
+          req.body.phone);
+      }
       res.redirect(`/job/${req.params.id}`)
+      
     } catch (e) {
       //add status code here
       //res.status()
