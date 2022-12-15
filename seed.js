@@ -81,7 +81,7 @@ async function main() {
 	}
 
 	try {
-		newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", firstUser._id);
+		newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", secondUser._id);
 		console.log("The new job:");
 		console.log(newJob);
 		// console.log(await users.getUserById(firstUser));
@@ -89,6 +89,14 @@ async function main() {
 		console.log(e);
 	}
 
+	try {
+		newJob = await jobs.createJob("Cars Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", firstUser._id);
+		console.log("The new job:");
+		console.log(newJob);
+		// console.log(await users.getUserById(firstUser));
+	} catch (e) {
+		console.log(e);
+	}
 	try {
 		console.log("All jobs by user");
 		const result = await users.getAllPostJobsById(firstUser._id);
@@ -130,30 +138,30 @@ async function main() {
 	await connection.closeConnection();
 }
 
-try{
-	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
+// try{
+// 	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
 
-}catch(e){
-	console.log(e)
-}
+// }catch(e){
+// 	console.log(e)
+// }
 
-try{
-	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
+// try{
+// 	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
 
-}catch(e){
-	console.log(e)
-}
+// }catch(e){
+// 	console.log(e)
+// }
 
-try{
-	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
+// try{
+// 	const cj = jobs.createJob("porch cleaning", "i need someone to clean my porch", "Jefferson St", "6397b8a78447e7598af73398")
 
-}catch(e){
-	console.log(e)
-}
+// }catch(e){
+// 	console.log(e)
+// }
 
-try{
-	const comment = comments.createComment("6397b8d4e42368c1ce92e2ec","6397b8a78447e7598af73398","Siddharth", "I would like to do this job")
-}catch(e){
-	console.log(e)
-}
+// try{
+// 	const comment = comments.createComment("6397b8d4e42368c1ce92e2ec","6397b8a78447e7598af73398","Siddharth", "I would like to do this job")
+// }catch(e){
+// 	console.log(e)
+// }
 main();
