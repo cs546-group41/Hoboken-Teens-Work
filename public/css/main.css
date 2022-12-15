@@ -3,7 +3,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #222831;
+    background-color: #dae3f1;
   }
   
   input[type=text], select, textarea {
@@ -222,4 +222,20 @@ margin-bottom: 20px;
 .comment-listLi{
   list-style: none;
   text-align: justify;
+}
+.makecenter{
+  text-align: center;
+  margin: 10px;
+  text-decoration: underline;
+}
+.desc-text{
+  margin-bottom: 10px;
+  font-size: medium;
+  font-weight: lighter;
+}
+.main-about{
+  margin-left: 3%;
+}
+.move-right{
+  margin-left: 3%;
 }

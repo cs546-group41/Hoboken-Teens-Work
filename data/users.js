@@ -163,6 +163,8 @@ const loginCheck = async (email, pwd) => {
 	return user;
 };
 
+
+
 /*************Post Job functions********** */
 
 const getAllPostJobsById = async (id) => {
@@ -265,5 +267,6 @@ module.exports = {
 	saveJob,
 	unSaveJob,
 	isJobSaved,
-	getAllAppliedJobs
+	getAllAppliedJobs,
+	signupCheck
 };

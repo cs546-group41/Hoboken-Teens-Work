@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const data = require("../data");
-const users = data.users;
+const data = require('../data')
+const users = data.users
+const validation = require("../validation");
 
 router
   .route("/")
@@ -18,18 +19,38 @@ router
     }
 
     try {
-      const myUser = await users.createUser(
-        req.body.firstNameInput,
-        req.body.lastNameInput,
-        req.body.emailInput,
-        req.body.ageInput,
-        req.body.passwordInput,
-        req.body.phoneInput
-      );
-      res.redirect("login");
+      console.log(req.body);
+
+      const validatedFirstName = validation.checkFirstName(req.body.firstNameInput);
+			const validatedLastName = validation.checkLastName(req.body.lastNameInput);
+			const validatedEmail = validation.checkEmail(req.body.emailInput);
+			const validatedAge = validation.checkAge(req.body.ageInput);
+			const validatedPhone = validation.checkPhone(req.body.phoneNumberInput);
+			const validatedPassword = validation.checkPassword(req.body.passwordInput);
+
+      console.log(validatedFirstName,validatedLastName,validatedEmail,validatedAge,validatedPhone,validatedPassword);
+
+			if (validatedFirstName && validatedLastName && validatedEmail && validatedAge && validatedPhone && validatedPassword) {
+  
+        await users.createUser(
+          req.body.firstNameInput,
+          req.body.lastNameInput,
+          req.body.emailInput,
+          req.body.ageInput,
+          req.body.passwordInput,
+          req.body.phoneNumberInput
+        );
+        res.redirect('login');
+
+			}
+   
+     
+    
     } catch (e) {
-      res.status(404);
-      res.render("signUp", { errmsg: e });
+      return res.render("signUp", {
+        hideLogin: true,
+        errormsg: e
+      })
     }
   });
 

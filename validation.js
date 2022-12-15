@@ -163,6 +163,7 @@ const validatePwd = (pwd, hash) => {
 	return match
 }
 
+
 module.exports = {
 	checkString,
 	checkFirstName,

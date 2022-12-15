@@ -7,6 +7,10 @@ router.route("/").get(async (req, res) => {
   //go the the login page without error messge
   if (req.session.user) {
     try {
+      console.log(req.body.emailInput);
+      const user = await users.loginCheck(req.body.emailInput, req.body.passwordInput)
+      req.session.user = { fullName: `${user.firstName} ${user.lastName}`, id: user._id }
+      return res.redirect("/index")
       res.redirect(`/user/${req.session.user.id}`);
     } catch (e) {
       req.session.destroy();
