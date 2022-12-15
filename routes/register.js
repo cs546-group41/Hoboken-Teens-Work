@@ -1,21 +1,23 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const data = require('../data')
 const users = data.users
 const validation = require("../validation");
 
 router
-  .route('/')
+  .route("/")
   .get(async (req, res) => {
     //simple render the register page, if already logged in, will not see this page
-    if (req.session.user) return res.redirect("homepage")
-    res.render("signUp")
+    if (req.session.user) return res.redirect("homepage");
+    res.render("signUp");
   })
   .post(async (req, res) => {
     //code here for POST
+    console.log(req);
     if (req.session.user) {
-      return res.redirect("homepage")
+      return res.redirect("homepage");
     }
+
     try {
       console.log(req.body);
 
@@ -50,6 +52,6 @@ router
         errormsg: e
       })
     }
-  })
+  });
 
-module.exports = router
+module.exports = router;
