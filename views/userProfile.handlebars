@@ -1,14 +1,15 @@
 {{#if login}}
 {{#if selfReview}}
-<h1>you had logged in</h1>
+<h1 class="UserH1">You are logged in</h1>
 {{/if}}
 {{/if}}
-
-<p>name: {{curUser.firstName}} {{curUser.lastName}}</p>
-<p>email: {{curUser.email}}</p>
-<p>age: {{curUser.age}}</p>
-<p>phone: {{curUser.phone}}</p>
-
+<div class="personDetails">
+<p>Name: {{curUser.firstName}} {{curUser.lastName}}</p>
+<p>Email: {{curUser.email}}</p>
+<p>Age: {{curUser.age}}</p>
+<p>Phone: {{curUser.phone}}</p>
+</div>
+<div class="postJob">
 {{#if adultUser}}
     <p>job posted:</p>
     {{#if login}}
@@ -18,7 +19,10 @@
                     <a href="/job/{{id}}">{{jobTitle}}</a>  <button onclick='deleteJob(this,"{{id}}")'>Delete</button>
                 </li>
             {{/each}}
-            <a href="/job/createJob">Post a Job!</a>
+            <a href="/job/createJob">Post a Job!</a> <br>
+</div>
+
+<div class="jobsHired">
             <p>job Hired:</p>
             {{#each curUser.jobsHired}}
                 <li>
@@ -47,5 +51,8 @@
         {{/if}}
     {{/if}}
 {{/if}}
-<a href="/user/{{curUser._id}}/editUser">Edit Profile</a>
+</div>
+<div class="editProfileButton">
+<a class="editProfile" href="/user/{{curUser._id}}/editUser">Edit Profile</a>
+</div>
 <script src="/public/js/userOperations.js"></script>

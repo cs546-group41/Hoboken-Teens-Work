@@ -16,6 +16,8 @@ const createUser = async (firstName, lastName, email, age, password, phone) => {
 	password = validation.checkPassword(password);
 	const hashedPassword = validation.encryptPwd(password);
 	const userCollection = await users();
+	const userEmail = await userCollection.findOne({ email: email });
+	if(userEmail) throw "A user with that email already exists!"
 	let myUser = null;
 
 	if (age < 18) {
@@ -268,5 +270,5 @@ module.exports = {
 	unSaveJob,
 	isJobSaved,
 	getAllAppliedJobs,
-	signupCheck
+	// signupCheck
 };
