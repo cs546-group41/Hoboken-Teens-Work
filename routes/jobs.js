@@ -84,8 +84,9 @@ router.route("/createJob")
 
     try {
       const { jobTitle, jobDescription, jobStreetName } = createJobData;
-      jobs.createJob(jobTitle, jobDescription, jobStreetName, jobAuthorId);
-      return res.redirect(`/user/${req.session.user.id}`)
+      await jobs.createJob(jobTitle, jobDescription, jobStreetName, jobAuthorId);
+      return res.redirect('/user/'+req.session.user.id);
+
     } catch (e) {
       res.status(500);
       res.render("createJob", {
@@ -93,6 +94,7 @@ router.route("/createJob")
         login: true,
         loginUserData: req.session.user,
         phone: req.session.user.phone,
+        presetJob:req.body,
         errmsg: e
       })
     }

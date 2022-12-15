@@ -267,6 +267,5 @@ module.exports = {
 	saveJob,
 	unSaveJob,
 	isJobSaved,
-	getAllAppliedJobs,
-	signupCheck
+	getAllAppliedJobs
 };
