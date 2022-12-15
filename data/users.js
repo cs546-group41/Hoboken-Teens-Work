@@ -163,6 +163,16 @@ const loginCheck = async (email, pwd) => {
 	return user;
 };
 
+const signupCheck = async (email, pwd) => {
+	email = validation.checkEmail(email);
+	pwd = validation.checkPassword(pwd);
+	const userCollection = await users();
+	const user = await userCollection.findOne({ email: email });
+	if (!user) throw "Either the email or password is invalid";
+	if (!validation.validatePwd(pwd, user.hashedPassword)) throw "Either the email or password is invalid";
+	return user;
+};
+
 /*************Post Job functions********** */
 
 const getAllPostJobsById = async (id) => {
@@ -265,5 +275,6 @@ module.exports = {
 	saveJob,
 	unSaveJob,
 	isJobSaved,
-	getAllAppliedJobs
+	getAllAppliedJobs,
+	signupCheck
 };
