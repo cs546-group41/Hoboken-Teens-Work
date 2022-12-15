@@ -90,6 +90,34 @@ async function main() {
 	// }
 
 	// try {
+	// 	console.log("\n\nGet user by ID\n");
+	// 	const result1 = await users.getUserById(firstUser._id);
+	// 	const result2 = await users.getUserById(secondUser._id);
+	// 	const result3 = await users.getUserById(thirdUser._id);
+	// 	const result4 = await users.getUserById(fourthUser._id);
+	// 	const result5 = await users.getUserById(fifthUser._id);
+	// 	const result6 = await users.getUserById(sixthUser._id);
+
+	// 	console.log(result1);
+	// 	console.log(result2);
+	// 	console.log(result3);
+	// 	console.log(result4);
+	// 	console.log(result5);
+	// 	console.log(result6);
+	// } catch (e) {
+	// 	console.log(e);
+	// }
+
+	// try {
+	// 	newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", firstUser._id);
+	// 	console.log("The new job:");
+	// 	console.log(newJob);
+	// 	console.log(await users.getUserById(firstUser._id));
+	// } catch (e) {
+	// 	console.log(e);
+	// }
+
+	// try {
 	// 	console.log("All jobs by user");
 	// 	const result = await users.getAllPostJobsById(firstUser._id);
 	// 	console.log(result);

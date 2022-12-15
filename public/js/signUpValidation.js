@@ -1,4 +1,6 @@
+
 function checkFirstName(input) {
+  if(!input) throw "You must provide First Name"
   if (input.length < 2) throw "First name must be atleast 2 characters";
   const regex = /[^A-z\s'"]/g;
   if (regex.test(input) || input.includes("_"))
@@ -9,6 +11,7 @@ function checkFirstName(input) {
 }
 
 function checkLastName(input) {
+  if(!input) throw "You must provide Last Name"
   if (input.length < 2) throw "Last name must be atleast 2 characters";
 
   const regex = /[^A-z\s'\-"]/g;
@@ -24,6 +27,7 @@ function checkLastName(input) {
 }
 
 function checkEmail(email) {
+  if(!email) throw "You must provide a email"
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     email = email.trim();
     return email;
@@ -82,7 +86,6 @@ if (staticForm) {
   const errorTextElem = document.getElementsByClassName("text-goes-here")[0];
 
   staticForm.addEventListener("submit", (event) => {
-    event.preventDefault();
 
     try {
       errorContainer.classList.add("hidden");
@@ -111,6 +114,7 @@ if (staticForm) {
         errorContainer.style.display = "none";
       }
     } catch (e) {
+      event.preventDefault();
       errorTextElem.textContent = "Error: " + e;
       errorContainer.style.display = "block";
     }

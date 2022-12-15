@@ -16,7 +16,8 @@ router.route("/").get(async (req, res) => {
       req.session.destroy();
       res.render("login", { hideLogin: true });
     }
-  } else {
+  } 
+  else {
     res.render("login", { hideLogin: true });
   }
 });

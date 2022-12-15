@@ -134,7 +134,7 @@ nav{
 .homepageH1{
   text-align: center;
   margin: 15px;
-  color: white;
+  color: rgb(0, 0, 0);
  
 }
 
@@ -146,7 +146,7 @@ nav{
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  
+  border-radius: 30px;
 }
 .homepageLoginAndSignup:hover{
   color: white;
@@ -170,7 +170,7 @@ footer{
 
 .IndividualJobsH1{
 text-align: center;
-color: white;
+color: rgb(0, 0, 0);
 margin-top: 30px;
 margin-bottom: 20px;
 }
@@ -183,27 +183,23 @@ margin-bottom: 20px;
   padding: 5px;
   font-size: 30px;
   list-style: none;
-  color: #f2f2f2;
+  color: #000000;
   margin: auto;
   margin-bottom: 15px;
 }
 .comments{
   justify-content: center;
-  width: 100%;
   background-color: #222831;
   text-align: center;
-  margin: 15px;
   text-decoration:solid;
-  /* text-align: left; */
-  padding: 50px 35px;
-  border-radius: 14px;
+  padding: 5px 5px;
+  border-radius: 6px;
   font-size: 30px;
   list-style: none;
-
-  color: #f2f2f2;
+  color: #000000;
   margin: auto;
   width: 50%;
-  padding: 10px;
+  
 }
 .comment-list{
   justify-content: center;
@@ -221,7 +217,7 @@ margin-bottom: 20px;
 }
 .comment-listLi{
   list-style: none;
-  text-align: justify;
+  text-align: center;
 }
 .makecenter{
   text-align: center;
