@@ -108,12 +108,12 @@ router
 			await users.editUser(req.params.id, req.body.firstNameInput, req.body.lastNameInput, req.body.phoneInput, req.body.passwordInput);
 			res.redirect(`/user/${req.params.id}`);
 		} catch (e) {
-			res.render("createJob", {
+			res.render("error", {
 				title: `Edit Profile - ${req.session.user.fullName}`,
 				login: true,
 				loginUserData: req.session.user,
-				presetUser: userData,
-				errmsg: e,
+				presetUser: req.session.user,
+				errormsg: "Could not update user profile or no change in existing information was found",
 			});
 		}
 	});
