@@ -208,9 +208,11 @@ router
     }
     var login = false
     var saved = false
+    var applied = false
     if (req.session.user) {
       login = true
       saved = await users.isJobSaved(req.params.id, req.session.user.id)
+      applied = await users.isJobApplied(req.session.user.id, req.params.id)
     }
     var jobDetail = null
     try {
@@ -236,7 +238,8 @@ router
       login: login,
       loginUserData: req.session.user,
       jobDetail: jobDetail,
-      saved: saved
+      saved: saved,
+      applied: applied
     })
   })
 
