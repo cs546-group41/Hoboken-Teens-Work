@@ -15,7 +15,6 @@ if (staticForm) {
     const errorTextElem = document.getElementsByClassName('text-goes-here')[0];
 
     staticForm.addEventListener('submit', (event) => {
-        event.preventDefault();
         try {
             errorContainer.classList.add('hidden')
             const searchBarInput = searchInput.value;
@@ -26,11 +25,9 @@ if (staticForm) {
                 errorContainer.style.display = "none"
             }
         } catch (e) {
+            event.preventDefault();
             errorTextElem.textContent = "Error: " + e
             errorContainer.style.display = "block"
         }
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "job/searchJobs", true);
-        xhttp.send()
     })
 }
