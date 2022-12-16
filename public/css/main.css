@@ -123,6 +123,11 @@ nav{
   text-decoration: none;
   background-color: #393E46 ;
 }
+.joblistTitle a{
+  color: #00ADB5;
+  text-decoration: none;
+  background-color: #393E46 ;
+}
 .joblistDescription{
   font-size: 20px;
   color: #EEEEEE;
@@ -149,6 +154,7 @@ nav{
   border-radius: 30px;
 }
 .homepageLoginAndSignup:hover{
+  transition: 0.3s;
   color: white;
   background-color: black;
 }
@@ -215,10 +221,14 @@ margin-bottom: 20px;
   width: 50%;
   padding: 10px;
 }
+.comment-listLi a {
+  list-style: none;
+}
 .comment-listLi{
   list-style: none;
   text-align: center;
 }
+
 .makecenter{
   text-align: center;
   margin: 10px;
@@ -234,4 +244,113 @@ margin-bottom: 20px;
 }
 .move-right{
   margin-left: 3%;
+}
+.personDetails{
+  justify-content: center;
+  background-color: #393E46;
+  text-decoration:none;
+  padding: 50px 35px;
+  border-radius: 6px;
+  font-size: 30px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  width: 50%;
+  padding: 5px;
+}
+.UserH1{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: black;
+}
+.postJob{
+  justify-content: center;
+  text-decoration:none;
+  border: #000000;
+  border: 5px;
+  border-radius: 6px;
+  font-size: 30px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  margin-top: 20px;
+  width: 50%;
+  padding: 5px;
+}
+.jobsHired{
+  justify-content: center;
+  text-decoration:none;
+  border: #000000;
+  border: 5px;
+  border-radius: 6px;
+  font-size: 30px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  width: 50%;
+  padding: 5px;
+}
+.editProfile{
+  background-color: white;
+  color: black;
+  border: 2px solid rgb(0, 0, 0);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 30px;
+  justify-content: center;
+  text-align: center;
+}
+.editProfile:hover{
+  transition: 0.3s;
+  color: white;
+  background-color: black;
+}
+.editProfileButton{
+  text-align: center;
+#login-form{
+  width: 50%;
+  position: relative;
+  left: 25%;
+}
+.loginBtn{
+  background-color: #8a908a; /* Green */
+  border-radius: 1%;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  position: relative;
+  left: 40%;
+}
+.RegisterLink{
+  position: relative;
+  left: 37%;
+}
+.footerText{
+  position:absolute;
+  bottom: 1%;
+}
+#registration-form{
+  width: 50%;
+  position: relative;
+  left: 27%;
+  height: 50%;
+}
+input[type="text"], input[type="password"],select {
+
+  background-color : #f3ebeb; 
+
+}
+#create-Job{
+  width: 50%;
+  position: relative;
+  left: 27%;
+  height: 50%;
 }

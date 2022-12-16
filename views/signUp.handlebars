@@ -1,4 +1,6 @@
 
+<div>
+<h4 class="makecenter">Registration Page</h4>
 <form  action="/register" id="registration-form" method="post">
 		<label for="firstNameInput">Enter your first name</label>
 		<input type="text" name="firstNameInput" id="firstNameInput" placeholder="Enter your first name">
@@ -18,16 +20,21 @@
 		<label for="passwordInput">Create a password</label>
 		<input type="password" name="passwordInput" id="passwordInput" placeholder="Enter your password">
 		<br><br>
-		<button type="submit" form="registration-form" class="btn btn-default">Submit</button>
+		
+		<button type="submit" form="registration-form" class="loginBtn">Register</button>
+		{{!-- <br>
+			<a href="/" class="RegisterLink">Already have an account? Click here to login</a> --}}
 		<div class="form-group hidden" id="error-container">
 		  <div class="alert alert-danger text-goes-here"></div>
 		</div>
 	</form>
+</div>
+
 
 	
 	<br><br><br><br>
 	{{#if errormsg}} <h4>Error : {{errormsg}}</h4>{{/if}}
 	<br>
-	<a href="/">Already have an account? Click here to login</a>
+	{{!-- <a href="/">Already have an account? Click here to login</a> --}}
 	<script src="/public/js/signUpValidation.js"></script>
-</main>
+

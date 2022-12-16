@@ -2,6 +2,7 @@
 
     
 function checkUserclientSideEmail(email) {
+    if(!email) throw "You should provide a email"
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         email = email.trim();
         return email;

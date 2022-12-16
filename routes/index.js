@@ -4,6 +4,7 @@ const loginRoute = require("./login");
 const homepageRoute = require("./homepage");
 const registerRoute = require("./register");
 const logoutRoute = require("./logout");
+const uploadRoute = require("./upload")
 const path = require("path");
 
 const constructorMethod = (app) => {
@@ -30,6 +31,7 @@ const constructorMethod = (app) => {
 	app.use("/job", jobRoute);
 	app.use("/register", registerRoute);
 	app.use("/logout", logoutRoute);
+	app.use("/upload", uploadRoute);
 
 	app.use("/about", (req, res) => {
 		res.sendFile(path.resolve("static/About.html"));
