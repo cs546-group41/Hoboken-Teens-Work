@@ -1,11 +1,11 @@
 <div>
-    <h4>{{#if presetJob}}Edit Job{{else}}Create Job{{/if}}</h4>
+    <h4 class="makecenter">{{#if presetJob}}Edit Job{{else}}Create Job{{/if}}</h4>
 </div>
-<div class="container">
+<div >
     {{#if presetJob}}
       <form action="/job/{{presetJob._id}}/editJob" method="post">
     {{else}}
-      <form action="/job/createJob" method="post">
+      <form action="/job/createJob" id="create-Job"method="post">
     {{/if}}
     <div class="row">
       <div class="col-25">
@@ -86,6 +86,8 @@
 
       </div>
     </div>
+    <br>
+    <button type="submit" form="create-Job" class="loginBtn">Submit</button>
     {{!-- <div class="row">
       <div class="col-25">
         <label for="phone">Phone Number</label>
@@ -94,10 +96,14 @@
         <input type="text" id="phone" name="phone" placeholder="Enter phone number" value="{{presetJob.jobAuthor.phone}}" >
       </div>
     </div> --}}
-    <div class="row">
-      <input  type="submit" value="Submit">
-    </div>
+    {{!-- <div class="row">
+      <input  type="submit" value="Submit" class="loginBtn">
+    
+    </div> --}}
 
   </form>
 </div>
-<p>Error msg:{{errmsg}}</p>
+ {{#if errmsg}}
+    <p>Error msg:{{errmsg}}</p>
+{{/if}}
+

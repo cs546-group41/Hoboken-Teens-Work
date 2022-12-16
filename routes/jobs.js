@@ -42,20 +42,30 @@ router.route("/searchJobs").post(async (req, res) => {
 
 router.route("/createJob")
   .get(async (req, res) => {
+  console.log(req.session.user);
+     let userData = null;
     if (req.session.user !== undefined) {
       try {
-        await users.getUserById(req.session.user.id)
+         userData = await users.getUserById(req.session.user.id);
+        console.log(userData);
       } catch (e) {
         req.session.destroy()
       }
     }
-    if (!req.session.user) return res.redirect('/index')
-    res.render("createJob", {
-      title: "Creating New Job",
-      login: true,
-      loginUserData: req.session.user,
-      phone: req.session.user.phone
-    })
+    if (!req.session.user) {
+      return  res.redirect('/index')
+    }
+    else{
+      res.render("createJob", {
+        title: "Creating New Job",
+        login: true,
+        loginUserData: userData,
+        phone: userData.phone
+      })
+    }
+
+      
+
   })
   .post(async (req, res) => {
     if (req.session.user !== undefined) {

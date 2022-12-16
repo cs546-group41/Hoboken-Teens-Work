@@ -1,4 +1,3 @@
-const axios = require('axios')
 
 function checkSearchQuery(searchQuery) {
     if (!searchQuery) throw "You must enter something in the search bar";
