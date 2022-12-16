@@ -1,3 +1,6 @@
+
+
+    
 function checkUserclientSideEmail(email) {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         email = email.trim();
@@ -22,51 +25,42 @@ function checkUserClientSidePassword(strVal) {
     return strVal;
 }
 
-const checkUser = async (email, password) => {
-    const userCollection = await users()
-    const validatedEmail = validation.checkString(email)
-    const validatedPassword = validation.checkPassword(password)
-    let userFound = await userCollection.findOne({ email: validatedEmail })
-    if (userFound === null) throw "Either the email or passwaord is invalid"
-    let userPassword = userFound.hashedPassword
-    let comparePassword = false
-    comparePassword = await bcrypt.compare(validatedPassword, userPassword)
-    if (comparePassword) {
-        return { AuthenticatedUser: true }
-    } else throw "Either the email or password is invalid"
+
+const staticForm = document.getElementById("login-form");
+console.log(staticForm)
+if (staticForm) {
+
+    const usernameInput = document.getElementById("emailInput")
+    console.log(usernameInput)
+    const passwordInput = document.getElementById("passwordInput")
+
+    const errorContainer = document.getElementById('error-container')
+    const errorTextElem = document.getElementsByClassName('text-goes-here')[0];
+    staticForm.addEventListener('submit', (event) => {
+        console.log("Inside submit")
+        
+        try {
+            errorContainer.classList.add('hidden')
+            const usernameInputElem = usernameInput.value;
+            
+            const passwordInputElem = passwordInput.value;
+
+
+            const validatedEmail = checkUserclientSideEmail(usernameInputElem)
+            const validatedPassword = checkUserClientSidePassword(passwordInputElem)
+            console.log(validatedEmail)
+            if (validatedEmail && validatedPassword) {
+                errorContainer.style.display = "none"
+            }
+
+        } catch (e) {
+            event.preventDefault();
+            errorTextElem.textContent = "Error: " + e
+            errorContainer.style.display = "block"
+        }
+    })
 }
 
-
-
-   const staticForm = document.getElementById("login-form");
-   staticForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    try {
-        const usernameInput = document.getElementById("emailInput")
-
-        const passwordInput = document.getElementById("passwordInput")
     
-        const errorContainer = document.getElementById('error-container')
-       // const errorTextElem = document.getElementsByClassName('text-goes-here')[0];
-
-        errorContainer.classList.add('hidden')
-        const usernameInputElem = usernameInput.value;
-
-        const passwordInputElem = passwordInput.value;
-
-
-        const validatedEmail = checkUserclientSideEmail(usernameInputElem)
-        const validatedPassword = checkUserClientSidePassword(passwordInputElem)
-
-        if (validatedEmail && validatedPassword) {
-            errorContainer.style.display = "none"
-        }
-        
-    } catch (e) {
-        errorTextElem.textContent = "Error: " + e
-        errorContainer.style.display = "block"
-    }
-})
-
 
 
