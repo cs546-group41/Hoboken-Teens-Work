@@ -41,14 +41,12 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
   jobDescription = validation.checkJobDescription(jobDescription);
   jobStreetName = validation.checkJobStreetName(jobStreetName);
   authorId = validation.checkId(authorId);
-  let jobAuthorPhoneNumber = null;
+  // let jobAuthorPhoneNumber = null;
 
   const usersCollection = await users();
   const user = await usersCollection.findOne({_id: ObjectId(authorId)});
+  const jobAuthorPhoneNumber = user.phone;
   console.log(user);
-  if (user.phone) {
-    jobAuthorPhoneNumber = user.phone;
-  }
   const newJob = {
     jobTitle: jobTitle,
     jobDescription: jobDescription,
@@ -109,14 +107,12 @@ const editJob = async (
   jobTitle,
   jobDescription,
   jobStreetName,
-  //jobStatus,
   phoneNumber
 ) => {
   jobId = validation.checkId(jobId);
   jobTitle = validation.checkJobTitle(jobTitle);
   jobDescription = validation.checkJobDescription(jobDescription);
   jobStreetName = validation.checkJobStreetName(jobStreetName);
-  //jobStatus = validation.checkJobStatus(jobStatus);
   authorId = validation.checkId(authorId);
 
   if (phoneNumber) {
@@ -142,7 +138,6 @@ const editJob = async (
   if (jobTitle !== jobToEdit.jobTitle) editFlag++;
   if (jobDescription !== jobToEdit.jobDescription) editFlag++;
   if (jobStreetName !== jobToEdit.jobStreetName) editFlag++;
-  //if (jobStatus !== jobToEdit.jobStreetName) editFlag++;
   if (phoneNumber !== jobToEdit.phone) editFlag++;
 
   if (editFlag < 1) throw "No changes were made";

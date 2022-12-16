@@ -312,4 +312,45 @@ margin-bottom: 20px;
 }
 .editProfileButton{
   text-align: center;
+#login-form{
+  width: 50%;
+  position: relative;
+  left: 25%;
+}
+.loginBtn{
+  background-color: #8a908a; /* Green */
+  border-radius: 1%;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  position: relative;
+  left: 40%;
+}
+.RegisterLink{
+  position: relative;
+  left: 37%;
+}
+.footerText{
+  position:absolute;
+  bottom: 1%;
+}
+#registration-form{
+  width: 50%;
+  position: relative;
+  left: 27%;
+  height: 50%;
+}
+input[type="text"], input[type="password"],select {
+
+  background-color : #f3ebeb; 
+
+}
+#create-Job{
+  width: 50%;
+  position: relative;
+  left: 27%;
+  height: 50%;
 }

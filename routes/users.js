@@ -97,7 +97,7 @@ router
 				title: `Error`,
 				login: true,
 				loginUserData: req.session.user,
-				errormsg: "e",
+				errormsg: e,
 			});
 		}
 	})
@@ -108,13 +108,23 @@ router
 			await users.editUser(req.params.id, req.body.firstNameInput, req.body.lastNameInput, req.body.phoneInput, req.body.passwordInput);
 			res.redirect(`/user/${req.params.id}`);
 		} catch (e) {
-			res.render("error", {
-				title: `Edit Profile - ${req.session.user.fullName}`,
-				login: true,
-				loginUserData: req.session.user,
-				presetUser: req.session.user,
-				errormsg: "Could not update user profile or no change in existing information was found",
-			});
+			try{
+				const userData = await users.getUserById(req.session.user.id)
+				res.render("editProfile", {
+					title: `Edit Profile - ${req.session.user.fullName}`,
+					login: true,
+					loginUserData: req.session.user,
+					presetUser: userData,
+					errmsg: e,
+				});
+			}catch(e2){
+				return res.render("error", {
+					title: `Error`,
+					login: true,
+					loginUserData: req.session.user,
+					errormsg: e2,
+				});	
+			}
 		}
 	});
 
