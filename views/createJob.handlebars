@@ -1,11 +1,11 @@
 <div>
-    <h4>{{#if presetJob}}Edit Job{{else}}Create Job{{/if}}</h4>
+    <h4 class="makecenter">{{#if presetJob}}Edit Job{{else}}Create Job{{/if}}</h4>
 </div>
-<div class="container">
+<div >
     {{#if presetJob}}
       <form action="/job/{{presetJob._id}}/editJob" method="post">
     {{else}}
-      <form action="/job/createJob" method="post">
+      <form action="/job/createJob" id="create-Job"method="post">
     {{/if}}
     <div class="row">
       <div class="col-25">
@@ -28,21 +28,10 @@
         <label for="jobStreetName">Job Street Name</label>
       </div>
       <div class="col-75">
-        <input type="text" id="jobStreetName" name="jobStreetName" placeholder="Enter Job Street Name" value="{{presetJob.jobStreetName}}" >
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-25">
-        <label for="phone">Phone Number</label>
-      </div>
-      <div class="col-75">
-        <input type="text" id="phone" name="phone" placeholder="Enter phone number" value="{{presetJob.jobAuthor.phone}}" >
-      </div>
-    </div>
-    <div class="row">
-      <input  type="submit" value="Submit">
-    </div>
-    <select name="street" id="street-dropdown">
+        {{!-- <input type="text" id="jobStreetName" name="jobStreetName" placeholder="Enter Job Street Name" value="{{presetJob.jobStreetName}}" > --}}
+
+            <select name="jobStreetName" id="jobStreetName" value="{{presetJob.jobStreetName}}">
+      <option>Select Street</option>
       <option value="10th St">10th St</option>
       <option value="11th St">11th St</option>
       <option value="12th St">12th St</option>
@@ -94,6 +83,27 @@
       <option value="Willow Ave">Willow Ave</option>
       <option value="Willow Ter">Willow Ter</option>
     </select>
+
+      </div>
+    </div>
+    <br>
+    <button type="submit" form="create-Job" class="loginBtn">Submit</button>
+    {{!-- <div class="row">
+      <div class="col-25">
+        <label for="phone">Phone Number</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="phone" name="phone" placeholder="Enter phone number" value="{{presetJob.jobAuthor.phone}}" >
+      </div>
+    </div> --}}
+    {{!-- <div class="row">
+      <input  type="submit" value="Submit" class="loginBtn">
+    
+    </div> --}}
+
   </form>
 </div>
-<p>Error msg:{{errmsg}}</p>
+ {{#if errmsg}}
+    <p>Error msg:{{errmsg}}</p>
+{{/if}}
+
