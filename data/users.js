@@ -83,7 +83,6 @@ const editUser = async (id, firstName, lastName, phoneNumber) => {
 	const userCollection = await users();
 	const editStatus = await userCollection.updateOne({ _id: ObjectId(id) }, { $set: userEditInfo });
 	if (!editStatus.matchedCount && !editStatus.modifiedCount) throw "Edit failed";
-
 	return await getUserById(id);
 };
 

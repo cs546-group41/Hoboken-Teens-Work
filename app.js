@@ -5,6 +5,7 @@ const static = express.static(__dirname + "/public");
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
 
+
 app.use("/public", static);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
