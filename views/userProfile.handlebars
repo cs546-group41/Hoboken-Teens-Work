@@ -1,7 +1,7 @@
 {{#if login}}
-{{#if selfReview}}
-<h1 class="UserH1">You are logged in</h1>
-{{/if}}
+	{{#if selfReview}}
+		<h1>you had logged in</h1>
+	{{/if}}
 {{/if}}
 <div class="personDetails">
 <p>Name: {{curUser.firstName}} {{curUser.lastName}}</p>
@@ -11,48 +11,47 @@
 </div>
 <div class="postJob">
 {{#if adultUser}}
-    <p>job posted:</p>
-    {{#if login}}
-        {{#if selfReview}}
-            {{#each curUser.jobsPosted}}
-                <li>
-                    <a href="/job/{{id}}">{{jobTitle}}</a>  <button onclick='deleteJob(this,"{{id}}")'>Delete</button>
-                </li>
-            {{/each}}
-            <a href="/job/createJob">Post a Job!</a> <br>
-</div>
-
-<div class="jobsHired">
-            <p>job Hired:</p>
-            {{#each curUser.jobsHired}}
-                <li>
-                    <a href="/job/{{jobId}}">{{jobTitle}}</a>
-                    <a herf="/user/{{hiredUserId}}">{{hiredUserName}}</a>
-                </li>
-            {{/each}}
-        {{else}}
-            {{#each curUser.jobsPosted}}
-                <li>
-                    <a href="/job/{{id}}">{{jobTitle}}</a>
-                </li>
-            {{/each}}
-        {{/if}}
-    {{/if}}
-{{else}}    
-    {{#if selfReview}}
-        {{#if login}}
-            <p>Hired jobs:</p>
-            {{#each curUser.hiredForJobs}}
-                <li>
-                    <a href="/job/{{id}}">{{jobTitle}}</a>
-                </li>
-            {{/each}}
-            <a href="/user/{{curUser._id}}/savedJob">Check Saved Jobs</a>
-        {{/if}}
-    {{/if}}
+	<p>job posted:</p>
+	{{#if login}}
+		{{#if selfReview}}
+			{{#each curUser.jobsPosted}}
+				<li>
+					<a href="/job/{{id}}">{{jobTitle}}</a>
+					<button onclick='deleteJob(this,"{{id}}")'>Delete</button>
+				</li>
+			{{/each}}
+			<a href="/job/createJob">Post a Job!</a>
+			<p>job Hired:</p>
+			{{#each curUser.jobsHired}}
+				<li>
+					<a href="/job/{{jobId}}">{{jobTitle}}</a>
+					<a herf="/user/{{hiredUserId}}">{{hiredUserName}}</a>
+				</li>
+			{{/each}}
+		{{else}}
+			{{#each curUser.jobsPosted}}
+				<ul>
+					<li>
+						<a href="/job/{{id}}">{{jobTitle}}</a>
+					</li>
+				</ul>
+			{{/each}}
+		{{/if}}
+	{{/if}}
+{{else}}
+	{{#if selfReview}}
+		{{#if login}}
+			<p>Hired jobs:</p>
+			{{#each curUser.hiredForJobs}}
+				<li>
+					<a href="/job/{{id}}">{{title}}</a>
+				</li>
+			{{/each}}
+			<a href="/user/{{curUser._id}}/savedJob">Check Saved Jobs</a>
+		{{/if}}
+	{{/if}}
 {{/if}}
-</div>
-<div class="editProfileButton">
-<a class="editProfile" href="/user/{{curUser._id}}/editUser">Edit Profile</a>
-</div>
+{{#if login}}
+<a href="/user/{{curUser._id}}/editUser">Edit Profile</a>
+{{/if}}
 <script src="/public/js/userOperations.js"></script>

@@ -1,22 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function checkSearchQuery(searchQuery) {
     if (!searchQuery) throw "You must enter something in the search bar";
     if (searchQuery.trim().length === 0) throw "Only blank spaces are not allowed";
@@ -34,21 +15,22 @@ if (staticForm) {
     const errorTextElem = document.getElementsByClassName('text-goes-here')[0];
 
     staticForm.addEventListener('submit', (event) => {
-        try{
-
+        event.preventDefault();
+        try {
             errorContainer.classList.add('hidden')
             const searchBarInput = searchInput.value;
             console.log(searchBarInput)
             const validatedSearchBar = checkSearchQuery(searchBarInput)
             console.log(validatedSearchBar)
-            if(validatedSearchBar){
+            if (validatedSearchBar) {
                 errorContainer.style.display = "none"
             }
-        }catch(e){
-            event.preventDefault();
+        } catch (e) {
             errorTextElem.textContent = "Error: " + e
             errorContainer.style.display = "block"
         }
-
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "job/searchJobs", true);
+        xhttp.send()
     })
 }

@@ -39,9 +39,11 @@
 {{/if}}
 
 {{#if jobDetail.jobStatus}}
-    <form id="resumeUpload" enctype="multipart/form-data">
+    <form id="resumeUpload" enctype="multipart/form-data" action="/upload" method="post">
         <p>Upload your Resume</p>
-        <input type="file" id="resumePDF" accept="pdf"/>
+        <input type="file" id="resume" name="resume" accept="application/pdf"/>
+        <input type="text" id="userId" name="userId" value="{{loginUserData.id}}"style="display: none;"/> 
+        <input type="text" id="jobId" name="jobId"/ value="{{jobDetail._id}}" style="display: none;"/>
         <button>Upload</button>
     </form>
 {{/if}}
