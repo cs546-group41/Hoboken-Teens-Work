@@ -43,12 +43,14 @@
 			<p>Hired jobs:</p>
 			{{#each curUser.hiredForJobs}}
 				<li>
-					<a href="/job/{{id}}">{{jobTitle}}</a>
+					<a href="/job/{{id}}">{{title}}</a>
 				</li>
 			{{/each}}
 			<a href="/user/{{curUser._id}}/savedJob">Check Saved Jobs</a>
 		{{/if}}
 	{{/if}}
 {{/if}}
+{{#if login}}
 <a href="/user/{{curUser._id}}/editUser">Edit Profile</a>
+{{/if}}
 <script src="/public/js/userOperations.js"></script>

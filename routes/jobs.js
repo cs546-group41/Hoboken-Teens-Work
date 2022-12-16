@@ -5,40 +5,45 @@ const users = data.users
 const jobs = data.jobs
 const comments = data.comments
 const validation = require("../validation")
+const fs = require('fs'); 
+const path = require('path')
 
-router.route("/searchJobs").post(async (req, res) => {
-  var title = "Search Results"
-  if (req.session.user !== undefined) {
-    try {
-      await users.getUserById(req.session.user.id)
-    } catch (e) {
-      req.session.destroy()
+router
+  .route("/searchJobs")
+  .post(async (req, res) => {
+    console.log(req.body)
+    var title = "Search Results"
+    if (req.session.user !== undefined) {
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+      }
     }
-  }
-  if (!req.session.user) {
-    res.status(403)
-    return res.render("error", {
-      title: "Error",
-      login: false,
-      errormsg: "You Need to Login first to use the Search Function!"
+    if (!req.session.user) {
+      res.status(403)
+      return res.render("error", {
+        title: "Error",
+        login: false,
+        errormsg: "You Need to Login first to use the Search Function!"
+      })
+    }
+    var errormsg = ""
+    var searchResults = null
+    try {
+      searchResults = await jobs.searchJobs(req.body.jobsInput)
+    } catch (e) {
+      title = "Job Not Found!"
+      errormsg = e
+    }
+    res.render("searchResults", {
+      title: title,
+      login: true,
+      loginUserData: req.session.user,
+      searchResults: searchResults,
+      errormsg: errormsg
     })
-  }
-  var errormsg = ""
-  var searchResults = null
-  try {
-    searchResults = await jobs.searchJobs(req.body.jobsInput)
-  } catch (e) {
-    title = "Job Not Found!"
-    errormsg = e
-  }
-  res.render("searchResults", {
-    title: title,
-    login: true,
-    loginUserData: req.session.user,
-    searchResults: searchResults,
-    errormsg: errormsg
   })
-})
 
 router.route("/createJob")
   .get(async (req, res) => {
@@ -160,11 +165,37 @@ router
   })
 
 router
-  .route('/apply')
+  .route('/hire')
   .post(async (req, res) => {
-
+    if(!req.session.user) return res.sendStatus(401)
+    try{
+      await users.hireForJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      res.sendStatus(200)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(400)
+    }
   })
 
+router
+  .route('/fire')
+  .post(async (req, res) => {
+    if(!req.session.user) return res.sendStatus(401)
+    try{
+      const path = await users.fireFromJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      try{
+        fs.unlinkSync("./"+path);
+      }catch(e){
+        console.log(e)
+        return res.sendStatus(400)
+      }
+      res.sendStatus(200)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(400)
+    }
+  })
+  
 router
   .route('/:id')
   .get(async (req, res) => {
@@ -197,7 +228,7 @@ router
         login: true,
         loginUserData: req.session.user,
         jobDetail: jobDetail,
-        saved:saved
+        saved: saved
       })
     }
     res.render("individualJob", {
@@ -205,19 +236,19 @@ router
       login: login,
       loginUserData: req.session.user,
       jobDetail: jobDetail,
-      saved:saved
+      saved: saved
     })
   })
 
-  router.route("/:id/editJob")
+router.route("/:id/editJob")
   .get(async (req, res) => {
     //check if logged in and if it is the author of the job, if not redirect to the job detail page
     if (!req.session.user) return res.redirect(`jobs/${req.params.id}`)
     var jobDetail = null
-    try{
+    try {
       jobDetail = await jobs.getJobById(req.params.id)
-      if (jobDetail.jobAuthor.id!=req.session.user.id){console.log(1); res.redirect(`jobs/${req.params.id}`)}
-    }catch(e){
+      if (jobDetail.jobAuthor.id != req.session.user.id) { console.log(1); res.redirect(`jobs/${req.params.id}`) }
+    } catch (e) {
       return res.redirect("/index")
     }
     res.render("createJob", {
@@ -231,33 +262,33 @@ router
     //check if login in and if is the author of the job, if not redirect to the job detail page
     if (!req.session.user) return res.redirect(`jobs/${req.params.id}`)
     var jobDetail = null
-    try{
+    try {
       jobDetail = await jobs.getJobById(req.params.id)
-      if (jobDetail.jobAuthor.id!=req.session.user.id) res.redirect(`jobs/${req.params.id}`)
-    }catch(e){
+      if (jobDetail.jobAuthor.id != req.session.user.id) res.redirect(`jobs/${req.params.id}`)
+    } catch (e) {
       return res.redirect("/index")
     }
     //edit job part
     try {
       //validation need to put in client side
-      if(req.body.phone === "N/A") {
+      if (req.body.phone === "N/A") {
         await jobs.editJob(
-          req.params.id, 
-          req.session.user.id, 
-          req.body.jobTitle, 
-          req.body.jobDescription, 
+          req.params.id,
+          req.session.user.id,
+          req.body.jobTitle,
+          req.body.jobDescription,
           req.body.jobStreetName);
       } else {
         await jobs.editJob(
-          req.params.id, 
-          req.session.user.id, 
-          req.body.jobTitle, 
-          req.body.jobDescription, 
+          req.params.id,
+          req.session.user.id,
+          req.body.jobTitle,
+          req.body.jobDescription,
           req.body.jobStreetName,
           req.body.phone);
       }
       res.redirect(`/job/${req.params.id}`)
-      
+
     } catch (e) {
       //add status code here
       //res.status()
@@ -271,7 +302,7 @@ router
     }
   });
 
-  router.route("/:id/changeStatus")
+router.route("/:id/changeStatus")
   .post(async (req, res) => {
     //check if login in and if is the author of the job, if not redirect to the job detail page
     if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." })
