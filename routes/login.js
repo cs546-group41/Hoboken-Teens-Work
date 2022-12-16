@@ -29,9 +29,11 @@ router.route("/").post(async (req, res) => {
       req.body.emailInput,
       req.body.passwordInput
     );
+    const isAdult = user.age > 18 ? false : true; 
     req.session.user = {
       fullName: `${user.firstName} ${user.lastName}`,
       id: user._id,
+      isAdult: isAdult
     };
     return res.redirect("/index");
   } catch (e) {

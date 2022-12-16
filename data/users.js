@@ -9,8 +9,7 @@ const jobsData = require("./jobs");
 const createUser = async (firstName, lastName, email, age, password, phone) => {
 	firstName = validation.checkFirstName(firstName);
 	lastName = validation.checkLastName(lastName);
-	email = validation.checkString(email);
-	validation.checkEmail(email);
+	email = validation.checkEmail(email);
 	age = validation.checkAge(age);
 	phone = validation.checkPhone(phone);
 	password = validation.checkPassword(password);
@@ -163,8 +162,6 @@ const loginCheck = async (email, pwd) => {
 	return user;
 };
 
-
-
 /*************Post Job functions********** */
 
 const getAllPostJobsById = async (id) => {
@@ -173,9 +170,12 @@ const getAllPostJobsById = async (id) => {
 	const user = await userCollection.findOne({ _id: ObjectId(id) });
 	if (!user) throw "User not found";
 	var IDs = [];
-	for (let i = 0; i < user.jobsPosted.length; i++) {
-		IDs.push(user.jobsPosted[i].id);
+	if (user.jobPosted) {
+		for (let i = 0; i < user.jobsPosted.length; i++) {
+			IDs.push(user.jobsPosted[i].id);
+		}
 	}
+
 	return IDs;
 };
 
@@ -204,7 +204,6 @@ const getAllSavedJob = async (id) => {
 	return user.jobsSaved;
 };
 
-
 // Bookmark a job
 const saveJob = async (jobId, id) => {
 	id = validation.checkId(id);
@@ -219,7 +218,6 @@ const saveJob = async (jobId, id) => {
 	if (!saveJob.matchedCount && !saveJob.modifiedCount) throw "Save job failed!";
 	return jobShort;
 };
-
 
 // Remove bookmark from a job
 const unSaveJob = async (jobId, id) => {
@@ -267,5 +265,5 @@ module.exports = {
 	saveJob,
 	unSaveJob,
 	isJobSaved,
-	getAllAppliedJobs
+	getAllAppliedJobs,
 };

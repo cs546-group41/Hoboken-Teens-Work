@@ -46,6 +46,7 @@ function checkLastName(input) {
 
 function checkEmail(email) {
 	email = checkString(email);
+	email = email.toLowerCase();
 	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
 		email = email.trim();
 		return email;

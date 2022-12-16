@@ -28,7 +28,9 @@
     <input type="text" id="comment" name="comment" />
     <input type="text" id="jobId" name="comment" value="{{jobDetail._id}}" style="display: none;"/>
     <input type="submit" value="submit">
-</form><br></br>
+</form><br><br>
+
+{{#if isAdult}}
 
 {{#if saved}}
 <button id="save-job-saved" onclick='saveJob("{{jobDetail._id}}", true)' >Saved!</button>
@@ -44,6 +46,7 @@
         <input type="file" id="resumePDF" accept="pdf"/>
         <button>Upload</button>
     </form>
+{{/if}}
 {{/if}}
 {{/if}}
 <script src="/public/js/jobOperations.js"></script>
