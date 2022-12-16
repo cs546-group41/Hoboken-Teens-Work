@@ -1,36 +1,33 @@
 const express = require("express");
 const router = express.Router();
 const data = require("../data");
-var fs = require('fs');
-var multer = require('multer');
-var md5 = require('md5');
+const fs = require('fs');
+const multer = require('multer');
+const md5 = require('md5');
 const users = data.users;
-const jobs = data.jobs;
-
-const upload = multer({
-    dest: "../uploads",
+const saveOptions = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function (req, file, cb) {
+        console.log(file)
+        cb(null, md5(Date.now() + file.originalname) + file.originalname.substring(file.originalname.lastIndexOf(".")));
+    }
 });
+const upload = multer({ storage :saveOptions });
 
-const saveFile = multer.diskStorage({
-	destination: function (req, file, callback) {
-		const userId = req.body.userId
-        const jobId = req.body.jobId
-        callback(null, `upload/${jobId}/${userId}`);
-	},
-	filename: function (req, file, callback) {
-		callback(null, md5(Date.now() + file.originalname) + file.originalname.substring(file.originalname.lastIndexOf(".")));  
-	}
-});
 
 router
     .route("/")
-    //.post(upload.single("resume") ,async (req, res) => {
-    .get(async(req,res)=>{
-        res.render('test')
-    })
-    .post(async(req,res)=>{
-        res.redirect("/index");
+    .post(upload.single("resume"), async (req, res) => {
+        if (!req.session.user) return res.sendStatus(401)
+        const file = req.file;
+        try{
+            await users.applyForJob(req.session.user.id, req.body.jobId, file.path)
+            res.sendStatus(200)
+        }catch(e){
+            res.sendStatus(400)
+        }
     });
-
 
 module.exports = router;

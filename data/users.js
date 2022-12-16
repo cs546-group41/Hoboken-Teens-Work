@@ -110,10 +110,18 @@ const hireForJob = async (authorId, jobId, applicantId) => {
 	authorId = validation.checkId(authorId);
 	const myJob = await jobsData.getJobById(jobId);
 	const myApplicant = await getUserById(applicantId);
-	myJob.hired = {
-		id: applicantId,
-		name: myApplicant.firstName + myApplicant.lastName,
-	};
+	if (!myJob.applicants.find((item) => item.applicantId === myApplicant._id.toString())) throw "ApplicantId not Exist!"
+	const jobCollection = await jobs()
+	const userCollection = await users()
+	const hireUser = await jobCollection.updateOne({ _id: ObjectId(jobId),"applicants.applicantId":applicantId }, { $set: { "applicants.$.hired": true } });
+	if (!hireUser.matchedCount && !hireUser.modifiedCount) throw "Hire failed!";
+	const jobInfo = await jobCollection.findOne({ _id: ObjectId(jobId) })
+	const jobShortInfo = {
+		id : jobInfo._id.toString(),
+		title: jobInfo.jobTitle
+	}
+	const hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $push: { hiredForJobs: jobShortInfo } });
+	if (!hire.matchedCount && !hire.modifiedCount) throw "Apply failed!";
 };
 
 const fireFromJob = async (authorId, jobId, applicantId) => {
@@ -121,27 +129,49 @@ const fireFromJob = async (authorId, jobId, applicantId) => {
 	applicantId = validation.checkId(applicantId);
 	authorId = validation.checkId(authorId);
 	const myJob = await jobsData.getJobById(jobId);
-	myJob.hired = {};
+	const myApplicant = await getUserById(applicantId);
+	const applicantInfo = myJob.applicants.find((item) => item.applicantId === myApplicant._id.toString())
+	if (!applicantInfo) throw "ApplicantId not Exist!"
+	const oldPath = applicantInfo.resume
+	const jobCollection = await jobs()
+	const userCollection = await users()
+	const fireUser = await jobCollection.updateOne({ _id: ObjectId(jobId) }, { $pull: { applicants: {applicantId:applicantId} } });
+	if (!fireUser.matchedCount && !fireUser.modifiedCount) throw "Fire failed!";
+	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { hiredForJobs: {id:jobId} } });
+	if (!hire.matchedCount && !hire.modifiedCount) throw "Apply failed!";
+	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied: {id:jobId} } });
+	if (!hire.matchedCount && !hire.modifiedCount) throw "Apply failed!";
+	return oldPath
 };
 
-const applyToJob = async (jobId, applicantId) => {
+
+const applyForJob = async (userId, jobId, filePath) => {
+	userId = validation.checkId(userId);
 	jobId = validation.checkId(jobId);
-	applicantId = validation.checkId(applicantId);
-	const myApplicant = getUserById(applicantId);
-	const userCollection = await users();
-	const addToJobsApplied = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $push: { jobsApplied: jobId } });
-	if (!addToJobsApplied.matchedCount && !addToJobsApplied.modifiedCount) throw "Could not apply to job";
-	const applicantObject = {
-		applicantId: applicantId,
-		name: `${myApplicant.firstName} ${myApplicant.lastName}`,
-		resume: `../resources/jobs/${jobId}/resume/${applicantId}.pdf`,
-	};
-	const jobsCollection = await jobs();
-	const addToAllApplicants = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $push: { applicannts: applicantObject } });
-	if (!addToAllApplicants.matchedCount && !addToAllApplicants.modifiedCount) throw "Could not apply to job";
-
-	return true;
+	const jobCollection = await jobs()
+	const userCollection = await users()
+	const user = await getUserById(userId);
+	const applicantInfo = {
+		applicantId: userId,
+		name: `${user.firstName} ${user.lastName}`,
+		resume: filePath,
+		hired : false
+	}
+	const jobInfo = await jobCollection.findOne({ _id: ObjectId(jobId) })
+	const jobShortInfo = {
+		id : jobInfo._id.toString(),
+		title: jobInfo.jobTitle
+	}
+	if (jobInfo.applicants.find((item) => item.applicantId === userId)) {
+		throw "Already applied for this job!"
+	} else {
+		const applyJob = await jobCollection.updateOne({ _id: ObjectId(jobId) }, { $push: { applicants: applicantInfo } });
+		if (!applyJob.matchedCount && !applyJob.modifiedCount) throw "Apply failed!";
+		const applyjobUser = await userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { jobsApplied: jobShortInfo } });
+		if (!applyjobUser.matchedCount && !applyjobUser.modifiedCount) throw "Apply failed!";
+	}
 };
+
 
 const withdrawJobApplication = async (jobId, applicantId) => {
 	jobId = validation.checkId(jobId);
@@ -247,7 +277,8 @@ const getAllAppliedJobs = async (id) => {
 	return user.jobsApplied;
 };
 
-const appliedJob = async () => {};
+
+
 
 module.exports = {
 	createUser,
@@ -257,7 +288,6 @@ module.exports = {
 	getResumeById,
 	hireForJob,
 	fireFromJob,
-	applyToJob,
 	withdrawJobApplication,
 	loginCheck,
 	getAllPostJobsById,
@@ -266,5 +296,6 @@ module.exports = {
 	saveJob,
 	unSaveJob,
 	isJobSaved,
-	getAllAppliedJobs
+	getAllAppliedJobs,
+	applyForJob
 };
