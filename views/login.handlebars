@@ -1,5 +1,6 @@
 <body>
 <div>
+	 <h4 class="makecenter">Login Page</h4>
 	<form action="/login" id="login-form" method="post">
 		<label for="emailInput">Enter your email</label>
 		<input type="text" name="emailInput" id="emailInput" placeholder="Enter your email">
@@ -7,17 +8,20 @@
 		<label for="passwordInput">Enter your password</label>
 		<input type="password" name="passwordInput" id="passwordInput" placeholder="Enter your password">
 		<br><br>
-		<button type="submit" form="login-form" class="btn btn-default">Login</button>
+		<button type="submit" form="login-form" class="loginBtn">Login</button>
 
 		<div class="form-group hidden" id="error-container">
 			<div class="alert alert-danger text-goes-here"></div>
 		</div>
+		<br>
+		<a href="/register" class="RegisterLink">Click here to register!</a>
 	</form>
 	<br><br>
 	{{#if errormsg}} <h4>Error : {{errormsg}}</h4>{{/if}}
 	<br>
-	<a href="/register">Click here to register!</a>
+	
 </div>
 		<script src="/public/js/loginValidation.js"></script>
 
 </body>
+

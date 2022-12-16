@@ -1,3 +1,4 @@
+
 function checkSearchQuery(searchQuery) {
     if (!searchQuery) throw "You must enter something in the search bar";
     if (searchQuery.trim().length === 0) throw "Only blank spaces are not allowed";
