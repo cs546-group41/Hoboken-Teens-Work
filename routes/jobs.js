@@ -5,6 +5,8 @@ const users = data.users
 const jobs = data.jobs
 const comments = data.comments
 const validation = require("../validation")
+const fs = require('fs'); 
+const path = require('path')
 
 router
   .route("/searchJobs")
@@ -151,11 +153,37 @@ router
   })
 
 router
-  .route('/apply')
+  .route('/hire')
   .post(async (req, res) => {
-
+    if(!req.session.user) return res.sendStatus(401)
+    try{
+      await users.hireForJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      res.sendStatus(200)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(400)
+    }
   })
 
+router
+  .route('/fire')
+  .post(async (req, res) => {
+    if(!req.session.user) return res.sendStatus(401)
+    try{
+      const path = await users.fireFromJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      try{
+        fs.unlinkSync("./"+path);
+      }catch(e){
+        console.log(e)
+        return res.sendStatus(400)
+      }
+      res.sendStatus(200)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(400)
+    }
+  })
+  
 router
   .route('/:id')
   .get(async (req, res) => {

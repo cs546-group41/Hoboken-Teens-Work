@@ -1,3 +1,6 @@
+<meta name="authorId" content="{{loginUserData.id}}" />
+<meta name="jobId" content="{{jobDetail._id}}" />
+
 <h1>{{jobDetail.jobTitle}}</h1>
 
 <p>{{jobDetail.jobDescription}}</p>
@@ -12,10 +15,11 @@
   {{#each jobDetail.applicants}}
     <li>
       <a href="/user/{{applicantId}}">{{name}}</a> <a href="{{resume}}">View Resume</a>
-      {{#if this.isHired}}
-        <button class="fire">Fire</button>
+      {{#if hired}}
+        <button id="fire-button" onclick='fire(this,"{{applicantId}}")'>Fire!</button>
       {{else}}
-        <button class="hire">Hire</button>
+        <button id="fire-button" onclick='fire(this,"{{applicantId}}")' style="display: none;">Fire!</button>
+        <button id="hire-button" onclick='hire("{{applicantId}}")'  >Hire</button>
       {{/if}}
     </li>
   {{/each}}
