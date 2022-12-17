@@ -163,6 +163,7 @@ router
     if(!req.session.user) return res.sendStatus(401)
     try{
       await users.hireForJob(req.session.user.id, xss(req.body.jobId), xss(req.body.applicantId))
+      await jobs.changeStatus(req.body.jobId, req.session.user.id, "Taken")
       res.sendStatus(200)
     }catch(e){
       console.log(e)
@@ -176,11 +177,11 @@ router
     if(!req.session.user) return res.sendStatus(401)
     try{
       const path = await users.fireFromJob(req.session.user.id, xss(req.body.jobId), xss(req.body.applicantId))
+      await jobs.changeStatus(req.body.jobId, req.session.user.id, "Open")
       try{
         fs.unlinkSync("./"+path);
       }catch(e){
-        console.log(e)
-        return res.sendStatus(400)
+        return res.sendStatus(200)
       }
       res.sendStatus(200)
     }catch(e){
@@ -206,10 +207,22 @@ router
 	if (req.session.user) {
 		login = true;
     isAdult = user.age > 18 ? false : true;
-		saved = await users.isJobSaved(req.params.id, req.session.user.id);
-    applied = await users.isJobApplied(req.session.user.id, req.params.id)
+    try{
+      saved = await users.isJobSaved(req.params.id, req.session.user.id);
+      applied = await users.isJobApplied(req.session.user.id, req.params.id)
+    }
+    catch(e)
+    {
+      return res.render("error", {
+        title: "Error",
+        login: login,
+        errormsg: e,
+      });
+    }
+	
 	}
 	var jobDetail = null;
+  
 	try {
 		jobDetail = await jobs.getJobById(req.params.id);
 	} catch (e) {
@@ -219,25 +232,42 @@ router
 			errormsg: e,
 		});
 	}
-	if (req.session.user && (await users.jobPosterCheck(req.params.id, req.session.user.id))) {
-		return res.render("applicants", {
-			title: `Posted Job Detail - ${jobDetail.jobTitle}`,
-			login: true,
-			loginUserData: req.session.user,
-			jobDetail: jobDetail,
-			saved: saved,
+
+
+  try{
+    if (req.session.user && (await users.jobPosterCheck(req.params.id, req.session.user.id))) {
+      return res.render("applicants", {
+        title: `Posted Job Detail - ${jobDetail.jobTitle}`,
+        login: true,
+        loginUserData: req.session.user,
+        jobDetail: jobDetail,
+        saved: saved,
+      });
+    }
+  
+  
+  
+    res.render("individualJob", {
+      title: `Job Detail - ${jobDetail.jobTitle}`,
+      login: login,
+      loginUserData: req.session.user,
+      jobDetail: jobDetail,
+      saved: saved,
+      applied: applied,
+      isAdult: isAdult,
+    });
+  }
+  catch (e) {
+    return res.render("error", {
+			title: "Error",
+			login: login,
+			errormsg: e,
 		});
-	}
-	// console.log(req.session.user);
-	res.render("individualJob", {
-		title: `Job Detail - ${jobDetail.jobTitle}`,
-		login: login,
-		loginUserData: req.session.user,
-		jobDetail: jobDetail,
-		saved: saved,
-    applied: applied,
-		isAdult: isAdult,
-	});
+  }
+
+
+
+
 });
 
 router.route("/:id/editJob")
@@ -302,24 +332,25 @@ router.route("/:id/editJob")
     }
   });
 
-router.route("/:id/changeStatus").post(async (req, res) => {
-	//check if login in and if is the author of the job, if not redirect to the job detail page
-	if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." });
-	if (req.session.user !== undefined) {
-		try {
-			await users.getUserById(req.session.user.id);
-		} catch (e) {
-			req.session.destroy();
-			return res.status(401).json({ results: "Unauthorized User Request." });
-		}
-	}
-	try {
-		var result = await jobs.changeStatus(req.params.id, req.session.user.id);
-		res.status(200).json({ results: result });
-	} catch (e) {
-		console.log(e);
-		res.status(400).json({ results: e });
-	}
-});
+router.route("/:id/changeStatus")
+  .post(async (req, res) => {
+    //check if login in and if is the author of the job, if not redirect to the job detail page
+    if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." })
+    if (req.session.user !== undefined) {
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+        return res.status(401).json({ results: "Unauthorized User Request." })
+      }
+    }
+    try {
+      var result = await jobs.changeStatus(req.params.id, req.session.user.id, req.body.status)
+      res.status(200).json({ results: result })
+    } catch (e) {
+      console.log(e)
+      res.status(400).json({ results: e })
+    }
+  });
 
 module.exports = router;
