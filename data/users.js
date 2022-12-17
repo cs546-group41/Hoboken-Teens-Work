@@ -262,7 +262,7 @@ const isJobSaved = async (jobId, id) => {
 const getAllAppliedJobs = async (id) => {
 	id = validation.checkId(id);
 	const user = await getUserById(id);
-	return user.jobsPosted;
+	return user.jobsApplied;
 };
 
 const isJobHired = async (userId, jobId) => {
