@@ -15,7 +15,7 @@ let newComment = undefined;
 
 async function main() {
 	const db = await connection.dbConnection();
-	await db.dropDatabase();
+	// await db.dropDatabase();
 
 	console.log("Create Users");
 
@@ -80,14 +80,14 @@ async function main() {
 	// 	console.log(e);
 	// }
 
-	try {
-		newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", "639baa523a7b4b7f7ddb723b");
-		console.log("The new job:");
-		console.log(newJob);
-		console.log(await users.getUserById(firstUser._id));
-	} catch (e) {
-		console.log(e);
-	}
+	// try {
+	// 	newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", secondUser._id);
+	// 	console.log("The new job:");
+	// 	console.log(newJob);
+	// 	console.log(await users.getUserById(firstUser._id));
+	// } catch (e) {
+	// 	console.log(e);
+	// }
 
 	// try {
 	// 	console.log("\n\nGet user by ID\n");
@@ -108,14 +108,14 @@ async function main() {
 	// 	console.log(e);
 	// }
 
-	// try {
-	// 	newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", firstUser._id);
-	// 	console.log("The new job:");
-	// 	console.log(newJob);
-	// 	console.log(await users.getUserById(firstUser._id));
-	// } catch (e) {
-	// 	console.log(e);
-	// }
+	try {
+		newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", "639d6c1350b9e111ef90bec2");
+		console.log("The new job:");
+		console.log(newJob);
+		// console.log(await users.getUserById(firstUser._id));
+	} catch (e) {
+		console.log(e);
+	}
 
 	// try {
 	// 	console.log("All jobs by user");
@@ -155,11 +155,11 @@ async function main() {
 	// 	console.log(e);
 	// }
 
-	try {
-		const comment = comments.createComment(newJob._id, firstUser._id, `${secondUser.firstname} ${secondUser.lastName}`, "I would like to do this job");
-	} catch (e) {
-		console.log(e);
-	}
+	// try {
+	// 	const comment = comments.createComment(newJob._id, firstUser._id, `${secondUser.firstname} ${secondUser.lastName}`, "I would like to do this job");
+	// } catch (e) {
+	// 	console.log(e);
+	// }
 	await connection.closeConnection();
 }
 

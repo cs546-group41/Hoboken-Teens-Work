@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const data = require("../data");
-const users = data.users;
 const fs = require('fs');
 const multer = require('multer');
 const md5 = require('md5');
@@ -44,8 +43,9 @@ router
                 if (err) res.sendStatus(500) // send a 500 on error
             })
         } catch (e) {
-            //console.log(e)
-            res.sendStatus(400)
+            // console.log(e)
+            res.sendStatus(400);
+            return;
         }
     })
 

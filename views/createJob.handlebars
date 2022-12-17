@@ -102,8 +102,12 @@
     </div> --}}
 
   </form>
+   <div class="form-group hidden" id="error-container">
+				<div class="alert alert-danger text-goes-here"></div>
+			</div>
 </div>
- {{#if errormsg}}
-    <p>Error msg:{{errormsg}}</p>
+<script src="/public/js/createJobValidation.js"></script>
+ {{#if errmsg}}
+    <p>Error msg:{{errmsg}}</p>
 {{/if}}
 
