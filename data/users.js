@@ -163,17 +163,19 @@ const applyForJob = async (userId, jobId, filePath) => {
 const withdrawJobApplication = async (jobId, applicantId) => {
 	jobId = validation.checkId(jobId);
 	applicantId = validation.checkId(applicantId);
-	const myApplicant = await getUserById(applicantId);
-	for (const job of myApplicant.jobsApplied) {
-		if (job === jobId) myApplicant.jobsApplied.splice(myApplicant.jobsApplied.indexOf(jobId), 1);
-	}
+	const userCollection = await users()
+    const userUpdate = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied : { id: jobId }} })
+	if (!userUpdate.matchedCount && !userUpdate.modifiedCount) throw "Withdraw Failed!";
+	const jobCollection = await jobs()
+	const jobUpdate = await jobCollection.updateOne({ _id: ObjectId(jobId) },  {$pull: {applicants:{ applicantId: applicantId}}})
+	if (!jobUpdate.matchedCount && !jobUpdate.modifiedCount) throw "Withdraw Failed!";
 };
 
 const loginCheck = async (email, pwd) => {
 	email = validation.checkEmail(email);
 	pwd = validation.checkPassword(pwd);
 	const userCollection = await users();
-	const user = await userCollection.findOne({ email: email });
+	const user = await userCollection.findOne({ email: {$regex: new RegExp("^" + email.toLowerCase(), "i") }} );
 	if (!user) throw "Either the email or password is invalid";
 	if (!validation.validatePwd(pwd, user.hashedPassword)) throw "Either the email or password is invalid";
 	return user;
@@ -186,28 +188,15 @@ const getAllPostJobsById = async (id) => {
 	const userCollection = await users();
 	const user = await userCollection.findOne({ _id: ObjectId(id) });
 	if (!user) throw "User not found";
-	var IDs = [];
-	if (user.jobPosted) {
-		for (let i = 0; i < user.jobsPosted.length; i++) {
-			IDs.push(user.jobsPosted[i].id);
-		}
-	}
-
-	return IDs;
+	return user.jobsPosted
 };
 
-// const getAllJobsByUser = async (authorId) => {
-// 	authorId = validation.checkId(authorId);
-// 	const myUser = await getUserById(authorId);
-// 	if(!myUser) throw "User not found";
-// 	return myUser.jobsPosted;
-// };
-
-const jobPosterCheck = async (jobId, id) => {
-	id = validation.checkId(id);
+const jobPosterCheck = async (jobId, posterId) => {
+	posterId = validation.checkId(posterId);
 	jobId = validation.checkId(jobId);
-	const IDS = await getAllPostJobsById(id);
-	if (IDS.indexOf(jobId) > -1) return true;
+	const jobs = await getAllPostJobsById(posterId);
+	//console.log(jobs)
+	if (jobs.find(item=>item.id===jobId)) return true
 	return false;
 };
 
@@ -260,7 +249,7 @@ const isJobSaved = async (jobId, id) => {
 const getAllAppliedJobs = async (id) => {
 	id = validation.checkId(id);
 	const user = await getUserById(id);
-	return user.jobsPosted;
+	return user.jobsApplied;
 };
 
 const isJobHired = async (userId, jobId) => {
@@ -275,7 +264,7 @@ const isJobApplied = async (userId, jobId) => {
 	userId = validation.checkId(userId);
 	jobId = validation.checkId(jobId);
 	const user = await getUserById(userId);
-	console.log(user);
+	//console.log(user);
 	if (user.jobsPosted.find((item) => item.id === jobId)) return true;
 	return false
 }

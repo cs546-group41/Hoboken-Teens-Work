@@ -44,19 +44,16 @@
             <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
         </form><br><br>
     </div>
+    {{#if isMinor}}
     <div>
-{{#if isAdult}}
-
         {{#if saved}}
-                <button id="save-job-saved" onclick='saveJob("{{jobDetail._id}}", true)' >Saved!</button>
-                <button id="save-job-unsave" onclick='saveJob("{{jobDetail._id}}", false)' style="display: none;" >Save This Job</button>
+                <button class="button-unsave-job" onclick='saveJob(this,"{{jobDetail._id}}", true)'>Saved!</button>
             {{else}}
-                <button id="save-job-saved" onclick='saveJob("{{jobDetail._id}}", true)' style="display: none;">Saved!</button>
-                <button id="save-job-unsave" onclick='saveJob("{{jobDetail._id}}", false)' >Save This Job</button>
+                <button class="button-save-job" onclick='saveJob(this,"{{jobDetail._id}}", false)'>Save This Job</button>
         {{/if}}
     </div>
     <div>
-        {{#if jobDetail.jobStatus}}
+        {{#if isAvaliable}}
         {{#if applied}}
             <p>You Had Already Post Your Application!.</p>
         {{else}}
@@ -71,6 +68,6 @@
         {{/if}}
         {{/if}}
     </div>
+    {{/if}}
 {{/if}}
 <script src="/public/js/jobOperations.js"></script>
-{{/if}}
