@@ -163,17 +163,19 @@ const applyForJob = async (userId, jobId, filePath) => {
 const withdrawJobApplication = async (jobId, applicantId) => {
 	jobId = validation.checkId(jobId);
 	applicantId = validation.checkId(applicantId);
-	const myApplicant = await getUserById(applicantId);
-	for (const job of myApplicant.jobsApplied) {
-		if (job === jobId) myApplicant.jobsApplied.splice(myApplicant.jobsApplied.indexOf(jobId), 1);
-	}
+	const userCollection = await users()
+    const userUpdate = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied : { id: jobId }} })
+	if (!userUpdate.matchedCount && !userUpdate.modifiedCount) throw "Withdraw Failed!";
+	const jobCollection = await jobs()
+	const jobUpdate = await jobCollection.updateOne({ _id: ObjectId(jobId) },  {$pull: {applicants:{ applicantId: applicantId}}})
+	if (!jobUpdate.matchedCount && !jobUpdate.modifiedCount) throw "Withdraw Failed!";
 };
 
 const loginCheck = async (email, pwd) => {
 	email = validation.checkEmail(email);
 	pwd = validation.checkPassword(pwd);
 	const userCollection = await users();
-	const user = await userCollection.findOne({ email: email });
+	const user = await userCollection.findOne({ email: {$regex: new RegExp("^" + email.toLowerCase(), "i") }} );
 	if (!user) throw "Either the email or password is invalid";
 	if (!validation.validatePwd(pwd, user.hashedPassword)) throw "Either the email or password is invalid";
 	return user;

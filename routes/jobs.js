@@ -23,36 +23,37 @@ router
     if (!req.session.user) {
       res.status(403)
       return res.render("error", {
-        title: "Error",
+        title: "Search Results - Error",
         login: false,
         errormsg: "You Need to Login first to use the Search Function!"
       })
     }
-    var errormsg = ""
     var searchResults = null
     try {
       searchResults = await jobs.searchJobs(xss(req.body.jobsInput))
     } catch (e) {
-      title = "Job Not Found!"
-      errormsg = e
+      return res.render("error", {
+        title: "Search Results - Error",
+        login: false,
+        errormsg: e
+      })
     }
     res.render("searchResults", {
       title: title,
       login: true,
       loginUserData: req.session.user,
-      searchResults: searchResults,
-      errormsg: errormsg
+      searchResults: searchResults
     })
   })
 
 router.route("/createJob")
   .get(async (req, res) => {
-  console.log(req.session.user);
-     let userData = null;
+  //console.log(req.session.user);
+     var userData = null;
     if (req.session.user !== undefined) {
       try {
          userData = await users.getUserById(req.session.user.id);
-        console.log(userData);
+        //console.log(userData);
       } catch (e) {
         req.session.destroy()
       }
@@ -80,37 +81,33 @@ router.route("/createJob")
         req.session.destroy()
       }
     }
-    const createJobData = xss(req.body);
-    const jobAuthorId = req.session.user.id;
     try {
-      createJobData.jobTitle = validation.checkJobTitle(createJobData.jobTitle);
-      createJobData.jobDescription = validation.checkJobDescription(createJobData.jobDescription);
-      createJobData.jobStreetName = validation.checkJobStreetName(createJobData.jobStreetName);
+      var jobTitle = validation.checkJobTitle(xss(req.body.jobTitle));
+      var jobDescription = validation.checkJobDescription(xss(req.body.jobDescription));
+      var jobStreetName = validation.checkJobStreetName(xss(req.body.jobStreetName));
     } catch (e) {
       res.status(400)
       return res.render("createJob", {
-        title: "Creating New Job",
+        title: "Creating New Job - Error",
         login: true,
         loginUserData: req.session.user,
         phone: req.session.user.phone,
-        errmsg: e
+        errormsg: e
       })
     }
 
     try {
-      const { jobTitle, jobDescription, jobStreetName } = createJobData;
-      await jobs.createJob(jobTitle, jobDescription, jobStreetName, jobAuthorId);
+      await jobs.createJob(jobTitle, jobDescription, jobStreetName, req.session.user.id);
       return res.redirect('/user/'+req.session.user.id);
-
     } catch (e) {
       res.status(500);
       res.render("createJob", {
-        title: "Creating New Job",
+        title: "Creating New Job - Error",
         login: true,
         loginUserData: req.session.user,
         phone: req.session.user.phone,
         presetJob:xss(req.body),
-        errmsg: e
+        errormsg: e
       })
     }
   });
@@ -213,10 +210,11 @@ router
 	var jobDetail = null;
 	try {
 		jobDetail = await jobs.getJobById(req.params.id);
-	} catch (e) {
-		return res.render("error", {
-			title: "Error",
-			login: login,
+	} catch (e) { 
+    return res.render("error", {
+			title: `Posted Job Detail - - Error`,
+			login: true,
+			loginUserData: req.session.user,
 			errormsg: e,
 		});
 	}
@@ -298,7 +296,7 @@ router.route("/:id/editJob")
         login: true,
         loginUserData: req.session.user,
         presetJob: jobDetail,
-        errmsg: e
+        errormsg: e
       })
     }
   });
