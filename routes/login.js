@@ -2,13 +2,15 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const users = data.users;
+const xss = require("xss");
+
 router.route("/").get(async (req, res) => {
   //if the user have cookie, then will directly go to user page, if the user is not found, cookie will be deleted and
   //go the the login page without error messge
   if (req.session.user) {
     try {
-      console.log(req.body.emailInput);
-      const user = await users.loginCheck(req.body.emailInput, req.body.passwordInput)
+      console.log(xss(req.body.emailInput));
+      const user = await users.loginCheck(xss(req.body.emailInput), xss(req.body.passwordInput))
       req.session.user = { fullName: `${user.firstName} ${user.lastName}`, id: user._id }
       return res.redirect("/index")
       res.redirect(`/user/${req.session.user.id}`);
@@ -26,8 +28,8 @@ router.route("/").post(async (req, res) => {
   //if the input match the data in the database, then will store a cookie otherwise re-render the page with error msg
   try {
     const user = await users.loginCheck(
-      req.body.emailInput,
-      req.body.passwordInput
+      xss(req.body.emailInput),
+      xss(req.body.passwordInput)
     );
     const isAdult = user.age > 18 ? false : true; 
     req.session.user = {

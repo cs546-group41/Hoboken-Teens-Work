@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const data = require('../data')
-const users = data.users
-const jobs = data.jobs
-const comments = data.comments
-const validation = require("../validation")
+const data = require('../data');
+const users = data.users;
+const jobs = data.jobs;
+const comments = data.comments;
+const validation = require("../validation");
 const fs = require('fs'); 
-const path = require('path')
+const path = require('path');
+const xss = require("xss");
 
 router
   .route("/searchJobs")
   .post(async (req, res) => {
-    console.log(req.body)
     var title = "Search Results"
     if (req.session.user !== undefined) {
       try {
@@ -31,7 +31,7 @@ router
     var errormsg = ""
     var searchResults = null
     try {
-      searchResults = await jobs.searchJobs(req.body.jobsInput)
+      searchResults = await jobs.searchJobs(xss(req.body.jobsInput))
     } catch (e) {
       title = "Job Not Found!"
       errormsg = e
@@ -80,7 +80,7 @@ router.route("/createJob")
         req.session.destroy()
       }
     }
-    const createJobData = req.body;
+    const createJobData = xss(req.body);
     const jobAuthorId = req.session.user.id;
     try {
       createJobData.jobTitle = validation.checkJobTitle(createJobData.jobTitle);
@@ -109,7 +109,7 @@ router.route("/createJob")
         login: true,
         loginUserData: req.session.user,
         phone: req.session.user.phone,
-        presetJob:req.body,
+        presetJob:xss(req.body),
         errmsg: e
       })
     }
@@ -126,7 +126,7 @@ router.route("/addComment").post(async (req, res) => {
 		}
 	}
 	try {
-		const comment = await comments.createComment(req.body.jobId, req.session.user.id, req.session.user.fullName, req.body.comment);
+		const comment = await comments.createComment(xss(req.body.jobId), req.session.user.id, req.session.user.fullName, xss(req.body.comment));
 		res.status(200).json({ results: comment });
 	} catch (e) {
 		res.status(400).json({ results: e });
@@ -144,11 +144,11 @@ router.route("/saveJob").post(async (req, res) => {
 		}
 	}
 	try {
-		if (await users.isJobSaved(req.body.jobId, req.session.user.id)) {
-			await users.unSaveJob(req.body.jobId, req.session.user.id);
+		if (await users.isJobSaved(xss(req.body.jobId), req.session.user.id)) {
+			await users.unSaveJob(xss(req.body.jobId), req.session.user.id);
 			res.status(200).json({ results: "unSaveJob" });
 		} else {
-			await users.saveJob(req.body.jobId, req.session.user.id);
+			await users.saveJob(xss(req.body.jobId), req.session.user.id);
 			res.status(200).json({ results: "saveJob" });
 		}
 	} catch (e) {
@@ -162,7 +162,7 @@ router
   .post(async (req, res) => {
     if(!req.session.user) return res.sendStatus(401)
     try{
-      await users.hireForJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      await users.hireForJob(req.session.user.id, xss(req.body.jobId), xss(req.body.applicantId))
       res.sendStatus(200)
     }catch(e){
       console.log(e)
@@ -175,7 +175,7 @@ router
   .post(async (req, res) => {
     if(!req.session.user) return res.sendStatus(401)
     try{
-      const path = await users.fireFromJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      const path = await users.fireFromJob(req.session.user.id, xss(req.body.jobId), xss(req.body.applicantId))
       try{
         fs.unlinkSync("./"+path);
       }catch(e){
@@ -271,21 +271,21 @@ router.route("/:id/editJob")
     //edit job part
     try {
       //validation need to put in client side
-      if (req.body.phone === "N/A") {
+      if (xss(req.body.phone) === "N/A") {
         await jobs.editJob(
           req.params.id,
           req.session.user.id,
-          req.body.jobTitle,
-          req.body.jobDescription,
-          req.body.jobStreetName);
+          xss(req.body.jobTitle),
+          xss(req.body.jobDescription),
+          xss(req.body.jobStreetName));
       } else {
         await jobs.editJob(
           req.params.id,
           req.session.user.id,
-          req.body.jobTitle,
-          req.body.jobDescription,
-          req.body.jobStreetName,
-          req.body.phone);
+          xss(req.body.jobTitle),
+          xss(req.body.jobDescription),
+          xss(req.body.jobStreetName),
+          xss(req.body.phone));
       }
       res.redirect(`/job/${req.params.id}`)
 
