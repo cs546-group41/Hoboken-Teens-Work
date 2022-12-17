@@ -18,11 +18,11 @@
         {{#if hideLogin}}
         {{else}}
         {{#if login}}
-        <p>current status: Logged in</p>
+        <p>User Status : Logged in</p>
         <a href="/user/{{loginUserData.id}}">{{loginUserData.fullName}}</a><br></br>
         <a href="/logout">Click to logout</a>
         {{else}}
-        <p>current status: Not logged in</p>
+        <p>User Status : Not logged in</p>
         <li class="none">
             <a class="homepageLoginAndSignup" href="/login">Login</a>
         </li>
