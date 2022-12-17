@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const users = data.users;
 const jobs = data.jobs;
+const path = require('path')
 
 router.route("/").get(async (req, res) => {
 	//check aithentication
@@ -37,6 +38,10 @@ router.route("/").get(async (req, res) => {
 		jobList: jobData,
 		errormsg: errormsg,
 	});
+})
+.all(async(req,res)=>{
+	res.status(400)
+	res.sendFile(path.resolve("static/inValidRequest.html"));
 });
 
 module.exports = router;
