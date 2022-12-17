@@ -158,6 +158,7 @@ router
     if(!req.session.user) return res.sendStatus(401)
     try{
       await users.hireForJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      await jobs.changeStatus(req.body.jobId, req.session.user.id, "Taken")
       res.sendStatus(200)
     }catch(e){
       console.log(e)
@@ -171,11 +172,11 @@ router
     if(!req.session.user) return res.sendStatus(401)
     try{
       const path = await users.fireFromJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      await jobs.changeStatus(req.body.jobId, req.session.user.id, "Open")
       try{
         fs.unlinkSync("./"+path);
       }catch(e){
-        console.log(e)
-        return res.sendStatus(400)
+        return res.sendStatus(200)
       }
       res.sendStatus(200)
     }catch(e){
@@ -306,7 +307,7 @@ router.route("/:id/changeStatus")
       }
     }
     try {
-      var result = await jobs.changeStatus(req.params.id, req.session.user.id)
+      var result = await jobs.changeStatus(req.params.id, req.session.user.id, req.body.status)
       res.status(200).json({ results: result })
     } catch (e) {
       console.log(e)

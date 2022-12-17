@@ -51,6 +51,8 @@
 	{{/if}}
 {{/if}}
 {{#if login}}
+{{#if selfReview}}
 <a href="/user/{{curUser._id}}/editUser">Edit Profile</a>
+{{/if}}
 {{/if}}
 <script src="/public/js/userOperations.js"></script>

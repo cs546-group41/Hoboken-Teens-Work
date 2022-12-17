@@ -16,33 +16,19 @@ const createUser = async (firstName, lastName, email, age, password, phone) => {
 	password = validation.checkPassword(password);
 	const hashedPassword = validation.encryptPwd(password);
 	const userCollection = await users();
-	let myUser = null;
-
-	if (age < 18) {
-		myUser = {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			age: age,
-			phone: phone,
-			hashedPassword: hashedPassword,
-			jobsApplied: [],
-			jobsSaved: [],
-			hiredForJobs: [],
-		};
-	} else {
-		myUser = {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			age: age,
-			phone: phone,
-			hashedPassword: hashedPassword,
-			jobsPosted: [],
-			jobsHired: [],
-		};
-	}
-
+	var myUser = {
+		firstName: firstName,
+		lastName: lastName,
+		email: email,
+		age: age,
+		phone: phone,
+		hashedPassword: hashedPassword,
+		jobsPosted: [],
+		jobsHired: [],
+		jobsApplied: [],
+		jobsSaved: [],
+		hiredForJobs: [],
+	};
 	const insertInfo = await userCollection.insertOne(myUser);
 	if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add user";
 	const newId = insertInfo.insertedId.toString();
@@ -113,11 +99,11 @@ const hireForJob = async (authorId, jobId, applicantId) => {
 	if (!myJob.applicants.find((item) => item.applicantId === myApplicant._id.toString())) throw "ApplicantId not Exist!"
 	const jobCollection = await jobs()
 	const userCollection = await users()
-	const hireUser = await jobCollection.updateOne({ _id: ObjectId(jobId),"applicants.applicantId":applicantId }, { $set: { "applicants.$.hired": true } });
+	const hireUser = await jobCollection.updateOne({ _id: ObjectId(jobId), "applicants.applicantId": applicantId }, { $set: { "applicants.$.hired": true } });
 	if (!hireUser.matchedCount && !hireUser.modifiedCount) throw "Hire failed!";
 	const jobInfo = await jobCollection.findOne({ _id: ObjectId(jobId) })
 	const jobShortInfo = {
-		id : jobInfo._id.toString(),
+		id: jobInfo._id.toString(),
 		title: jobInfo.jobTitle
 	}
 	const hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $push: { hiredForJobs: jobShortInfo } });
@@ -135,11 +121,11 @@ const fireFromJob = async (authorId, jobId, applicantId) => {
 	const oldPath = applicantInfo.resume
 	const jobCollection = await jobs()
 	const userCollection = await users()
-	const fireUser = await jobCollection.updateOne({ _id: ObjectId(jobId) }, { $pull: { applicants: {applicantId:applicantId} } });
+	const fireUser = await jobCollection.updateOne({ _id: ObjectId(jobId) }, { $pull: { applicants: { applicantId: applicantId } } });
 	if (!fireUser.matchedCount && !fireUser.modifiedCount) throw "Fire failed!";
-	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { hiredForJobs: {id:jobId} } });
+	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { hiredForJobs: { id: jobId } } });
 	if (!hire.matchedCount && !hire.modifiedCount) throw "Apply failed!";
-	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied: {id:jobId} } });
+	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied: { id: jobId } } });
 	if (!hire.matchedCount && !hire.modifiedCount) throw "Apply failed!";
 	return oldPath
 };
@@ -155,11 +141,11 @@ const applyForJob = async (userId, jobId, filePath) => {
 		applicantId: userId,
 		name: `${user.firstName} ${user.lastName}`,
 		resume: filePath,
-		hired : false
+		hired: false
 	}
 	const jobInfo = await jobCollection.findOne({ _id: ObjectId(jobId) })
 	const jobShortInfo = {
-		id : jobInfo._id.toString(),
+		id: jobInfo._id.toString(),
 		title: jobInfo.jobTitle
 	}
 	if (jobInfo.applicants.find((item) => item.applicantId === userId)) {
@@ -277,7 +263,7 @@ const getAllAppliedJobs = async (id) => {
 	return user.jobsApplied;
 };
 
-const isJobHired = async(userId, jobId)=>{
+const isJobHired = async (userId, jobId) => {
 	userId = validation.checkId(userId);
 	jobId = validation.checkId(jobId);
 	const user = await getUserById(userId);
@@ -285,7 +271,7 @@ const isJobHired = async(userId, jobId)=>{
 	return false
 }
 
-const isJobApplied= async(userId, jobId)=>{
+const isJobApplied = async (userId, jobId) => {
 	userId = validation.checkId(userId);
 	jobId = validation.checkId(jobId);
 	const user = await getUserById(userId);
