@@ -13,7 +13,7 @@ router.route("/").get(async (req, res) => {
       const user = await users.loginCheck(xss(req.body.emailInput), xss(req.body.passwordInput))
       req.session.user = { fullName: `${user.firstName} ${user.lastName}`, id: user._id }
       return res.redirect("/index")
-      res.redirect(`/user/${req.session.user.id}`);
+      //res.redirect(`/user/${req.session.user.id}`);
     } catch (e) {
       req.session.destroy();
       res.render("login", { hideLogin: true });
