@@ -53,8 +53,10 @@
 {{/if}}
 </div>
 {{#if login}}
-<div class="editProfileButton">
-<a class="editProfile" href="/user/{{curUser._id}}/editUser">Edit Profile</a>
-</div>
+{{#if selfReview}}
+	<div class="editProfileButton">
+		<a class="editProfile" href="/user/{{curUser._id}}/editUser">Edit Profile</a>
+	</div>
+{{/if}}
 {{/if}}
 <script src="/public/js/userOperations.js"></script>

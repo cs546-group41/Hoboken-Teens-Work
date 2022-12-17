@@ -8,6 +8,7 @@ const fileRoute = require("./file")
 const path = require("path");
 
 const constructorMethod = (app) => {
+	
 	//server side check request
 	app.use(function (req, res, next) {
 		var id = "";
