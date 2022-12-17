@@ -365,3 +365,21 @@ input[type="text"], input[type="password"],select {
   position: relative;
   right: 47%;
 }
+.enter-comment{
+  width: 30%;
+}
+#add-comment{
+width: 30%;
+position: relative;
+left: 35%;
+}
+.label-comment{
+  position: relative;
+  left: 40%;
+}
+.submitComment{
+  position: relative;
+  left: 40%;
+  margin: 10px;
+  width: 15%;
+}

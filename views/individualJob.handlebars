@@ -2,21 +2,30 @@
 <meta name="varJobId" content="{{jobDetail._id}}">
 
 <h1 class="IndividualJobsH1">Job detail</h1>
-<div class="individualJobs">
-<p>job : {{jobDetail.jobTitle}}</p>
-<p>Description: {{jobDetail.jobDescription}}</p>
-<p>job StreetName : {{jobDetail.jobStreetName}}</p>
-<p>job Status : {{jobDetail.jobStatus}}</p>
-<p>Published by: <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
-<p>Contact Phone Number: {{jobDetail.jobAuthor.phone}}</p>
+<div class="individualJobs row">
+
+
+
+
+
+<p>job                 :    {{jobDetail.jobTitle}}</p>
+<p>Description         :    {{jobDetail.jobDescription}}</p>
+<p>job StreetName      :    {{jobDetail.jobStreetName}}</p>
+<p>job Status          :    {{jobDetail.jobStatus}}</p>
+<p>Published by        :    <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<p>Contact Phone Number:    {{jobDetail.jobAuthor.phone}}</p>
+
+
+
+
+
 </div>
 <div class="comments">
 <p>Comments:</p>
-<br><br>
 <ul id="comment-list">
     {{#each jobDetail.comments}}
     <li class="comment-listLi">
-        <p>By: <a href="/id/{{authorId}}">{{name}}</a></p>
+        <p>By: <a href="/user/{{authorId}}">{{name}}</a></p>
         <p>{{comment}}</p>
         <p>On: {{commentDate}}</p>
         <br>
@@ -24,14 +33,15 @@
     {{/each}}
 </ul>
 </div>
-
+<br>
 {{#if login}}
     <div>
         <form action="/addComment" method="post" id="add-comment">
-            <label for="comment">Leave a comment: </label>
-            <input type="text" id="comment" name="comment" />
-            <input type="text" id="jobId" name="comment" value="{{jobDetail._id}}" style="display: none;"/>
-            <input type="submit" value="submit">
+            <label for="comment" class="label-comment">Leave a comment: </label>
+            <input type="text" class="enter-comment" id="comment" name="comment" />
+            <input type="text" class="enter-comment" id="jobId" name="comment" value="{{jobDetail._id}}" style="display: none;"/>
+            <br>
+            <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
         </form><br><br>
     </div>
     <div>
@@ -62,5 +72,5 @@
         {{/if}}
     </div>
 {{/if}}
-{{/if}}
 <script src="/public/js/jobOperations.js"></script>
+{{/if}}
