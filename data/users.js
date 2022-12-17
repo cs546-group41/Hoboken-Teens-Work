@@ -153,9 +153,9 @@ const applyForJob = async (userId, jobId, filePath) => {
 		throw "Already applied for this job!"
 	} else {
 		const applyJob = await jobCollection.updateOne({ _id: ObjectId(jobId) }, { $push: { applicants: applicantInfo } });
-		if (!applyJob.matchedCount && !applyJob.modifiedCount) throw "Apply failed!";
+		if (!applyJob.matchedCount && !applyJob.modifiedCount) throw "Apply failed msg1!";
 		const applyjobUser = await userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { jobsApplied: jobShortInfo } });
-		if (!applyjobUser.matchedCount && !applyjobUser.modifiedCount) throw "Apply failed!";
+		if (!applyjobUser.matchedCount && !applyjobUser.modifiedCount) throw "Apply failed msg2!";
 	}
 };
 
