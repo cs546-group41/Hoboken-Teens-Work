@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const data = require("../data");
-const users = data.users;
 const fs = require('fs');
 const multer = require('multer');
 const md5 = require('md5');
 const path = require("path")
 
 
+const xss = require("xss");
 const saveOptions = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/');
@@ -23,14 +23,18 @@ const upload = multer({ storage: saveOptions });
 router
     .route("/upload")
     .post(upload.single("resume"), async (req, res) => {
+        console.log(req.body)
+        if (!req.session.user) return res.sendStatus(401);
         if (!req.session.user) return res.sendStatus(401)
         const file = req.file;
         try {
-            await users.applyForJob(req.session.user.id, req.body.jobId, file.filename)
-            res.sendStatus(200)
+            await users.applyForJob(req.session.user.id, xss(req.body.jobId), file.filename);
+            res.sendStatus(200);
+            return;
         } catch (e) {
             console.log(e)
-            res.sendStatus(400)
+            res.sendStatus(400);
+            return;
         }
     });
 
@@ -45,7 +49,8 @@ router
             })
         } catch (e) {
             console.log(e)
-            res.sendStatus(400)
+            res.sendStatus(400);
+            return;
         }
     })
 
