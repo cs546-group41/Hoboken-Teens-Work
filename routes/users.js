@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const users = data.users;
 const jobs = data.jobs;
+const xss = require("xss");
 
 router.route("/").get(async (req, res) => {
 	res.redirect("/index");
@@ -105,7 +106,7 @@ router
 		if (!req.session.user) return res.redirect("/index");
 		if (req.session.user.id !== req.params.id) return res.redirect("/index");
 		try {
-			await users.editUser(req.params.id, req.body.firstNameInput, req.body.lastNameInput, req.body.phoneInput, req.body.passwordInput);
+			await users.editUser(req.params.id, xss(req.body.firstNameInput), xss(req.body.lastNameInput), xss(req.body.phoneInput), xss(req.body.passwordInput));
 			res.redirect(`/user/${req.params.id}`);
 		} catch (e) {
 			try{
