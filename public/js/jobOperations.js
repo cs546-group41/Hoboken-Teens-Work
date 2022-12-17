@@ -10,8 +10,14 @@ addCommentForm.addEventListener('submit', (event) => {
             if (this.status == 200) {
                 var container = document.getElementById('comment-list')
                 container.innerHTML = container.innerHTML
-                    + `<li><p>By: <a href="/id/${result.authorId}">${result.name}</a></p><p>${result.comment}</p><p>On: ${result.commentDate}</p></li>`
-            } else {
+                +`
+                <li class="comment-listLi">
+                    <p>By: <a href="/user/${result.authorId}">${result.name}</a></p>
+                    <p>${result.comment}</p>
+                    <p>On: ${result.commentDate}</p>
+                    <br>
+                </li>`
+            }else {
                 alert("Failed to add comment")
             }
         }
