@@ -15,7 +15,7 @@ let newComment = undefined;
 
 async function main() {
 	const db = await connection.dbConnection();
-	await db.dropDatabase();
+	// await db.dropDatabase();
 
 	console.log("Create Users");
 
@@ -109,10 +109,10 @@ async function main() {
 	// }
 
 	try {
-		newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", firstUser._id);
+		newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", "639d6c1350b9e111ef90bec2");
 		console.log("The new job:");
 		console.log(newJob);
-		console.log(await users.getUserById(firstUser._id));
+		// console.log(await users.getUserById(firstUser._id));
 	} catch (e) {
 		console.log(e);
 	}
