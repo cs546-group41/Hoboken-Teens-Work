@@ -195,7 +195,7 @@ const jobPosterCheck = async (jobId, posterId) => {
 	posterId = validation.checkId(posterId);
 	jobId = validation.checkId(jobId);
 	const jobs = await getAllPostJobsById(posterId);
-	console.log(jobs)
+	//console.log(jobs)
 	if (jobs.find(item=>item.id===jobId)) return true
 	return false;
 };
@@ -264,7 +264,7 @@ const isJobApplied = async (userId, jobId) => {
 	userId = validation.checkId(userId);
 	jobId = validation.checkId(jobId);
 	const user = await getUserById(userId);
-	console.log(user);
+	//console.log(user);
 	if (user.jobsPosted.find((item) => item.id === jobId)) return true;
 	return false
 }

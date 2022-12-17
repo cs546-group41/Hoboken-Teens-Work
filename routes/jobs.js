@@ -218,7 +218,7 @@ router
 
 router.route("/:id")
   .get(async (req, res) => {
-    let isAdult = false;
+    let isMinor = false;
     if (req.session.user !== undefined) {
       try {
         var user = await users.getUserById(req.session.user.id);
@@ -228,10 +228,10 @@ router.route("/:id")
     }
     var login = false;
     var saved = false;
-    var applied = false
+    var applied = false;
     if (req.session.user) {
       login = true;
-      isAdult = user.age > 18 ? true : false;
+      isMinor = user.age > 18 ? false : true;
       try {
         saved = await users.isJobSaved(req.params.id, req.session.user.id);
         applied = await users.isJobApplied(req.session.user.id, req.params.id)
@@ -245,10 +245,9 @@ router.route("/:id")
       }
 
     }
-    var jobDetail = null;
-
     try {
-      jobDetail = await jobs.getJobById(req.params.id);
+      var jobDetail = await jobs.getJobById(req.params.id);
+      var isAvaliable = jobDetail.jobStatus === "Finished" ? false : true;
     } catch (e) {
       return res.render("error", {
         title: `Posted Job Detail - - Error`,
@@ -257,8 +256,6 @@ router.route("/:id")
         errormsg: e,
       });
     }
-
-    console.log(await users.jobPosterCheck(req.params.id, req.session.user.id))
     try {
       if (req.session.user && (await users.jobPosterCheck(req.params.id, req.session.user.id))) {
         return res.render("applicants", {
@@ -276,7 +273,8 @@ router.route("/:id")
         jobDetail: jobDetail,
         saved: saved,
         applied: applied,
-        isAdult: isAdult,
+        isMinor: isMinor,
+        isAvaliable: isAvaliable
       });
     }
     catch (e) {
@@ -299,7 +297,7 @@ router.route("/:id/editJob")
     var jobDetail = null
     try {
       jobDetail = await jobs.getJobById(req.params.id)
-      if (jobDetail.jobAuthor.id != req.session.user.id) { console.log(1); res.redirect(`jobs/${req.params.id}`) }
+      if (jobDetail.jobAuthor.id != req.session.user.id) res.redirect(`jobs/${req.params.id}`)
     } catch (e) {
       return res.redirect("/index")
     }
