@@ -312,6 +312,7 @@ margin-bottom: 20px;
 }
 .editProfileButton{
   text-align: center;
+}
 #login-form{
   width: 50%;
   position: relative;
@@ -328,15 +329,16 @@ margin-bottom: 20px;
   font-size: 16px;
   position: relative;
   left: 40%;
+  cursor: pointer;
 }
 .RegisterLink{
   position: relative;
   left: 37%;
 }
-.footerText{
+/* .footerText{
   position:absolute;
   bottom: 1%;
-}
+} */
 #registration-form{
   width: 50%;
   position: relative;
