@@ -1,3 +1,8 @@
+var resume = document.getElementsByName('resume')[0].content;
+console.log(resume)
+resume = resume.split('\\')[-1]
+console.log(resume)
+
 //change job status function
 function changeStatus(id) {
     var xhttp = new XMLHttpRequest();

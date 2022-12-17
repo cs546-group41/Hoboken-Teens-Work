@@ -7,7 +7,7 @@ const { ObjectId } = require("mongodb");
 // Return all jobs in the database
 const getAllJobs = async () => {
   const jobsCollection = await jobs();
-  const jobsList = await jobsCollection.find({}).toArray();
+  const jobsList = await jobsCollection.find({}).sort({jobCreationDate: -1}).toArray();
   if (!jobsList) throw "Could not get all jobs";
   return jobsList;
 };

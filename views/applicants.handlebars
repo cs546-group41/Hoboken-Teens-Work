@@ -14,7 +14,7 @@
 <ul>
   {{#each jobDetail.applicants}}
     <li>
-      <a href="/user/{{applicantId}}">{{name}}</a> <a href="{{resume}}">View Resume</a>
+      <a href="/user/{{applicantId}}">{{name}}</a> <a href="/file/download/{{resume}}"><button>Click to Download Resume</button></a>
       {{#if hired}}
         <button id="fire-button" onclick='fire(this,"{{applicantId}}")'>Fire!</button>
       {{else}}
