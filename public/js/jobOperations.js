@@ -44,7 +44,8 @@ function saveJob(id, saved) {
 
 
 //apply for job funciton
-const applyJobForm = document.getElementById("resumeUpload")
+const applyJobForm = document.getElementById("resumeUpload");
+
 applyJobForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const form = document.getElementById("resumeUpload")
