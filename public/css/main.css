@@ -316,7 +316,7 @@ margin-bottom: 20px;
 #login-form{
   width: 50%;
   position: relative;
-  left: 25%;
+  left: 27%;
 }
 .loginBtn{
   background-color: #8a908a; /* Green */
@@ -335,7 +335,7 @@ margin-bottom: 20px;
   left: 37%;
 }
 .footerText{
-  position:absolute;
+  position:relative;
   bottom: 1%;
 }
 #registration-form{
@@ -354,4 +354,32 @@ input[type="text"], input[type="password"],select {
   position: relative;
   left: 27%;
   height: 50%;
+}
+#jobsInput
+{
+  width: 20%;
+  position: relative;
+  left: 40%;
+}
+.submitJob{
+  position: relative;
+  right: 47%;
+}
+.enter-comment{
+  width: 30%;
+}
+#add-comment{
+width: 30%;
+position: relative;
+left: 35%;
+}
+.label-comment{
+  position: relative;
+  left: 40%;
+}
+.submitComment{
+  position: relative;
+  left: 40%;
+  margin: 10px;
+  width: 15%;
 }

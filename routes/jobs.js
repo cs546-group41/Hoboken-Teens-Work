@@ -204,10 +204,22 @@ router
 	if (req.session.user) {
 		login = true;
     isAdult = user.age > 18 ? false : true;
-		saved = await users.isJobSaved(req.params.id, req.session.user.id);
-    applied = await users.isJobApplied(req.session.user.id, req.params.id)
+    try{
+      saved = await users.isJobSaved(req.params.id, req.session.user.id);
+      applied = await users.isJobApplied(req.session.user.id, req.params.id)
+    }
+    catch(e)
+    {
+      return res.render("error", {
+        title: "Error",
+        login: login,
+        errormsg: e,
+      });
+    }
+	
 	}
 	var jobDetail = null;
+  
 	try {
 		jobDetail = await jobs.getJobById(req.params.id);
 	} catch (e) { 
@@ -218,25 +230,42 @@ router
 			errormsg: e,
 		});
 	}
-	if (req.session.user && (await users.jobPosterCheck(req.params.id, req.session.user.id))) {
-		return res.render("applicants", {
-			title: `Posted Job Detail - ${jobDetail.jobTitle}`,
-			login: true,
-			loginUserData: req.session.user,
-			jobDetail: jobDetail,
-			saved: saved,
+
+
+  try{
+    if (req.session.user && (await users.jobPosterCheck(req.params.id, req.session.user.id))) {
+      return res.render("applicants", {
+        title: `Posted Job Detail - ${jobDetail.jobTitle}`,
+        login: true,
+        loginUserData: req.session.user,
+        jobDetail: jobDetail,
+        saved: saved,
+      });
+    }
+  
+  
+  
+    res.render("individualJob", {
+      title: `Job Detail - ${jobDetail.jobTitle}`,
+      login: login,
+      loginUserData: req.session.user,
+      jobDetail: jobDetail,
+      saved: saved,
+      applied: applied,
+      isAdult: isAdult,
+    });
+  }
+  catch (e) {
+    return res.render("error", {
+			title: "Error",
+			login: login,
+			errormsg: e,
 		});
-	}
-	// console.log(req.session.user);
-	res.render("individualJob", {
-		title: `Job Detail - ${jobDetail.jobTitle}`,
-		login: login,
-		loginUserData: req.session.user,
-		jobDetail: jobDetail,
-		saved: saved,
-    applied: applied,
-		isAdult: isAdult,
-	});
+  }
+
+
+
+
 });
 
 router.route("/:id/editJob")
