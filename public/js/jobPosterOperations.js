@@ -19,6 +19,7 @@ function changeStatus(id, curStatus) {
                 var container = document.getElementById("jobStatusMsg")
                 if (curStatus === "Open" || curStatus === "Taken") container.innerText = "Finished"
                 else container.innerText = "Open"
+                location.reload();
             }
         }
     }
@@ -45,6 +46,7 @@ function hire(obj, applicantId) {
                 for (var i = elements.length - 1; i >= 0; i--) {
                     elements[i].parentNode.removeChild(elements[i]);
                 }
+                location.reload();
             }
             var statusTxt = document.getElementById('jobStatusMsg')
             statusTxt.innerText = "Taken"
@@ -73,6 +75,7 @@ function fire(obj, applicantId) {
                 }
                 var statusTxt = document.getElementById('jobStatusMsg')
                 statusTxt.innerText = "Open"
+                location.reload();
             }
         }
     }
