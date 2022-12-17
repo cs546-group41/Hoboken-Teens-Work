@@ -19,16 +19,19 @@ router.route("/searchJobs").post(async (req, res) => {
     }
   }
   if (!req.session.user) {
-    res.status(403)
+    //if not logged in
+    res.status(401)
     return res.render("error", {
       title: "Search Results - Error",
       login: false,
       errormsg: "You Need to Login first to use the Search Function!"
     })
   }
-  try{
+  try {
     var searchQuery = validation.checkSearchQuery(xss(req.body.jobsInput))
-  }catch(e){
+  } catch (e) {
+    //if the Search input was not valid
+    res.status(400)
     return res.render("error", {
       title: "Search Results - Error",
       login: false,
@@ -39,6 +42,8 @@ router.route("/searchJobs").post(async (req, res) => {
   try {
     searchResults = await jobs.searchJobs(searchQuery)
   } catch (e) {
+    //should be server side if throws error
+    res.status(500)
     return res.render("error", {
       title: "Search Results - Error",
       login: false,
@@ -52,7 +57,8 @@ router.route("/searchJobs").post(async (req, res) => {
     searchResults: searchResults
   })
 }).all(async (req, res) => {
-  res.status(400)
+  //other method should not Allowed
+  res.status(405)
   res.sendFile(path.resolve("static/inValidRequest.html"));
 });
 
@@ -69,9 +75,12 @@ router.route("/createJob")
       }
     }
     if (!req.session.user) {
+      //only loggin user can use this function
+      res.status(401)
       return res.redirect('/index')
     }
     else {
+      //render with defalut value
       res.render("createJob", {
         title: "Creating New Job",
         login: true,
@@ -89,6 +98,7 @@ router.route("/createJob")
       }
     }
     try {
+      //route side validtaion
       var jobTitle = validation.checkJobTitle(xss(req.body.jobTitle));
       var jobDescription = validation.checkJobDescription(xss(req.body.jobDescription));
       var jobStreetName = validation.checkJobStreetName(xss(req.body.jobStreetName));
@@ -119,59 +129,76 @@ router.route("/createJob")
     }
   })
   .all(async (req, res) => {
-    res.status(400)
+    //other method should not Allowed
+    res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 
 router.route("/addComment").post(async (req, res) => {
-  if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." });
+  if (!req.session) return res.sendStatus(401);
   if (req.session.user !== undefined) {
     try {
       await users.getUserById(req.session.user.id);
     } catch (e) {
       req.session.destroy();
-      return res.status(401).json({ results: "Unauthorized User Request." });
+      return res.sendStatus(401);
     }
   }
-  try{
-  }catch(e){}
+  //route side validation
   try {
-    const comment = await comments.createComment(xss(req.body.jobId), req.session.user.id, req.session.user.fullName, xss(req.body.comment));
+    var jobId = validation.checkId(xss(req.body.jobId))
+    var commentText = validation.checkString(xss(req.body.comment))
+  } catch (e) {
+    return res.status(400).json({ results: e });
+  }
+
+  try {
+    const comment = await comments.createComment(jobId, req.session.user.id, req.session.user.fullName, commentText);
     res.status(200).json({ results: comment });
   } catch (e) {
     res.status(400).json({ results: e });
   }
 })
   .all(async (req, res) => {
-    res.status(400)
+    //other method should not Allowed
+    res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 
 router.route("/saveJob").post(async (req, res) => {
-  if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." });
+  if (!req.session) return res.sendStatus(401);
   if (req.session.user !== undefined) {
     try {
       await users.getUserById(req.session.user.id);
     } catch (e) {
       req.session.destroy();
-      return res.status(401).json({ results: "Unauthorized User Request." });
+      return res.sendStatus(401);
     }
   }
+
+  //route side validation
   try {
-    if (await users.isJobSaved(xss(req.body.jobId), req.session.user.id)) {
-      await users.unSaveJob(xss(req.body.jobId), req.session.user.id);
-      res.status(200).json({ results: "unSaveJob" });
+    var jobId = validation.checkId(xss(req.body.jobId))
+  } catch (e) {
+    return res.sendStatus(400)
+  }
+
+  try {
+    if (await users.isJobSaved(jobId, req.session.user.id)) {
+      await users.unSaveJob(jobId, req.session.user.id);
+      res.sendStatus(200);
     } else {
-      await users.saveJob(xss(req.body.jobId), req.session.user.id);
-      res.status(200).json({ results: "saveJob" });
+      await users.saveJob(jobId, req.session.user.id);
+      res.sendStatus(200);
     }
   } catch (e) {
     console.log(e);
-    res.status(400).json({ results: e });
+    res.status(500).json({ results: e });
   }
 })
   .all(async (req, res) => {
-    res.status(400)
+    //other method should not Allowed
+    res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 
@@ -179,17 +206,27 @@ router
   .route('/hire')
   .post(async (req, res) => {
     if (!req.session.user) return res.sendStatus(401)
+
+    //route side validation
     try {
-      await users.hireForJob(req.session.user.id, xss(req.body.jobId), xss(req.body.applicantId))
+      var jobId = validation.checkId(xss(req.body.jobId))
+      var applicantId = validation.checkId(xss(req.body.applicantId))
+    } catch (e) {
+      return res.sendStatus(400)
+    }
+
+    try {
+      await users.hireForJob(req.session.user.id, jobId, applicantId)
       await jobs.changeStatus(req.body.jobId, req.session.user.id, "Taken")
       res.sendStatus(200)
     } catch (e) {
       console.log(e)
-      res.sendStatus(400)
+      res.sendStatus(500)
     }
   })
   .all(async (req, res) => {
-    res.status(400)
+    //other method should not Allowed
+    res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 
@@ -197,22 +234,34 @@ router
   .route('/fire')
   .post(async (req, res) => {
     if (!req.session.user) return res.sendStatus(401)
+    
+    //route side validation
     try {
-      const path = await users.fireFromJob(req.session.user.id, xss(req.body.jobId), xss(req.body.applicantId))
+      var jobId = validation.checkId(xss(req.body.jobId))
+      var authorId = validation.checkId(req.session.user.id)
+      var applicantId = validation.checkId(xss(req.body.applicantId))
+    } catch (e) {
+      return res.sendStatus(400)
+    }
+    
+    try {
+      const path = await users.fireFromJob(authorId, jobId, applicantId)
       await jobs.changeStatus(req.body.jobId, req.session.user.id, "Open")
       try {
         fs.unlinkSync("./" + path);
       } catch (e) {
-        return res.sendStatus(200)
+        //the file is missing 
+        return res.sendStatus(202)
       }
       res.sendStatus(200)
     } catch (e) {
       console.log(e)
-      res.sendStatus(400)
+      res.sendStatus(500)
     }
   })
   .all(async (req, res) => {
-    res.status(400)
+    //other method should not Allowed
+    res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 
@@ -250,7 +299,7 @@ router.route("/:id")
       var isAvaliable = jobDetail.jobStatus === "Finished" ? false : true;
     } catch (e) {
       return res.render("error", {
-        title: `Posted Job Detail - - Error`,
+        title: `Posted Job Detail - Error`,
         login: true,
         loginUserData: req.session.user,
         errormsg: e,
@@ -286,7 +335,8 @@ router.route("/:id")
     }
   })
   .all(async (req, res) => {
-    res.status(400)
+    //other method should not Allowed
+    res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 
@@ -352,7 +402,8 @@ router.route("/:id/editJob")
     }
   })
   .all(async (req, res) => {
-    res.status(400)
+    //other method should not Allowed
+    res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 
@@ -377,7 +428,8 @@ router.route("/:id/changeStatus")
     }
   })
   .all(async (req, res) => {
-    res.status(400)
+    //other method should not Allowed
+    res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 

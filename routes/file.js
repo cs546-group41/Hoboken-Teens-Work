@@ -28,37 +28,44 @@ router.use(function (req, res, next) {
 
 router.route("/upload").post(upload.single("resume"), async (req, res) => {
     const file = req.file;
+    console.log(1)
     try{
+        //route side validation 
         var userId = validation.checkId(req.session.user.id);
         var jobId = validation.checkId(xss(req.body.jobId));
     }catch(e){
         res.sendStatus(400);
         return;
     }
+    console.log(2)
     try {
-        await users.applyForJob(userId, jobId, file.path);
+        await users.applyForJob(userId, jobId, file.filename);
         res.sendStatus(200);
         return;
     } catch (e) {
-        res.sendStatus(400);
+        console.log(e)
+        // normally the error here will be server side problem
+        res.sendStatus(500);
         return;
     }
 })
 .all(async(req,res)=>{
-	res.status(400)
+    //other method should not Allowed
+	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
 });
 
 router.route("/download/:filename").get(async (req, res) => {
     const filePath = path.join(__dirname, `../uploads/${req.params.filename}`)
     res.download(filePath, function (err) {
-        //send  Intenal Server Error if file not exist
+        //send Intenal Server Error if file not exist
         if (err) res.sendStatus(500); return;
     })
     return;
 })
 .all(async(req,res)=>{
-	res.status(400)
+	//other method should not Allowed
+	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
 });
 
