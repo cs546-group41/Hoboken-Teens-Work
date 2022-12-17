@@ -277,7 +277,21 @@ const getAllAppliedJobs = async (id) => {
 	return user.jobsApplied;
 };
 
+const isJobHired = async(userId, jobId)=>{
+	userId = validation.checkId(userId);
+	jobId = validation.checkId(jobId);
+	const user = await getUserById(userId);
+	if (user.hiredForJobs.find((item) => item.id === jobId)) return true;
+	return false
+}
 
+const isJobApplied= async(userId, jobId)=>{
+	userId = validation.checkId(userId);
+	jobId = validation.checkId(jobId);
+	const user = await getUserById(userId);
+	if (user.jobsApplied.find((item) => item.id === jobId)) return true;
+	return false
+}
 
 
 module.exports = {
@@ -298,4 +312,6 @@ module.exports = {
 	isJobSaved,
 	getAllAppliedJobs,
 	applyForJob,
+	isJobHired,
+	isJobApplied,
 };

@@ -202,10 +202,12 @@ router
 	}
 	var login = false;
 	var saved = false;
+    var applied = false
 	if (req.session.user) {
 		login = true;
+    isAdult = user.age > 18 ? false : true;
 		saved = await users.isJobSaved(req.params.id, req.session.user.id);
-		isAdult = user.age > 18 ? false : true;
+    applied = await users.isJobApplied(req.session.user.id, req.params.id)
 	}
 	var jobDetail = null;
 	try {
@@ -226,13 +228,14 @@ router
 			saved: saved,
 		});
 	}
-	console.log(req.session.user);
+	// console.log(req.session.user);
 	res.render("individualJob", {
 		title: `Job Detail - ${jobDetail.jobTitle}`,
 		login: login,
 		loginUserData: req.session.user,
 		jobDetail: jobDetail,
 		saved: saved,
+    applied: applied,
 		isAdult: isAdult,
 	});
 });

@@ -22,18 +22,18 @@ addCommentForm.addEventListener('submit', (event) => {
 
 
 //save job js function
-function saveJob(id,saved) {
+function saveJob(id, saved) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "saveJob", true);
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4) {
             if (this.status == 200) {
-                if (saved === true){
-                    document.getElementById("save-job-saved").setAttribute("style","display: none")
-                    document.getElementById("save-job-unsave").setAttribute("style","display: initial")
-                }else {
-                    document.getElementById("save-job-saved").setAttribute("style","display: initial")
-                    document.getElementById("save-job-unsave").setAttribute("style","display: none")
+                if (saved === true) {
+                    document.getElementById("save-job-saved").setAttribute("style", "display: none")
+                    document.getElementById("save-job-unsave").setAttribute("style", "display: initial")
+                } else {
+                    document.getElementById("save-job-saved").setAttribute("style", "display: initial")
+                    document.getElementById("save-job-unsave").setAttribute("style", "display: none")
                 }
             }
         }
@@ -43,5 +43,25 @@ function saveJob(id,saved) {
 }
 
 
+//apply for job funciton
+const applyJobForm = document.getElementById("resumeUpload")
+applyJobForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const form = document.getElementById("resumeUpload")
+    const formData = new FormData(form);
+    formData.append("jobId", document.getElementsByName("varJobId")[0].content)
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/file/upload", true);
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                form.parentNode.parentNode.removeChild(form.parentNode);
+                document.getElementById("hired-msg").setAttribute("style", "display: initial")
+            } else {
+            }
+        }
+    }
+    xhttp.send(formData);
+});
 
 
