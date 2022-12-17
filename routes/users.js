@@ -4,6 +4,8 @@ const data = require("../data");
 const users = data.users;
 const jobs = data.jobs;
 const xss = require("xss");
+const path = require("path")
+const fs = require('fs')
 
 router.route("/").get(async (req, res) => {
 	res.redirect("/index");
@@ -49,10 +51,10 @@ router.route("/:id").get(async (req, res) => {
 		});
 	} catch (e) {
 		return res.render("error", {
-			title: "User Not Found",
+			title: "Personal Info - Error",
 			login: login,
 			loginUserData: req.session.user,
-			errormsg: "User Not Found",
+			errormsg: e,
 		});
 	}
 });
@@ -71,11 +73,54 @@ router.route("/:id/savedJob").get(async (req, res) => {
 		});
 	} catch (e) {
 		return res.render("error", {
-			title: `Saved Jobs - Not Found`,
+			title: `Saved Jobs - Error`,
 			login: true,
 			loginUserData: req.session.user,
-			errormsg: "Current No Saved Jobs",
+			errormsg: e,
 		});
+	}
+});
+
+router.route("/:id/appliedJob").get(async (req, res) => {
+	if (!req.session.user) return res.redirect("/index");
+	if (req.session.user.id !== req.params.id) return res.redirect("/index");
+	try {
+		const userData = await users.getUserById(req.session.user.id);
+		return res.render("appliedJobs", {
+			title: `Applied Jobs - ${userData.firstName} ${userData.lastName}`,
+			login: true,
+			loginUserData: req.session.user,
+			curUser: userData,
+		});
+	} catch (e) {
+		return res.render("error", {
+			title: `Applied Job - Error`,
+			login: true,
+			loginUserData: req.session.user,
+			errormsg: e,
+		});
+	}
+});
+
+router.route("/:id/appliedJob/withdraw/:jobId").post(async (req, res) => {
+	if (!req.session.user) return res.sendStatus(401)
+	if (req.session.user.id !== req.params.id) return res.sendStatus(401)
+	try {
+		const applicant = await jobs.getApplicantById(req.params.jobId, req.session.user.id)
+		var filePath = applicant.resume
+		filePath = path.join(__dirname, `../${filePath}`)
+		//console.log(filePath)
+		await users.withdrawJobApplication(req.params.jobId,req.params.id)
+		try{
+			fs.unlinkSync(filePath);
+		  }catch(e){
+			console.log(e)
+			return res.sendStatus(200)
+		} 
+		return res.sendStatus(200)
+	} catch (e) {
+		console.log(e)
+		res.sendStatus(400)
 	}
 });
 
@@ -128,5 +173,7 @@ router
 			}
 		}
 	});
+
+	
 
 module.exports = router;
