@@ -206,7 +206,7 @@ router
     var applied = false
 	if (req.session.user) {
 		login = true;
-    isAdult = user.age > 18 ? false : true;
+    isAdult = user.age > 18 ? true : false;
     try{
       saved = await users.isJobSaved(req.params.id, req.session.user.id);
       applied = await users.isJobApplied(req.session.user.id, req.params.id)
@@ -246,7 +246,7 @@ router
     }
   
   
-  
+  console.log(isAdult);
     res.render("individualJob", {
       title: `Job Detail - ${jobDetail.jobTitle}`,
       login: login,
