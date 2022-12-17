@@ -19,26 +19,26 @@ router
     }
 
     try {
-      console.log(req.body);
+      console.log(xss(req.body));
 
-      const validatedFirstName = validation.checkFirstName(req.body.firstNameInput);
-			const validatedLastName = validation.checkLastName(req.body.lastNameInput);
-			const validatedEmail = validation.checkEmail(req.body.emailInput);
-			const validatedAge = validation.checkAge(req.body.ageInput);
-			const validatedPhone = validation.checkPhone(req.body.phoneNumberInput);
-			const validatedPassword = validation.checkPassword(req.body.passwordInput);
+      const validatedFirstName = validation.checkFirstName(xss(req.body.firstNameInput));
+			const validatedLastName = validation.checkLastName(xss(req.body.lastNameInput));
+			const validatedEmail = validation.checkEmail(xss(req.body.emailInput));
+			const validatedAge = validation.checkAge(xss(req.body.ageInput));
+			const validatedPhone = validation.checkPhone(xss(req.body.phoneNumberInput));
+			const validatedPassword = validation.checkPassword(xss(req.body.passwordInput));
 
       console.log(validatedFirstName,validatedLastName,validatedEmail,validatedAge,validatedPhone,validatedPassword);
 
 			if (validatedFirstName && validatedLastName && validatedEmail && validatedAge && validatedPhone && validatedPassword) {
   
         await users.createUser(
-          req.body.firstNameInput,
-          req.body.lastNameInput,
-          req.body.emailInput,
-          req.body.ageInput,
-          req.body.passwordInput,
-          req.body.phoneNumberInput
+          validatedFirstName,
+          validatedLastName,
+          validatedEmail,
+          validatedAge,
+          validatedPassword,
+          validatedPhone
         );
         res.redirect('login');
 

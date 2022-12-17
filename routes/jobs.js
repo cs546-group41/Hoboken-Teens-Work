@@ -1,17 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const data = require('../data')
-const users = data.users
-const jobs = data.jobs
-const comments = data.comments
-const validation = require("../validation")
+const data = require('../data');
+const users = data.users;
+const jobs = data.jobs;
+const comments = data.comments;
+const validation = require("../validation");
 const fs = require('fs'); 
-const path = require('path')
+const path = require('path');
+const xss = require("xss");
 
 router
   .route("/searchJobs")
   .post(async (req, res) => {
-    console.log(req.body)
     var title = "Search Results"
     if (req.session.user !== undefined) {
       try {
@@ -31,7 +31,7 @@ router
     var errormsg = ""
     var searchResults = null
     try {
-      searchResults = await jobs.searchJobs(req.body.jobsInput)
+      searchResults = await jobs.searchJobs(xss(req.body.jobsInput))
     } catch (e) {
       title = "Job Not Found!"
       errormsg = e
@@ -47,20 +47,30 @@ router
 
 router.route("/createJob")
   .get(async (req, res) => {
+  console.log(req.session.user);
+     let userData = null;
     if (req.session.user !== undefined) {
       try {
-        await users.getUserById(req.session.user.id)
+         userData = await users.getUserById(req.session.user.id);
+        console.log(userData);
       } catch (e) {
         req.session.destroy()
       }
     }
-    if (!req.session.user) return res.redirect('/index')
-    res.render("createJob", {
-      title: "Creating New Job",
-      login: true,
-      loginUserData: req.session.user,
-      phone: req.session.user.phone
-    })
+    if (!req.session.user) {
+      return  res.redirect('/index')
+    }
+    else{
+      res.render("createJob", {
+        title: "Creating New Job",
+        login: true,
+        loginUserData: userData,
+        phone: userData.phone
+      })
+    }
+
+      
+
   })
   .post(async (req, res) => {
     if (req.session.user !== undefined) {
@@ -70,7 +80,7 @@ router.route("/createJob")
         req.session.destroy()
       }
     }
-    const createJobData = req.body;
+    const createJobData = xss(req.body);
     const jobAuthorId = req.session.user.id;
     try {
       createJobData.jobTitle = validation.checkJobTitle(createJobData.jobTitle);
@@ -89,8 +99,9 @@ router.route("/createJob")
 
     try {
       const { jobTitle, jobDescription, jobStreetName } = createJobData;
-      jobs.createJob(jobTitle, jobDescription, jobStreetName, jobAuthorId);
-      return res.redirect(`/user/${req.session.user.id}`)
+      await jobs.createJob(jobTitle, jobDescription, jobStreetName, jobAuthorId);
+      return res.redirect('/user/'+req.session.user.id);
+
     } catch (e) {
       res.status(500);
       res.render("createJob", {
@@ -98,66 +109,60 @@ router.route("/createJob")
         login: true,
         loginUserData: req.session.user,
         phone: req.session.user.phone,
+        presetJob:xss(req.body),
         errmsg: e
       })
     }
   });
 
+router.route("/addComment").post(async (req, res) => {
+	if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." });
+	if (req.session.user !== undefined) {
+		try {
+			await users.getUserById(req.session.user.id);
+		} catch (e) {
+			req.session.destroy();
+			return res.status(401).json({ results: "Unauthorized User Request." });
+		}
+	}
+	try {
+		const comment = await comments.createComment(xss(req.body.jobId), req.session.user.id, req.session.user.fullName, xss(req.body.comment));
+		res.status(200).json({ results: comment });
+	} catch (e) {
+		res.status(400).json({ results: e });
+	}
+});
 
-
-router
-  .route("/addComment")
-  .post(async (req, res) => {
-    if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." })
-    if (req.session.user !== undefined) {
-      try {
-        await users.getUserById(req.session.user.id)
-      } catch (e) {
-        req.session.destroy()
-        return res.status(401).json({ results: "Unauthorized User Request." })
-      }
-    }
-    try {
-      const comment = await comments.createComment(req.body.jobId, req.session.user.id, req.session.user.fullName, req.body.comment)
-      res.status(200).json({ results: comment })
-    } catch (e) {
-      res.status(400).json({ results: e })
-    }
-  })
-
-router
-  .route("/saveJob")
-  .post(async (req, res) => {
-    if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." })
-    if (req.session.user !== undefined) {
-      try {
-        await users.getUserById(req.session.user.id)
-      } catch (e) {
-        req.session.destroy()
-        return res.status(401).json({ results: "Unauthorized User Request." })
-      }
-    }
-    try {
-      if (await users.isJobSaved(req.body.jobId, req.session.user.id)) {
-        await users.unSaveJob(req.body.jobId, req.session.user.id)
-        res.status(200).json({ results: "unSaveJob" })
-      }
-      else {
-        await users.saveJob(req.body.jobId, req.session.user.id)
-        res.status(200).json({ results: "saveJob" })
-      }
-    } catch (e) {
-      console.log(e)
-      res.status(400).json({ results: e })
-    }
-  })
+router.route("/saveJob").post(async (req, res) => {
+	if (!req.session) return res.status(401).json({ results: "Unauthorized User Request." });
+	if (req.session.user !== undefined) {
+		try {
+			await users.getUserById(req.session.user.id);
+		} catch (e) {
+			req.session.destroy();
+			return res.status(401).json({ results: "Unauthorized User Request." });
+		}
+	}
+	try {
+		if (await users.isJobSaved(xss(req.body.jobId), req.session.user.id)) {
+			await users.unSaveJob(xss(req.body.jobId), req.session.user.id);
+			res.status(200).json({ results: "unSaveJob" });
+		} else {
+			await users.saveJob(xss(req.body.jobId), req.session.user.id);
+			res.status(200).json({ results: "saveJob" });
+		}
+	} catch (e) {
+		console.log(e);
+		res.status(400).json({ results: e });
+	}
+});
 
 router
   .route('/hire')
   .post(async (req, res) => {
     if(!req.session.user) return res.sendStatus(401)
     try{
-      await users.hireForJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      await users.hireForJob(req.session.user.id, xss(req.body.jobId), xss(req.body.applicantId))
       await jobs.changeStatus(req.body.jobId, req.session.user.id, "Taken")
       res.sendStatus(200)
     }catch(e){
@@ -171,7 +176,7 @@ router
   .post(async (req, res) => {
     if(!req.session.user) return res.sendStatus(401)
     try{
-      const path = await users.fireFromJob(req.session.user.id, req.body.jobId, req.body.applicantId)
+      const path = await users.fireFromJob(req.session.user.id, xss(req.body.jobId), xss(req.body.applicantId))
       await jobs.changeStatus(req.body.jobId, req.session.user.id, "Open")
       try{
         fs.unlinkSync("./"+path);
@@ -184,53 +189,57 @@ router
       res.sendStatus(400)
     }
   })
-  
+
 router
-  .route('/:id')
+  .route("/:id")
   .get(async (req, res) => {
-    if (req.session.user !== undefined) {
-      try {
-        await users.getUserById(req.session.user.id)
-      } catch (e) {
-        req.session.destroy()
-      }
-    }
-    var login = false
-    var saved = false
+	let isAdult = false;
+	if (req.session.user !== undefined) {
+		try {
+			var user = await users.getUserById(req.session.user.id);
+		} catch (e) {
+			req.session.destroy();
+		}
+	}
+	var login = false;
+	var saved = false;
     var applied = false
-    if (req.session.user) {
-      login = true
-      saved = await users.isJobSaved(req.params.id, req.session.user.id)
-      applied = await users.isJobApplied(req.session.user.id, req.params.id)
-    }
-    var jobDetail = null
-    try {
-      jobDetail = await jobs.getJobById(req.params.id)
-    } catch (e) {
-      return res.render("error", {
-        title: "Error",
-        login: login,
-        errormsg: e
-      })
-    }
-    if (req.session.user && await users.jobPosterCheck(req.params.id, req.session.user.id)) {
-      return res.render("applicants", {
-        title: `Posted Job Detail - ${jobDetail.jobTitle}`,
-        login: true,
-        loginUserData: req.session.user,
-        jobDetail: jobDetail,
-        saved: saved
-      })
-    }
-    res.render("individualJob", {
-      title: `Job Detail - ${jobDetail.jobTitle}`,
-      login: login,
-      loginUserData: req.session.user,
-      jobDetail: jobDetail,
-      saved: saved,
-      applied: applied
-    })
-  })
+	if (req.session.user) {
+		login = true;
+    isAdult = user.age > 18 ? false : true;
+		saved = await users.isJobSaved(req.params.id, req.session.user.id);
+    applied = await users.isJobApplied(req.session.user.id, req.params.id)
+	}
+	var jobDetail = null;
+	try {
+		jobDetail = await jobs.getJobById(req.params.id);
+	} catch (e) {
+		return res.render("error", {
+			title: "Error",
+			login: login,
+			errormsg: e,
+		});
+	}
+	if (req.session.user && (await users.jobPosterCheck(req.params.id, req.session.user.id))) {
+		return res.render("applicants", {
+			title: `Posted Job Detail - ${jobDetail.jobTitle}`,
+			login: true,
+			loginUserData: req.session.user,
+			jobDetail: jobDetail,
+			saved: saved,
+		});
+	}
+	// console.log(req.session.user);
+	res.render("individualJob", {
+		title: `Job Detail - ${jobDetail.jobTitle}`,
+		login: login,
+		loginUserData: req.session.user,
+		jobDetail: jobDetail,
+		saved: saved,
+    applied: applied,
+		isAdult: isAdult,
+	});
+});
 
 router.route("/:id/editJob")
   .get(async (req, res) => {
@@ -263,21 +272,21 @@ router.route("/:id/editJob")
     //edit job part
     try {
       //validation need to put in client side
-      if (req.body.phone === "N/A") {
+      if (xss(req.body.phone) === "N/A") {
         await jobs.editJob(
           req.params.id,
           req.session.user.id,
-          req.body.jobTitle,
-          req.body.jobDescription,
-          req.body.jobStreetName);
+          xss(req.body.jobTitle),
+          xss(req.body.jobDescription),
+          xss(req.body.jobStreetName));
       } else {
         await jobs.editJob(
           req.params.id,
           req.session.user.id,
-          req.body.jobTitle,
-          req.body.jobDescription,
-          req.body.jobStreetName,
-          req.body.phone);
+          xss(req.body.jobTitle),
+          xss(req.body.jobDescription),
+          xss(req.body.jobStreetName),
+          xss(req.body.phone));
       }
       res.redirect(`/job/${req.params.id}`)
 
@@ -315,4 +324,4 @@ router.route("/:id/changeStatus")
     }
   });
 
-module.exports = router
+module.exports = router;
