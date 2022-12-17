@@ -15,12 +15,10 @@ const constructorMethod = (app) => {
 		if (req.session.user) {
 			id = req.session.user.id;
 		}
-
-		let authentication = "Unauthenticated";
+		var authentication = "Unauthenticated";
 		if (id) {
 			authentication = id;
 		}
-
 		console.log(`${new Date().toLocaleString("en-US")} ${req.method} ${req.originalUrl} user: ${authentication}`);
 		next();
 	});
