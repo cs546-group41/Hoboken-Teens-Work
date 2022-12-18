@@ -396,11 +396,13 @@ router.route("/:id/editJob")
     //route side validation
     //validation
     try {
+      console.log(req.body)
       var jobId = validation.checkId(req.params.id)
       var userId = validation.checkId(req.session.user.id)
       var jobTitle = validation.checkJobTitle(xss(req.body.jobTitle)) 
       var jobDescription = validation.checkJobDescription(xss(req.body.jobDescription))  
       var jobStreetName = validation.checkJobStreetName(xss(req.body.jobStreetName)) 
+      var jobTag = validation.checkJobTag(xss(req.body.jobTag))
       var phone = validation.checkPhone(xss(req.body.phone))  
     } catch (e) {
       res.status(400)
@@ -411,16 +413,17 @@ router.route("/:id/editJob")
     var jobDetail = null
     try {
       jobDetail = await jobs.getJobById(jobId)
-      if (jobDetail.jobAuthor.id != req.session.user.id) res.redirect(`jobs/${req.params.id}`)
+      if (jobDetail.jobAuthor.id != userId) res.redirect(`jobs/${jobId}`)
     } catch (e) {
       res.status(400)
       return res.redirect("/index")
     }
     //edit job part
     try {
-      await jobs.editJob(jobId, userId, jobTitle, jobDescription, jobStreetName, phone);
-      res.redirect(`/job/${req.params.id}`);
+      await jobs.editJob(jobId, userId, jobTitle, jobDescription, jobStreetName, phone, jobTag);
+      res.redirect(`/job/${jobId}`);
     } catch (e) {
+      console.log(e)
       //add status code here
       res.status(500)
       res.render("createJob", {
