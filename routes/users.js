@@ -281,6 +281,7 @@ router.route("/:id/editUser")
 		}
 		try {
 			await users.editUser(loginUserId, firstName, lastName, phone, password);
+			req.session.user.fullName = `${firstName} ${lastName}`;
 			res.redirect(`/user/${loginUserId}`);
 		} catch (e) {
 			try {
