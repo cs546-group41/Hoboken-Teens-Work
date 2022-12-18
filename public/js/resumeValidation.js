@@ -21,7 +21,7 @@
 //         try {
 //             function resume(input){
 //             const re = /.+\.(.pdf)$/i
-//             if(!re.test(Input)) throw "File should be of type pdf"
+-//             if(!re.test(Input)) throw "File should be of type pdf"
 //             return input
 //             }
 //             const validatedResume = resume(Input)
