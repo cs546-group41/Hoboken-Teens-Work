@@ -31,11 +31,15 @@ if(addCommentForm){
 
 // //share job
 
-function shareBtn(jobDetail)
-{
-    console.log("kk");
-    navigator.clipboard.writeText("/user/"+ jobDetail);
+const shareBtn = document.getElementById("shareJob")
+if(shareBtn){
+    shareBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        console.log(window.location.hostname+shareBtn.value);
 
+  navigator.clipboard.writeText("http://localhost:3000/job/"+shareBtn.value);
+  alert("Copied the URL : " + "http://localhost:3000/job"+shareBtn.value);
+    });
 }
 
 

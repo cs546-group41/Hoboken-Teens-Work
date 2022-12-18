@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const path = require("path")
 
 router
   .route('/')
@@ -9,4 +10,9 @@ router
       res.redirect('/index')
     })
   })
+  .all(async (req, res) => {
+    //other method should not Allowed
+    res.status(405)
+    res.sendFile(path.resolve("static/inValidRequest.html"));
+  });
 module.exports = router

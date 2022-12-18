@@ -10,18 +10,16 @@
     <p>Phone: {{curUser.phone}}</p>
 </div>
 <div class="postJob">
-    {{#if adultUser}}
-    <p>job posted:</p>
+{{#if adultUser}}
     {{#if login}}
-    {{#if selfReview}}
-    {{#each curUser.jobsPosted}}
-    <ul>
-        <li>
-            <a href="/job/{{id}}">{{jobTitle}}</a> <button onclick='deleteJob(this,"{{id}}")'>Delete</button>
-        </li>
-    </ul>
-    {{/each}}
-    <a href="/job/createJob">Post a Job!</a> <br>
+        <p>job posted:</p>
+        {{#if selfReview}}
+            {{#each curUser.jobsPosted}}
+                <li>
+                    <a href="/job/{{id}}">{{jobTitle}}</a>  <button onclick='deleteJob(this,"{{id}}")'>Delete</button>
+                </li>
+            {{/each}}
+            <a href="/job/createJob">Post a Job!</a> <br>
 </div>
 
 <div class="jobsHired">

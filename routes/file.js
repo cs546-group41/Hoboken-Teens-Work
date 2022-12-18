@@ -28,7 +28,7 @@ router.use(function (req, res, next) {
 
 router.route("/upload").post(upload.single("resume"), async (req, res) => {
     const file = req.file;
-    console.log(1)
+    //console.log(1)
     try{
         //route side validation 
         var userId = validation.checkId(req.session.user.id);
@@ -37,13 +37,13 @@ router.route("/upload").post(upload.single("resume"), async (req, res) => {
         res.sendStatus(400);
         return;
     }
-    console.log(2)
+    //console.log(2)
     try {
         await users.applyForJob(userId, jobId, file.filename);
         res.sendStatus(200);
         return;
     } catch (e) {
-        console.log(e)
+        //console.log(e)
         // normally the error here will be server side problem
         res.sendStatus(500);
         return;
