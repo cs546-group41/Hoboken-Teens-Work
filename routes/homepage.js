@@ -30,6 +30,7 @@ router.route("/").get(async (req, res) => {
 	var errormsg = "";
 	try {
 		jobData = await jobs.getAllJobs();
+		console.log(jobData)
 	} catch (e) {
 		//fail to get data from database
 		errormsg = e;

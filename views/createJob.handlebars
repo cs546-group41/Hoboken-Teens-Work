@@ -5,7 +5,7 @@
     {{#if presetJob}}
       <form action="/job/{{presetJob._id}}/editJob" id="create-Job" method="post">
     {{else}}
-      <form action="/job/createJob" id="create-Job"method="post">
+      <form action="/job/createJob" id="create-Job" method="post">
     {{/if}}
     <div class="row">
       <div class="col-25">
@@ -30,7 +30,7 @@
       <div class="col-75">
         {{!-- <input type="text" id="jobStreetName" name="jobStreetName" placeholder="Enter Job Street Name" value="{{presetJob.jobStreetName}}" > --}}
 
-            <select name="jobStreetName" id="jobStreetName" value="{{presetJob.jobStreetName}}">
+            <select name="jobStreetName" id="jobStreetName">
       <option>Select Street</option>
       <option value="10th St">10th St</option>
       <option value="11th St">11th St</option>

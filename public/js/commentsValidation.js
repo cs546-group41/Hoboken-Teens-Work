@@ -18,6 +18,8 @@ if (staticForm) {
         try {
             errorContainer.classList.add('hidden')
             const commentInput = Input.value;
+            const commentInputTrimmed = commentInput.trim()
+            if(commentInputTrimmed.length === 0) throw "Enter something in the comment box before clicking the submit button"
             console.log(commentInput)
             const validatedComment = checkComment(commentInput)
             if (validatedComment) {
