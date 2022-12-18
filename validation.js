@@ -102,6 +102,14 @@ function checkPassword(strVal) {
 	return strVal;
 }
 
+function checkLoginPassword (strVal) {
+	if(!strVal) throw "Must provide a password";
+	if(typeof(strVal) !== "string") throw "Password must be a string";
+	strVal = strVal.trim();
+	if(strVal.length === 0) throw "Password cannot be empty or just spaces";
+	return strVal;
+}
+
 function checkJobTitle(title) {
 	if (!title) throw "Must provide a job title";
 	if (typeof title !== "string") throw "Job title must be a string";
@@ -189,6 +197,7 @@ module.exports = {
 	checkFullName,
 	checkId,
 	checkPassword,
+	checkLoginPassword,
 	checkAge,
 	checkEmail,
 	checkPhone,

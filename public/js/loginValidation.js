@@ -11,20 +11,10 @@ function checkUserclientSideEmail(email) {
     }
 }
 function checkUserClientSidePassword(strVal) {
-    const oneUpper = /[A-Z]/;
-    const onelower = /[a-z]/;
-    const oneNumber = /[0-9]/;
-    const specialChar = /[^\w\s]/;
     if (!strVal) throw "You must supply a password!";
     if (typeof strVal !== "string") throw "Password must be a string!";
     strVal = strVal.trim();
     if (strVal.length === 0) throw "Password cannot be an empty string or string with just spaces";
-    if (strVal.length < 6) throw "Password must at least 6 characters long";
-    if (strVal.includes(" ")) throw "Password must not contain space";
-    if (!oneUpper.test(strVal)) throw "Password must contain one upper case letter ";
-    if (!onelower.test(strVal)) throw "Password must contain one lower case letter ";
-    if (!oneNumber.test(strVal)) throw "Password must contain one number ";
-    if (!specialChar.test(strVal) && !strVal.includes("_")) throw "Password must contain one special character ";
     return strVal;
 }
 

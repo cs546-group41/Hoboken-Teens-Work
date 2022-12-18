@@ -173,7 +173,7 @@ const withdrawJobApplication = async (jobId, applicantId) => {
 
 const loginCheck = async (email, pwd) => {
 	email = validation.checkEmail(email);
-	pwd = validation.checkPassword(pwd);
+	pwd = validation.checkLoginPassword(pwd);
 	const userCollection = await users();
 	const user = await userCollection.findOne({ email: {$regex: new RegExp("^" + email.toLowerCase(), "i") }} );
 	if (!user) throw "Either the email or password is invalid";

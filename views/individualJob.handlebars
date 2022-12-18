@@ -1,5 +1,12 @@
 <h1 class="IndividualJobsH1">Job detail</h1> 
-<button  class="Share-Btn"  id="shareJob" value="{{jobId}}">Share</button>
+<button  class="Share-Btn"  id="shareJob" value="user/{{jobDetail.jobAuthor.id}}">Share</button>
+{{#if isMinor}}
+{{#if saved}}
+    <button class="Share-Btn" onclick='saveJob(this,"{{jobDetail._id}}", true)'>Saved!</button>
+{{else}}
+    <button class="Share-Btn" onclick='saveJob(this,"{{jobDetail._id}}", false)'>Save This Job</button>
+{{/if}}
+{{/if}}
 <div class="individualJobs row">
 
 
@@ -22,7 +29,7 @@
 <div class="comments">
 <p>Comments:</p>
 <ul id="comment-list">
-   {{#each jobDetail.comments}}
+    {{#each jobDetail.comments}}
     <li class="comment-listLi">
         <p>By: <a href="/user/{{authorId}}">{{name}}</a></p>
         <p>{{comment}}</p>
@@ -45,29 +52,20 @@
     </div>
     {{#if isMinor}}
     <div>
-        {{#if saved}}
-                <button class="button-unsave-job" onclick='saveJob(this,"{{jobDetail._id}}", true)'>Saved!</button>
-            {{else}}
-                <button class="button-save-job" onclick='saveJob(this,"{{jobDetail._id}}", false)'>Save This Job</button>
-        {{/if}}
-    </div>
-    <div>
         {{#if isAvaliable}}
         {{#if applied}}
-            <p>You Had Already Post Your Application!.</p>
+            <div class="comments">
+                <p>You Had Already Post Your Application!.</p>
+            </div>
         {{else}}
-            <div>
+            <div class="comments">
                 <form id="resumeUpload" action="/file/upload" enctype="multipart/form-data" method="post">
-                    <p>Upload your Resume</p>
+                    <p>Upload your Resume and Apply!</p>
                     <input type="file" id="resume" name="resume" accept="application/pdf"/>
                     <span id="resumeError"></span>
-                    <button type="submit">Upload</button>
-                    <br>
-                    <span id="error"></span>
-                    <span id="error1"></span>
+                    <button >Upload</button>
                 </form>
             </div>
-            <p id="hired-msg" style="display : none">You Had Already Post Your Application!.</p>
         {{/if}}
         {{/if}}
     </div>
