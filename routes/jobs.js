@@ -342,11 +342,13 @@ router.route("/:id")
           saved: saved,
         });
       }
+      console.log(jobDetail);
       res.render("individualJob", {
         title: `Job Detail - ${jobDetail.jobTitle}`,
         login: login,
         loginUserData: req.session.user,
         jobDetail: jobDetail,
+        jobId:req.params.id,
         saved: saved,
         applied: applied,
         isMinor: isMinor,
