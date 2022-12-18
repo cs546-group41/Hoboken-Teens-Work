@@ -75,6 +75,7 @@ function saveJob(obj, id, saved) {
 
 
 //apply for job funciton
+
 const applyJobForm = document.getElementById("resumeUpload");
 if(applyJobForm)
 {

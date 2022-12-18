@@ -63,15 +63,15 @@
         {{else}}
             <div class="comments">
                 <form id="resumeUpload" action="/file/upload" enctype="multipart/form-data" method="post">
-                    <p>Upload your Resume and Apply!</p>
+                    <p>Upload your Resume and Apply! </p>
+                    <p>(File need to be Pdf file and less than 4MB)</p>
                     <input type="file" id="resume" name="resume" accept="application/pdf"/>
                     <span id="resumeError"></span>
-                    <button type="submit">Upload</button>
+                    <button id="applyJobButton">Upload</button>
                     <br>
                     <div class="form-group hidden" id="error-container">
-		  <div class="alert alert-danger text-goes-here"></div>
-		</div>
-                    <button >Upload</button>
+		                <div class="alert alert-danger text-goes-here"></div>
+		            </div>
                 </form>
             </div>
         {{/if}}
