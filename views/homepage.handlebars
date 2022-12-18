@@ -3,7 +3,8 @@
 		<form action="job/searchJobs" method="post" class="search-form" id="search-form">
 			{{!-- <label for="jobsInput" class="homepageJobsInput">Search</label><br> --}}
 			<input type="text" id="jobsInput" name="jobsInput" placeholder="Search for jobs">
-			
+			<h5 id="jobInputError">You need to write something in the searchbar to search first!</h5>
+			<h5 id="invalidInput">Only letters are allowed in </h5>
 			<br><br>
 			<input type="submit" class="button submitJob">
 			<div class="form-group hidden" id="error-container">
