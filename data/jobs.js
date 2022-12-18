@@ -33,24 +33,40 @@ const getApplicantById = async (jobId, applicantId) => {
 };
 
 // Search keywords for job titles or description in the entire database
-const searchJobs = async (jobSearchQuery) => {
+const searchJobs = async (jobSearchQuery,searchType) => {
 
   jobSearchQuery = validation.checkSearchQuery(jobSearchQuery);
   const jobList = await jobs();
-  const searchJobs = await jobList.find({ jobTitle: { $regex: jobSearchQuery, $options: "i" } }).toArray();
+  if(searchType == "JobTag")
+  {
+    console.log(jobList);
+    const searchJobs = await jobList.find({ jobTag: { $regex: jobSearchQuery, $options: "i" }}).toArray();
+    console.log(searchJobs);
   if (searchJobs.length === 0) return []
   for (job of searchJobs) {
     job._id = job._id.toString();
   }
   return searchJobs;
+  }
+  else{
+    const searchJobs = await jobList.find({ jobTitle: { $regex: jobSearchQuery, $options: "i" }}).toArray();
+     
+  if (searchJobs.length === 0) return []
+  for (job of searchJobs) {
+    job._id = job._id.toString();
+  }
+  return searchJobs;
+  }
+
 
 };
 
 // Create a new job posting
-const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
+const createJob = async (jobTitle, jobDescription, jobStreetName, authorId, jobTag) => {
   jobTitle = validation.checkJobTitle(jobTitle);
   jobDescription = validation.checkJobDescription(jobDescription);
   jobStreetName = validation.checkJobStreetName(jobStreetName);
+  jobTag = validation.checkJobTag(jobTag);
   authorId = validation.checkId(authorId);
   // let jobAuthorPhoneNumber = null;
 
@@ -71,7 +87,8 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
     applicants: [],
     hired: {},
     comments: [],
-    jobCreationDate: new Date().toLocaleString("en-US")
+    jobCreationDate: new Date().toLocaleString("en-US"),
+    jobTag: jobTag
   };
 
   const jobsCollection = await jobs();
@@ -118,12 +135,14 @@ const editJob = async (
   jobTitle,
   jobDescription,
   jobStreetName,
-  phoneNumber
+  phoneNumber,
+  jobTag
 ) => {
   jobId = validation.checkId(jobId);
   jobTitle = validation.checkJobTitle(jobTitle);
   jobDescription = validation.checkJobDescription(jobDescription);
   jobStreetName = validation.checkJobStreetName(jobStreetName);
+  jobTag = validation.checkJobTag(jobTag);
   authorId = validation.checkId(authorId);
 
   if (phoneNumber) {
@@ -150,6 +169,7 @@ const editJob = async (
   if (jobDescription !== jobToEdit.jobDescription) editFlag++;
   if (jobStreetName !== jobToEdit.jobStreetName) editFlag++;
   if (phoneNumber !== jobToEdit.phone) editFlag++;
+  if (jobTag !== jobToEdit.jobTag) editFlag++;
 
   if (editFlag < 1) throw "No changes were made";
 
@@ -158,6 +178,7 @@ const editJob = async (
     jobDescription: jobDescription,
     jobStreetName: jobStreetName,
     phone: phoneNumber,
+    jobTag: jobTag
   };
   const jobsCollection = await jobs();
   const editedJob = await jobsCollection.updateOne(
