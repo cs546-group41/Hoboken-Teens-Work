@@ -547,10 +547,6 @@ a:hover {
 .value-block{
   display: none;
 }
-span{
-  text-align: center;
-  justify-content: center;
-}
 .postJobs{
   position: relative;
     left: 48%;
