@@ -144,6 +144,7 @@ router.route("/addComment").post(async (req, res) => {
       return res.sendStatus(401);
     }
   }
+  
   //route side validation
   try {
     var jobId = validation.checkId(xss(req.body.jobId))

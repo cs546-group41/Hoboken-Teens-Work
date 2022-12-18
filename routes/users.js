@@ -89,8 +89,9 @@ router.route("/:id").get(async (req, res) => {
 		selfReview = false;
 	}
 	try {
-		const userData = await users.getUserById(req.params.id);
+		const userData = await users.getUserById(curUserId);
 		if (userData.age < 18) adultUser = false;
+		console.log(adultUser)
 		return res.render("userProfile", {
 			title: `Personal Info - ${userData.firstName} ${userData.lastName}`,
 			login: login,

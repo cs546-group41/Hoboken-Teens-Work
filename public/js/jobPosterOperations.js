@@ -6,6 +6,7 @@ function initialize() {
             hireButton.remove();
         });
     }
+    console.log(document.getElementById("value-authorId").value)
 }
 
 
