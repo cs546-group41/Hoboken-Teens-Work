@@ -1,15 +1,15 @@
 <main>
-	<br><br>
-	<form action="job/searchJobs" method="post" class="search-form" id="search-form">
-		<label for="searchType" class="homepageJobsInput">Search Type</label>
-		<select name="searchType" id="searchType" aria-placeholder="Select Search Type">
-    {{!-- <option value="" disabled selected>Search Type</option> --}}
-    <option value="JobTitle">Job Title</option>
-    <option value="JobTag">Job Tag</option>
+		<br><br>
+		<form action="job/searchJobs" method="post" class="search-form" id="search-form">
+			<label for="searchType" class="homepageJobsInput">Search Type :</label>
+			         <select name="searchType" id="searchType" aria-placeholder="Select Search Type">
+       {{!-- <option value="" disabled selected>Search Type</option> --}}
+      <option value="JobTitle">Job Title</option>
+      <option value="JobTag">Job Tag</option>
 
     </select>
 	<br><br>
-	<label for="jobsInput" class="keywordInput">Keyword</label>
+	<label for="jobsInput" class="keywordInput">Keyword :</label>
 			<input type="text" id="jobsInput" name="jobsInput" placeholder="Enter Keyword">
 			<br><br>
 			<input type="submit" class="button submitJob">
