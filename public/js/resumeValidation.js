@@ -30,6 +30,17 @@
 //             }
            
             
+            if(Input == ""){
+                document.getElementById("resumeError").innerHTML = "You must upload a resume"
+            } 
+            if (resumeInput) {
+                errorContainer.style.display = "none"
+            }
+        } catch (e) {
+            event.preventDefault();
+        }
+    })
+}*/
 //         } catch (e) {
 //             event.preventDefault();
 //             errorTextElem.textContent = "Error: " + e
