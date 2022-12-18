@@ -179,16 +179,17 @@
         <a href="/logout">Click to logout</a>
         {{else}}
         <p>User Status : Not logged in</p>
-        <ul class="none">
-            <li class="none">
-                <a class="homepageLoginAndSignup" href="/login">Login</a>
-            </li>
-        </ul>
-        <ul class="none">
-            <li class="none">
-                <a class="homepageLoginAndSignup" href="/register">Sign Up</a>
-            </li>
-        </ul>
+        <div>
+              <a class="homepageLoginAndSignup" href="/login">Login</a>
+               <a class="homepageLoginAndSignup" href="/register">Sign Up</a>
+
+        </div>
+        {{!-- <li class="none">
+            <a class="homepageLoginAndSignup" href="/login">Login</a>
+        </li>
+        <li class="none">
+            <a class="homepageLoginAndSignup" href="/register">Sign Up</a>
+        </li> --}}
         {{/if}}
         {{/if}}
     </nav>

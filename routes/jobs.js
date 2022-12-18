@@ -40,7 +40,7 @@ router.route("/searchJobs").post(async (req, res) => {
   }
   var searchResults = null
   try {
-    searchResults = await jobs.searchJobs(searchQuery)
+    searchResults = await jobs.searchJobs(searchQuery,req.body.searchType)
   } catch (e) {
     //should be server side if throws error
     res.status(500)
@@ -102,6 +102,7 @@ router.route("/createJob")
       var jobTitle = validation.checkJobTitle(xss(req.body.jobTitle));
       var jobDescription = validation.checkJobDescription(xss(req.body.jobDescription));
       var jobStreetName = validation.checkJobStreetName(xss(req.body.jobStreetName));
+      var jobTag = validation.checkJobTag(xss(req.body.jobTag));
     } catch (e) {
       res.status(400)
       return res.render("createJob", {
@@ -114,7 +115,7 @@ router.route("/createJob")
     }
 
     try {
-      await jobs.createJob(jobTitle, jobDescription, jobStreetName, req.session.user.id);
+      await jobs.createJob(jobTitle, jobDescription, jobStreetName, req.session.user.id, jobTag);
       return res.redirect('/user/' + req.session.user.id);
     } catch (e) {
       res.status(500);
@@ -377,7 +378,8 @@ router.route("/:id/editJob")
           req.session.user.id,
           xss(req.body.jobTitle),
           xss(req.body.jobDescription),
-          xss(req.body.jobStreetName));
+          xss(req.body.jobStreetName),
+          xss(req.body.jobTag));
       } else {
         await jobs.editJob(
           req.params.id,
@@ -385,6 +387,7 @@ router.route("/:id/editJob")
           xss(req.body.jobTitle),
           xss(req.body.jobDescription),
           xss(req.body.jobStreetName),
+          xss(req.body.jobTag),
           xss(req.body.phone));
       }
       res.redirect(`/job/${req.params.id}`)
