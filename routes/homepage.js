@@ -4,6 +4,7 @@ const data = require("../data");
 const users = data.users;
 const jobs = data.jobs;
 const path = require('path')
+const validation = require('../validation')
 
 router.route("/").get(async (req, res) => {
 	//check aithentication
@@ -14,7 +15,7 @@ router.route("/").get(async (req, res) => {
 		//if have cookie, auto login
 		try {
 			//check the if the id is valid
-			await users.getUserById(req.session.user.id);
+			await users.getUserById(validation.checkId(req.session.user.id));
 			login = true;
 			loginUserData = req.session.user;
 		} catch (e) {

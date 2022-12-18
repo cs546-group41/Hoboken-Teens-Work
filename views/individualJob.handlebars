@@ -2,7 +2,7 @@
 <meta name="varJobId" content="{{jobDetail._id}}">
 
 <h1 class="IndividualJobsH1">Job detail</h1> 
-<button  class="Share-Btn"  id="shareJob" value="{{jobId}}">Share</button>
+<button  class="Share-Btn"  id="shareJob" value="/user/{{jobDetail.jobAuthor.id}}">Share</button>
 <div class="individualJobs row">
 
 
@@ -63,6 +63,7 @@
                 <form id="resumeUpload" enctype="multipart/form-data" method="post">
                     <p>Upload your Resume</p>
                     <input type="file" id="resume" name="resume" accept="application/pdf"/>
+                    <span id="resumeError"></span>
                     <button>Upload</button>
                 </form>
             </div>
@@ -73,3 +74,5 @@
     {{/if}}
 {{/if}}
 <script src="/public/js/jobOperations.js"></script>
+<script src="/public/js/commentsValidation.js"></script>
+<script src="/public/js/resumeValidation.js"></script>

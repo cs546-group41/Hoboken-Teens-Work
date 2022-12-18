@@ -70,13 +70,3 @@ if (staticForm) {
         }
     })
 }
-
-// $('#Submit').click(function(){
-//     var ddlvalue= $("#dropdownid option:selected").val();
-//     if(ddlvalue!='-1')
-//     {    
-//         errorContainer.style.display = "none"
-//     }
-//   else
-//   alert('Please select Location');
-//    });

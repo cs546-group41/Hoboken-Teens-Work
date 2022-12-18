@@ -44,6 +44,15 @@ function checkLastName(input) {
 	return input;
 }
 
+function checkFullName(input){
+	input = checkString(input);
+	names = input.split(" ")
+	if (names.length<2) throw "Name sytax Error"
+	checkFirstName(names[0])
+	checkLastName(names[-1])
+	return input
+}
+
 function checkEmail(email) {
 	email = checkString(email);
 	email = email.toLowerCase();
@@ -150,8 +159,7 @@ function checkJobTag(jobTag) {
 
 function checkJobStatus(status) {
 	status = checkString(status);
-
-	if (["Open", "Finished"].includes(status)) {
+	if (["Open", "Finished", "Taken"].includes(status)) {
 		return status;
 	} else {
 		throw "Invalid job status";
@@ -182,6 +190,7 @@ module.exports = {
 	checkString,
 	checkFirstName,
 	checkLastName,
+	checkFullName,
 	checkId,
 	checkPassword,
 	checkAge,
