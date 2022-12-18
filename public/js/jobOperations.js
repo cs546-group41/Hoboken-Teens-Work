@@ -38,7 +38,7 @@ if(shareBtn){
         console.log(window.location.hostname+shareBtn.value);
 
   navigator.clipboard.writeText("http://localhost:3000/job/"+shareBtn.value);
-  alert("Copied the URL : " + "http://localhost:3000/job"+shareBtn.value);
+  alert("Copied URL to clipboard");
     });
 }
 

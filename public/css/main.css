@@ -124,18 +124,17 @@ nav {
   position: relative;
   left: 40%;
 }
-
-.homepageLi {
-  justify-content: center;
-  width: 100%;
-  background-color: #393E46;
-  text-align: center;
-  margin: 15px;
-  text-decoration: solid;
-  padding: 50px 35px;
-  border-radius: 14px;
-  font-size: 32px;
-  list-style: none;
+.homepageLi{
+justify-content: center;
+width: 100%;
+background-color: #393E46;
+text-align: center;
+margin: 15px;
+text-decoration:solid;
+padding: 25px 35px;
+border-radius: 14px;
+font-size: 32px;
+list-style: none;
 
 }
 

@@ -4,10 +4,10 @@
 {{/if}}
 {{/if}}
 <div class="personDetails">
-<p>Name: {{curUser.firstName}} {{curUser.lastName}}</p>
-<p>Email: {{curUser.email}}</p>
-<p>Age: {{curUser.age}}</p>
-<p>Phone: {{curUser.phone}}</p>
+    <p>Name: {{curUser.firstName}} {{curUser.lastName}}</p>
+    <p>Email: {{curUser.email}}</p>
+    <p>Age: {{curUser.age}}</p>
+    <p>Phone: {{curUser.phone}}</p>
 </div>
 
 {{#if adultUser}}
@@ -24,7 +24,7 @@
             {{/each}}
         </div>
     {{/if}}
-{{else}}    
+    {{else}}
     {{#if selfReview}}
         {{#if login}}
         <div class="jobsHired">
