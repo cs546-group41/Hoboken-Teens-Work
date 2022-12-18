@@ -1,8 +1,10 @@
 <p>Job Applied:</p>
 {{#each curUser.jobsApplied}}
+<ul>
 <li>
     <a href="/job/{{id}}">{{title}}</a> <button onclick="withdrawJob(this,'{{id}}')">Withdraw Job</button>
 </li>
+</ul>
 {{/each}}
 
 <p id="value-applicantId" class="value-block">{{loginUserData.id}}</p>
