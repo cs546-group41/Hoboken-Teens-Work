@@ -2,7 +2,7 @@
 <button  class="Share-Btn"  id="shareJob" value="user/{{jobDetail.jobAuthor.id}}">Share</button>
 <div class="individualJobs row">
 
-
+<p>Status: <p id="jobStatusMsg">{{jobDetail.jobStatus}}</p> <button onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')">Change Status</button>
 
 
 
@@ -37,8 +37,9 @@
 <div>
   <form action="/addComment" method="post" id="add-comment">
     <label for="comment" class="label-comment">Leave a comment: </label>
-    <input type="text" class="enter-comment" id="comment" name="comment" />
-    <input type="text" class="value-block" id="jobId" name="comment" value="{{jobDetail._id}}" />
+    <input type="text" class="enter-comment" id="comment" name="comment">
+    <input type="text" class="value-block" id="jobId" name="comment" value="{{jobDetail._id}}">
+    <br>
     <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
     </form><br><br>
 </div>

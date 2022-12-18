@@ -8,7 +8,7 @@ $(document).ready(function() {
     } else {
       event.preventDefault();
       $('#error').show();
-      $('#error').html('Only Support alphabet chars!');
+      $('#error').html('Only Support alphanumeric characters!');
       $('#jobsInput').focus();
     }
   })

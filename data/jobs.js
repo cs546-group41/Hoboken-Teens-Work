@@ -10,7 +10,9 @@ const getAllJobs = async () => {
   const jobsList = await jobsCollection.find({}).sort({jobCreationDate: -1}).toArray();
   if (!jobsList) throw "Could not get all jobs";
   const result = jobsList.filter(item=>item.jobStatus!=="Finished")
+  
   return result;
+  
 };
 
 

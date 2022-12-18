@@ -1,10 +1,10 @@
-<h1 class="makecenter">Job saved:</h1>
-<div class="comments">
-    <ul>
-        {{#each curUser.jobsSaved}}
-        <li class="comment-listLi">
-            <a href="/job/{{id}}">{{title}}</a>
-        </li>
-        {{/each}}
-    </ul>
+<div class="savedjobs">
+<p>job saved:</p>
+{{#each curUser.jobsSaved}}
+<ul>
+<li>
+    <a href="/job/{{id}}">{{title}}</a>
+</li>
+</ul>
+{{/each}}
 </div>
