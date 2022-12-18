@@ -41,13 +41,13 @@ function checkAge(age) {
 
   const regex = /[^0-9]/;
   if (regex.test(age)) throw "Age must be an integer number";
-  if (age > 118 || age < 0) throw "Age must be <= 118 and >= 0";
+  if (age > 118 || age < 13) throw "Age must be <= 118 and >= 13";
   age = parseInt(age);
   return age;
 }
 
 function checkPhone(phone) {
-  if (!phone) return null;
+  if (!phone) return "N/A";
   const regex = /[^0-9]/;
   phone = phone.trim();
   if (regex.test(phone)) throw "Phone number must contain only integer number";
@@ -60,7 +60,7 @@ function checkPassword(strVal) {
 	const oneNumber = /[0-9]/;
 	const specialChar = /[^\w\s]/;
 	if (!strVal) throw "You must supply a password!";
-	if (typeof strVal !== "string") throw "Password must be a string!";
+	if (typeof strVal !== "string") throw "Password must be a string";
 	strVal = strVal.trim();
 	if (strVal.length === 0) throw "Password cannot be an empty string or string with just spaces";
 	if (strVal.length < 8) throw "Password must at least 8 characters long";

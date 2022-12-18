@@ -33,7 +33,7 @@ router.route("/").get(async (req, res) => {
   try {
     //route side validtaion
     var email = validation.checkEmail(xss(req.body.emailInput));
-    var password = validation.checkPassword(xss(req.body.passwordInput));
+    var password = validation.checkLoginPassword(xss(req.body.passwordInput));
   } catch (e) {
     res.status(400)
     res.render("login", { 
