@@ -8,18 +8,17 @@ const fileRoute = require("./file")
 const path = require("path");
 
 const constructorMethod = (app) => {
+	
 	//server side check request
 	app.use(function (req, res, next) {
 		var id = "";
 		if (req.session.user) {
 			id = req.session.user.id;
 		}
-
-		let authentication = "Unauthenticated";
+		var authentication = "Unauthenticated";
 		if (id) {
 			authentication = id;
 		}
-
 		console.log(`${new Date().toLocaleString("en-US")} ${req.method} ${req.originalUrl} user: ${authentication}`);
 		next();
 	});

@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const users = data.users;
 const jobs = data.jobs;
+const path = require('path')
 
 router.route("/").get(async (req, res) => {
 	//check aithentication
@@ -29,6 +30,7 @@ router.route("/").get(async (req, res) => {
 	} catch (e) {
 		//fail to get data from database
 		errormsg = e;
+		res.status(500)
 	}
 	res.render("homepage", {
 		title: title,
@@ -37,6 +39,11 @@ router.route("/").get(async (req, res) => {
 		jobList: jobData,
 		errormsg: errormsg,
 	});
+})
+.all(async(req,res)=>{
+	//other method should not Allowed
+	res.status(405)
+	res.sendFile(path.resolve("static/inValidRequest.html"));
 });
 
 module.exports = router;

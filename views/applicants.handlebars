@@ -5,23 +5,50 @@
 
 <p>{{jobDetail.jobDescription}}</p>
 
-<p>Status: <p id="jobStatus">{{jobDetail.jobStatus}}</p> <button onclick="changeStatus('{{jobDetail._id}}')">Change Status</button></p>
+<p>Status: <p id="jobStatusMsg">{{jobDetail.jobStatus}}</p> <button onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')">Change Status</button></p>
+
+<div class="comments">
+<p>Comments:</p>
+<ul id="comment-list">
+    {{#each jobDetail.comments}}
+    <li class="comment-listLi">
+        <p>By: <a href="/user/{{authorId}}">{{name}}</a></p>
+        <p>{{comment}}</p>
+        <p>On: {{commentDate}}</p>
+        <br>
+    </li>
+    {{/each}}
+</ul>
+</div>
+<br>
+<div>
+  <form action="/addComment" method="post" id="add-comment">
+    <label for="comment" class="label-comment">Leave a comment: </label>
+    <input type="text" class="enter-comment" id="comment" name="comment" />
+    <input type="text" class="enter-comment" id="jobId" name="comment" value="{{jobDetail._id}}" style="display: none;"/>
+    <br>
+    <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
+    </form><br><br>
+</div>
+
 
 <a href="/job/{{jobDetail._id}}/editJob">Edit job</a>
 
 <h2>Applicants</h2>
 
-<ul>
+<ul id="applicants-list" class="applicants-list">
   {{#each jobDetail.applicants}}
     <li>
-      <a href="/user/{{applicantId}}">{{name}}</a> <a href="{{resume}}">View Resume</a>
+      <a href="/user/{{applicantId}}">{{name}}</a> 
+      <a class="download-resume" href="/file/download/{{resume}}"><button>Click to Download Resume</button></a>
       {{#if hired}}
-        <button id="fire-button" onclick='fire(this,"{{applicantId}}")'>Fire!</button>
+        <button class="fire-button" onclick='fire(this,"{{applicantId}}")'>Fire!</button>
       {{else}}
-        <button id="fire-button" onclick='fire(this,"{{applicantId}}")' style="display: none;">Fire!</button>
-        <button id="hire-button" onclick='hire("{{applicantId}}")'  >Hire</button>
+        <button class="hire-button" onclick='hire(this,"{{applicantId}}")'>Hire</button>
       {{/if}}
     </li>
   {{/each}}
 </ul>
+
+
 <script src="/public/js/jobPosterOperations.js"></script>

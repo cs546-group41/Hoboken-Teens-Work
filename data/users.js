@@ -17,33 +17,19 @@ const createUser = async (firstName, lastName, email, age, password, phone) => {
 	const userCollection = await users();
 	const userEmail = await userCollection.findOne({ email: email });
 	if(userEmail) throw "A user with that email already exists!"
-	let myUser = null;
-
-	if (age < 18) {
-		myUser = {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			age: age,
-			phone: phone,
-			hashedPassword: hashedPassword,
-			jobsApplied: [],
-			jobsSaved: [],
-			hiredForJobs: [],
-		};
-	} else {
-		myUser = {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			age: age,
-			phone: phone,
-			hashedPassword: hashedPassword,
-			jobsPosted: [],
-			jobsHired: [],
-		};
-	}
-
+	var myUser = {
+		firstName: firstName,
+		lastName: lastName,
+		email: email,
+		age: age,
+		phone: phone,
+		hashedPassword: hashedPassword,
+		jobsPosted: [],
+		jobsHired: [],
+		jobsApplied: [],
+		jobsSaved: [],
+		hiredForJobs: [],
+	};
 	const insertInfo = await userCollection.insertOne(myUser);
 	if (!insertInfo.acknowledged || !insertInfo.insertedId) throw "Could not add user";
 	const newId = insertInfo.insertedId.toString();
@@ -114,11 +100,11 @@ const hireForJob = async (authorId, jobId, applicantId) => {
 	if (!myJob.applicants.find((item) => item.applicantId === myApplicant._id.toString())) throw "ApplicantId not Exist!"
 	const jobCollection = await jobs()
 	const userCollection = await users()
-	const hireUser = await jobCollection.updateOne({ _id: ObjectId(jobId),"applicants.applicantId":applicantId }, { $set: { "applicants.$.hired": true } });
+	const hireUser = await jobCollection.updateOne({ _id: ObjectId(jobId), "applicants.applicantId": applicantId }, { $set: { "applicants.$.hired": true } });
 	if (!hireUser.matchedCount && !hireUser.modifiedCount) throw "Hire failed!";
 	const jobInfo = await jobCollection.findOne({ _id: ObjectId(jobId) })
 	const jobShortInfo = {
-		id : jobInfo._id.toString(),
+		id: jobInfo._id.toString(),
 		title: jobInfo.jobTitle
 	}
 	const hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $push: { hiredForJobs: jobShortInfo } });
@@ -136,11 +122,11 @@ const fireFromJob = async (authorId, jobId, applicantId) => {
 	const oldPath = applicantInfo.resume
 	const jobCollection = await jobs()
 	const userCollection = await users()
-	const fireUser = await jobCollection.updateOne({ _id: ObjectId(jobId) }, { $pull: { applicants: {applicantId:applicantId} } });
+	const fireUser = await jobCollection.updateOne({ _id: ObjectId(jobId) }, { $pull: { applicants: { applicantId: applicantId } } });
 	if (!fireUser.matchedCount && !fireUser.modifiedCount) throw "Fire failed!";
-	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { hiredForJobs: {id:jobId} } });
+	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { hiredForJobs: { id: jobId } } });
 	if (!hire.matchedCount && !hire.modifiedCount) throw "Apply failed!";
-	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied: {id:jobId} } });
+	var hire = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied: { id: jobId } } });
 	if (!hire.matchedCount && !hire.modifiedCount) throw "Apply failed!";
 	return oldPath
 };
@@ -156,20 +142,20 @@ const applyForJob = async (userId, jobId, filePath) => {
 		applicantId: userId,
 		name: `${user.firstName} ${user.lastName}`,
 		resume: filePath,
-		hired : false
+		hired: false
 	}
 	const jobInfo = await jobCollection.findOne({ _id: ObjectId(jobId) })
 	const jobShortInfo = {
-		id : jobInfo._id.toString(),
+		id: jobInfo._id.toString(),
 		title: jobInfo.jobTitle
 	}
 	if (jobInfo.applicants.find((item) => item.applicantId === userId)) {
 		throw "Already applied for this job!"
 	} else {
 		const applyJob = await jobCollection.updateOne({ _id: ObjectId(jobId) }, { $push: { applicants: applicantInfo } });
-		if (!applyJob.matchedCount && !applyJob.modifiedCount) throw "Apply failed!";
+		if (!applyJob.matchedCount && !applyJob.modifiedCount) throw "Apply failed msg1!";
 		const applyjobUser = await userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { jobsApplied: jobShortInfo } });
-		if (!applyjobUser.matchedCount && !applyjobUser.modifiedCount) throw "Apply failed!";
+		if (!applyjobUser.matchedCount && !applyjobUser.modifiedCount) throw "Apply failed msg2!";
 	}
 };
 
@@ -177,17 +163,19 @@ const applyForJob = async (userId, jobId, filePath) => {
 const withdrawJobApplication = async (jobId, applicantId) => {
 	jobId = validation.checkId(jobId);
 	applicantId = validation.checkId(applicantId);
-	const myApplicant = await getUserById(applicantId);
-	for (const job of myApplicant.jobsApplied) {
-		if (job === jobId) myApplicant.jobsApplied.splice(myApplicant.jobsApplied.indexOf(jobId), 1);
-	}
+	const userCollection = await users()
+    const userUpdate = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied : { id: jobId }} })
+	if (!userUpdate.matchedCount && !userUpdate.modifiedCount) throw "Withdraw Failed!";
+	const jobCollection = await jobs()
+	const jobUpdate = await jobCollection.updateOne({ _id: ObjectId(jobId) },  {$pull: {applicants:{ applicantId: applicantId}}})
+	if (!jobUpdate.matchedCount && !jobUpdate.modifiedCount) throw "Withdraw Failed!";
 };
 
 const loginCheck = async (email, pwd) => {
 	email = validation.checkEmail(email);
 	pwd = validation.checkPassword(pwd);
 	const userCollection = await users();
-	const user = await userCollection.findOne({ email: email });
+	const user = await userCollection.findOne({ email: {$regex: new RegExp("^" + email.toLowerCase(), "i") }} );
 	if (!user) throw "Either the email or password is invalid";
 	if (!validation.validatePwd(pwd, user.hashedPassword)) throw "Either the email or password is invalid";
 	return user;
@@ -200,28 +188,15 @@ const getAllPostJobsById = async (id) => {
 	const userCollection = await users();
 	const user = await userCollection.findOne({ _id: ObjectId(id) });
 	if (!user) throw "User not found";
-	var IDs = [];
-	if (user.jobPosted) {
-		for (let i = 0; i < user.jobsPosted.length; i++) {
-			IDs.push(user.jobsPosted[i].id);
-		}
-	}
-
-	return IDs;
+	return user.jobsPosted
 };
 
-// const getAllJobsByUser = async (authorId) => {
-// 	authorId = validation.checkId(authorId);
-// 	const myUser = await getUserById(authorId);
-// 	if(!myUser) throw "User not found";
-// 	return myUser.jobsPosted;
-// };
-
-const jobPosterCheck = async (jobId, id) => {
-	id = validation.checkId(id);
+const jobPosterCheck = async (jobId, posterId) => {
+	posterId = validation.checkId(posterId);
 	jobId = validation.checkId(jobId);
-	const IDS = await getAllPostJobsById(id);
-	if (IDS.indexOf(jobId) > -1) return true;
+	const jobs = await getAllPostJobsById(posterId);
+	//console.log(jobs)
+	if (jobs.find(item=>item.id===jobId)) return true
 	return false;
 };
 
@@ -277,7 +252,7 @@ const getAllAppliedJobs = async (id) => {
 	return user.jobsApplied;
 };
 
-const isJobHired = async(userId, jobId)=>{
+const isJobHired = async (userId, jobId) => {
 	userId = validation.checkId(userId);
 	jobId = validation.checkId(jobId);
 	const user = await getUserById(userId);
@@ -285,11 +260,12 @@ const isJobHired = async(userId, jobId)=>{
 	return false
 }
 
-const isJobApplied= async(userId, jobId)=>{
+const isJobApplied = async (userId, jobId) => {
 	userId = validation.checkId(userId);
 	jobId = validation.checkId(jobId);
 	const user = await getUserById(userId);
-	if (user.jobsApplied.find((item) => item.id === jobId)) return true;
+	//console.log(user);
+	if (user.jobsPosted.find((item) => item.id === jobId)) return true;
 	return false
 }
 

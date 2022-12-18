@@ -1,11 +1,11 @@
 <main>
 		<br><br>
 		<form action="job/searchJobs" method="post" class="search-form" id="search-form">
-			<label for="jobsInput" class="homepageJobsInput">Search</label><br>
+			{{!-- <label for="jobsInput" class="homepageJobsInput">Search</label><br> --}}
 			<input type="text" id="jobsInput" name="jobsInput" placeholder="Search for jobs">
-			<br>
+			
 			<br><br>
-			<input type="submit" class="button">
+			<input type="submit" class="button submitJob">
 			<div class="form-group hidden" id="error-container">
 				<div class="alert alert-danger text-goes-here"></div>
 			</div>
@@ -15,7 +15,8 @@
     <ul class="homepageUl">
       {{#each jobList}}
       <li class="homepageLi">
-        <a href="/job/{{_id}}" class="joblistTitle">{{jobTitle}}</a>
+        <a href="/job/{{_id}}" class="joblistTitle">{{jobTitle}} </a> <br>
+		<a href="/job/{{_id}}" class="joblistStatus">Status: {{jobStatus}}</a>
 		<br>
 		<a href="/job/{{_id}}" class="joblistDescription"> {{jobDescription}}</a>
       </li>

@@ -7,9 +7,10 @@ const { ObjectId } = require("mongodb");
 // Return all jobs in the database
 const getAllJobs = async () => {
   const jobsCollection = await jobs();
-  const jobsList = await jobsCollection.find({}).toArray();
+  const jobsList = await jobsCollection.find({}).sort({jobCreationDate: -1}).toArray();
   if (!jobsList) throw "Could not get all jobs";
-  return jobsList;
+  const result = jobsList.filter(item=>item.jobStatus!=="Finished")
+  return result;
 };
 
 
@@ -21,16 +22,26 @@ const getJobById = async (jobId) => {
   return findJob
 };
 
+const getApplicantById = async (jobId, applicantId) => {
+  jobId = validation.checkId(jobId);
+  applicantId = validation.checkId(applicantId);
+  const jobsCollection = await jobs();
+  const findJob = await jobsCollection.findOne({ _id: ObjectId(jobId) });
+  if (!findJob) throw "Job not found";
+  const applicant = findJob.applicants.find(item => item.applicantId===applicantId)
+  return applicant
+};
+
 // Search keywords for job titles or description in the entire database
 const searchJobs = async (jobSearchQuery) => {
 
   jobSearchQuery = validation.checkSearchQuery(jobSearchQuery);
   const jobList = await jobs();
   const searchJobs = await jobList.find({ jobTitle: { $regex: jobSearchQuery, $options: "i" } }).toArray();
-  if (searchJobs.length === 0) throw "No job was found for the entered text";
-  // for(job of searchJobs) {
-  //   job._id = job._id.toString();
-  // }
+  if (searchJobs.length === 0) return []
+  for (job of searchJobs) {
+    job._id = job._id.toString();
+  }
   return searchJobs;
 
 };
@@ -44,9 +55,9 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
   // let jobAuthorPhoneNumber = null;
 
   const usersCollection = await users();
-  const user = await usersCollection.findOne({_id: ObjectId(authorId)});
+  const user = await usersCollection.findOne({ _id: ObjectId(authorId) });
   const jobAuthorPhoneNumber = user.phone;
-  console.log(user);
+  //console.log(user);
   const newJob = {
     jobTitle: jobTitle,
     jobDescription: jobDescription,
@@ -94,7 +105,7 @@ const removeJob = async (jobId) => {
   if (deleteJob.deletedCount === 0) throw "Job could not be removed";
 
   const userCollection = await users();
-  const userUpdate = await userCollection.updateOne({ _id: ObjectId(theJob.jobAuthor.id) }, { $pull: { jobsPosted: {id:jobId} } });
+  const userUpdate = await userCollection.updateOne({ _id: ObjectId(theJob.jobAuthor.id) }, { $pull: { jobsPosted: { id: jobId } } });
   if (userUpdate.modifiedCount === 0) throw "Update user info failed!"
   return `The Job: "${jobName}" has been successfully removed`;
 
@@ -122,7 +133,7 @@ const editJob = async (
   }
 
   const usersCollection = await users();
-  const author = await usersCollection.findOne({_id: ObjectId(authorId)});
+  const author = await usersCollection.findOne({ _id: ObjectId(authorId) });
   let jobToEdit = null;
   if (author.age >= 18 && author.jobsPosted) {
     for (job of author.jobsPosted) {
@@ -159,22 +170,34 @@ const editJob = async (
   return await getJobById(jobId);
 };
 
-const changeStatus = async (jobId, id)=>{
+const changeStatus = async (jobId, id, status) => {
   jobId = validation.checkId(jobId);
   id = validation.checkId(id);
   const jobsCollection = await jobs();
+  const userCollection = await users();
   const jobData = await jobsCollection.findOne({ _id: ObjectId(jobId) });
   if (jobData.jobAuthor.id != id) throw "Unauthorized Operation";
   const curStatus = jobData.jobStatus;
-  if (curStatus==="open"){
-    const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: "finished" } });
-    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!";
-    return "open";
+  if (curStatus !== status) {
+    if (status === "Finished") {
+      const applicantList = jobData.applicants
+      //console.log(applicantList)
+      for (var i = 0; i < applicantList.length; i++) {
+        var applicantId = applicantList[i].applicantId
+        await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsSaved: { id: jobId } } })
+        await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied : { id: jobId } } })
+        await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsHired: { id: jobId } } })
+      }
+      const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: status, applicants: [] } });
+      if (!statusUpdate.matchedCount && !statusUpdate.modifiedCount) throw "Update user info failed!";
+    }
+    else {
+      const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: status } });
+      if (!statusUpdate.matchedCount && !statusUpdate.modifiedCount) throw "Update user info failed!";
+    }
   }else{
-    const statusUpdate = await jobsCollection.updateOne({ _id: ObjectId(jobId) }, { $set: { jobStatus: "open" } })
-    if (statusUpdate.modifiedCount === 0) throw "Update user info failed!";
-    return "finished";
-  }
+    throw "Invalid Status Change!"
+  } 
 }
 
 module.exports = {
@@ -184,5 +207,6 @@ module.exports = {
   createJob,
   removeJob,
   editJob,
-  changeStatus
+  changeStatus,
+  getApplicantById
 };

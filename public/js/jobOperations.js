@@ -10,8 +10,14 @@ addCommentForm.addEventListener('submit', (event) => {
             if (this.status == 200) {
                 var container = document.getElementById('comment-list')
                 container.innerHTML = container.innerHTML
-                    + `<li><p>By: <a href="/id/${result.authorId}">${result.name}</a></p><p>${result.comment}</p><p>On: ${result.commentDate}</p></li>`
-            } else {
+                +`
+                <li class="comment-listLi">
+                    <p>By: <a href="/user/${result.authorId}">${result.name}</a></p>
+                    <p>${result.comment}</p>
+                    <p>On: ${result.commentDate}</p>
+                    <br>
+                </li>`
+            }else {
                 alert("Failed to add comment")
             }
         }
@@ -21,20 +27,24 @@ addCommentForm.addEventListener('submit', (event) => {
 });
 
 
-//save job js function
-function saveJob(id, saved) {
+//save/unsave job js function saved=ture for unsave, 
+function saveJob(obj, id, saved) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "saveJob", true);
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4) {
             if (this.status == 200) {
+                var newButton = document.createElement("button")
                 if (saved === true) {
-                    document.getElementById("save-job-saved").setAttribute("style", "display: none")
-                    document.getElementById("save-job-unsave").setAttribute("style", "display: initial")
+                    newButton.class = "button-save-job"
+                    newButton.innerText = "Save this Job!"
+                    newButton.onclick = new Function('saveJob(this,"{{jobDetail._id}}", false)')
                 } else {
-                    document.getElementById("save-job-saved").setAttribute("style", "display: initial")
-                    document.getElementById("save-job-unsave").setAttribute("style", "display: none")
+                    newButton.class = "button-unsave-job"
+                    newButton.innerText = "Saved!"
+                    newButton.onclick = new Function('saveJob(this,"{{jobDetail._id}}", true)')
                 }
+                obj.parentNode.replaceChild(newButton, obj)
             }
         }
     }
@@ -44,7 +54,8 @@ function saveJob(id, saved) {
 
 
 //apply for job funciton
-const applyJobForm = document.getElementById("resumeUpload")
+const applyJobForm = document.getElementById("resumeUpload");
+
 applyJobForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const form = document.getElementById("resumeUpload")
