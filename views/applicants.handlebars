@@ -37,7 +37,7 @@
   {{#each jobDetail.applicants}}
     <li>
       <a href="/user/{{applicantId}}">{{name}}</a> 
-      <a class="download-resume" href="/file/download/{{resume}}"><button>Click to Download Resume</button></a>
+      <a class="download-resume" id="resume-download-link" href="#" ><button onclick="downloadResume(this,'{{applicantId}}')">Click to Download Resume</button></a>
       {{#if hired}}
         <button class="fire-button" onclick='fire(this,"{{applicantId}}")'>Fire!</button>
       {{else}}

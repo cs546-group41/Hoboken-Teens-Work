@@ -265,7 +265,7 @@ const isJobApplied = async (userId, jobId) => {
 	jobId = validation.checkId(jobId);
 	const user = await getUserById(userId);
 	//console.log(user);
-	if (user.jobsPosted.find((item) => item.id === jobId)) return true;
+	if (user.jobsApplied.find((item) => item.id === jobId)) return true;
 	return false
 }
 
