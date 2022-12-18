@@ -88,7 +88,7 @@ router.route("/createJob")
   .post(async (req, res) => {
     if (req.session.user !== undefined) {
       try {
-        await users.getUserById(validation.checkId(req.session.user.id))
+        var user = await users.getUserById(validation.checkId(req.session.user.id))
       } catch (e) {
         req.session.destroy()
         res.status(400)
@@ -107,7 +107,7 @@ router.route("/createJob")
         title: "Creating New Job - Error",
         login: true,
         loginUserData: req.session.user,
-        phone: req.session.user.phone,
+        phone: user.phone,
         errormsg: e
       })
     }
@@ -121,7 +121,7 @@ router.route("/createJob")
         title: "Creating New Job - Error",
         login: true,
         loginUserData: req.session.user,
-        phone: req.session.user.phone,
+        phone: user.phone,
         presetJob: xss(req.body),
         errormsg: e
       })
