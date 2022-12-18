@@ -1,5 +1,5 @@
 <h1 class="IndividualJobsH1">Job detail</h1> 
-<button  class="Share-Btn"  id="shareJob" value="user/{{jobDetail.jobAuthor.id}}">Share</button>
+<button  class="Share-Btn"  id="shareJob" value="{{jobId}}">Share</button>
 <div class="individualJobs row">
 
 
@@ -22,7 +22,7 @@
 <div class="comments">
 <p>Comments:</p>
 <ul id="comment-list">
-    {{#each jobDetail.comments}}
+   {{#each jobDetail.comments}}
     <li class="comment-listLi">
         <p>By: <a href="/user/{{authorId}}">{{name}}</a></p>
         <p>{{comment}}</p>
@@ -61,7 +61,10 @@
                     <p>Upload your Resume</p>
                     <input type="file" id="resume" name="resume" accept="application/pdf"/>
                     <span id="resumeError"></span>
-                    <button>Upload</button>
+                    <button type="submit">Upload</button>
+                    <br>
+                    <span id="error"></span>
+                    <span id="error1"></span>
                 </form>
             </div>
             <p id="hired-msg" style="display : none">You Had Already Post Your Application!.</p>
