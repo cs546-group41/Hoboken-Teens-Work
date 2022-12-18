@@ -11,22 +11,22 @@ const xss = require("xss");
 
 router.route("/searchJobs").post(async (req, res) => {
   var title = "Search Results"
-  if (req.session.user !== undefined) {
-    try {
-      await users.getUserById(req.session.user.id)
-    } catch (e) {
-      req.session.destroy()
-    }
-  }
-  if (!req.session.user) {
-    //if not logged in
-    res.status(401)
-    return res.render("error", {
-      title: "Search Results - Error",
-      login: false,
-      errormsg: "You Need to Login first to use the Search Function!"
-    })
-  }
+  // if (req.session.user !== undefined) {
+  //   try {
+  //     await users.getUserById(req.session.user.id)
+  //   } catch (e) {
+  //     req.session.destroy()
+  //   }
+  // }
+  // if (!req.session.user) {
+  //   //if not logged in
+  //   res.status(401)
+  //   return res.render("error", {
+  //     title: "Search Results - Error",
+  //     login: false,
+  //     errormsg: "You Need to Login first to use the Search Function!"
+  //   })
+  // }
   try {
     var searchQuery = validation.checkSearchQuery(xss(req.body.jobsInput))
   } catch (e) {
@@ -50,12 +50,15 @@ router.route("/searchJobs").post(async (req, res) => {
       errormsg: e
     })
   }
+
   res.render("searchResults", {
     title: title,
-    login: true,
+    login: req.session.user ? true:false,
     loginUserData: req.session.user,
     searchResults: searchResults
   })
+
+
 }).all(async (req, res) => {
   //other method should not Allowed
   res.status(405)
