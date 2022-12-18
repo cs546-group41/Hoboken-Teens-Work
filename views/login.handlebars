@@ -1,0 +1,28 @@
+<body>
+<div class="login-div">
+	 <h4 class="makecenter">Login Page</h4>
+	<form action="/login" id="login-form" method="post">
+		<label for="emailInput">Enter your Email</label>
+		<input type="text" name="emailInput" id="emailInput" placeholder="Enter your email">
+		<br><br>
+		<label for="passwordInput">Enter your Password</label>
+		<input type="password" name="passwordInput" id="passwordInput" placeholder="Enter your password">
+		<br><br>
+		<button type="submit" form="login-form" class="loginBtn">Login</button>
+        <br><br>
+		<div class="form-group hidden" id="error-container">
+			<div class="alert alert-danger text-goes-here"></div>
+		</div>
+		<br>
+		<a href="/register" class="RegisterLink">Click here to register!</a>
+	</form>
+	<br><br>
+	
+	{{#if errormsg}} <h4 class="error-login">Error : {{errormsg}}</h4>{{/if}}
+	<br>
+	
+</div>
+		<script src="/public/js/loginValidation.js"></script>
+
+</body>
+

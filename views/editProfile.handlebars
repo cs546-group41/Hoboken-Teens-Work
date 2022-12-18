@@ -1,0 +1,29 @@
+<h1>Edit your profile</h1>
+<form id="edit-profile-form" action="/user/{{presetUser._id}}/editUser" method="post">
+	<label for="firstNameInput">Enter your first name</label>
+	<input type="text" name="firstNameInput" id="firstNameInput" placeholder="Enter your first name" value="{{presetUser.firstName}}"/>
+	<br /><br />
+	<label for="lastNameInput">Enter your last name</label>
+	<input type="text" name="lastNameInput" id="lastNameInput" placeholder="Enter your last name" value="{{presetUser.lastName}}" />
+	<br /><br />
+	<label for="emailInput">Enter your email</label>
+	<input type="text" name="emailInput" id="emailInput" placeholder="Enter your email" value="{{presetUser.email}}" readonly="readonly"/>
+	<br /><br />
+	<label for="ageInput">Enter your age</label>
+	<input type="text" name="ageInput" id="ageInput" placeholder="Enter your age" value="{{presetUser.age}}" readonly="readonly"/>
+	<br /><br />
+	<label for="phoneNumberInput">Enter your phone number</label>
+	<input type="text" name="phoneInput" id="phoneInput" placeholder="Enter your phone number" value="{{presetUser.phone}}"/>
+	<br /><br />
+	<label for="passwordInput">Enter New password</label>
+	<input type="password" name="passwordInput" id="passwordInput" placeholder="Enter your password"/>
+	<br /><br />
+	<div class="form-group hidden" id="error-container">
+				<div class="alert alert-danger text-goes-here"></div>
+			</div>
+	<input type="submit" value="Submit" />
+</form>
+<br /><br /><br /><br />
+{{#if errmsg}} <h4>Error message: {{errmsg}}</h4>{{/if}}
+<script src="/public/js/editProfileValidation.js"></script>
+ 

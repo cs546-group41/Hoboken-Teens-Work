@@ -1,0 +1,82 @@
+<h1 class="IndividualJobsH1">Job detail</h1> 
+<button  class="Share-Btn"  id="shareJob" value="{{jobId}}">Share</button>
+<div class="individualJobs row">
+
+
+
+
+
+<p>Job Title                :    {{jobDetail.jobTitle}}</p>
+<p>Job Description         :    {{jobDetail.jobDescription}}</p>
+<p>Job Tag         :    {{jobDetail.jobTag}}</p>
+<p>Job StreetName      :    {{jobDetail.jobStreetName}}</p>
+<p>Job Status          :    {{jobDetail.jobStatus}}</p>
+<p>Published by        :    <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<p>Contact Phone Number:    {{jobDetail.jobAuthor.phone}}</p>
+
+
+
+
+
+</div>
+<div class="comments">
+<p>Comments:</p>
+<ul id="comment-list">
+   {{#each jobDetail.comments}}
+    <li class="comment-listLi">
+        <p>By: <a href="/user/{{authorId}}">{{name}}</a></p>
+        <p>{{comment}}</p>
+        <p>On: {{commentDate}}</p>
+        <br>
+    </li>
+    {{/each}}
+</ul>
+</div>
+<br>
+{{#if login}}
+    <div>
+        <form action="/addComment" method="post" id="add-comment">
+            <label for="comment" class="label-comment">Leave a comment: </label>
+            <input type="text" class="enter-comment" id="comment" name="comment" />
+            <input type="text" class="value-block" id="jobId" name="comment" value="{{jobDetail._id}}" />
+            <br>
+            <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
+        </form><br><br>
+    </div>
+    {{#if isMinor}}
+    <div>
+        {{#if saved}}
+                <button class="button-unsave-job" onclick='saveJob(this,"{{jobDetail._id}}", true)'>Saved!</button>
+            {{else}}
+                <button class="button-save-job" onclick='saveJob(this,"{{jobDetail._id}}", false)'>Save This Job</button>
+        {{/if}}
+    </div>
+    <div>
+        {{#if isAvaliable}}
+        {{#if applied}}
+            <p>You Had Already Post Your Application!.</p>
+        {{else}}
+            <div>
+                <form id="resumeUpload" action="/file/upload" enctype="multipart/form-data" method="post">
+                    <p>Upload your Resume</p>
+                    <input type="file" id="resume" name="resume" accept="application/pdf"/>
+                    <span id="resumeError"></span>
+                    <button type="submit">Upload</button>
+                    <br>
+                    <span id="error"></span>
+                    <span id="error1"></span>
+                </form>
+            </div>
+            <p id="hired-msg" style="display : none">You Had Already Post Your Application!.</p>
+        {{/if}}
+        {{/if}}
+    </div>
+    {{/if}}
+{{/if}}
+
+<p id="value-userId" class="value-block">{{loginUserData.id}}</p>
+<p id="value-jobId" class="value-block">{{jobDetail._id}}</p>
+
+<script src="/public/js/jobOperations.js"></script>
+<script src="/public/js/commentsValidation.js"></script>
+<script src="/public/js/resumeValidation.js"></script>

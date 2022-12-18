@@ -1,0 +1,37 @@
+<main>
+		<br><br>
+		<form action="job/searchJobs" method="post" class="search-form" id="search-form">
+			<label for="searchType" class="homepageJobsInput">Search Type :</label>
+			         <select name="searchType" id="searchType" aria-placeholder="Select Search Type">
+       {{!-- <option value="" disabled selected>Search Type</option> --}}
+      <option value="JobTitle">Job Title</option>
+      <option value="JobTag">Job Tag</option>
+
+    </select>
+	<br><br>
+	<label for="jobsInput" class="keywordInput">Keyword :</label>
+			<input type="text" id="jobsInput" name="jobsInput" placeholder="Enter Keyword">
+			<br><span id="error" class="makecenter"></span>
+			<br><br>
+			<input type="submit" class="button submitJob">
+			<br>
+			<div id="error" hidden>Please input something to search</div>
+		</form>
+		<br><br>
+    <h1 class="homepageH1">Available Jobs in Hoboken right now!</h1>
+    <ul class="homepageUl">
+      {{#each jobList}}
+      <li class="homepageLi">
+        <a href="/job/{{_id}}" class="joblistTitle">{{jobTitle}} </a> <br>
+		<a href="/job/{{_id}}" class="joblistStatus">Status: {{jobStatus}}</a>
+		<br>
+		<a href="/job/{{_id}}" class="joblistDescription"> {{jobDescription}}</a>
+		<br>
+		<a href="/job/{{_id}}" class="joblistDescription">Job Tag: {{jobTag}}</a>
+      </li>
+      {{/each}}
+    </ul>
+	<script src="/public/js/searchbarValidation.js"></script>
+	    <script src="https://code.jquery.com/jquery-3.6.2.js" integrity="sha256-pkn2CUZmheSeyssYw3vMp1+xyub4m+e+QK4sQskvuo4=" crossorigin="anonymous"></script>
+
+</main>

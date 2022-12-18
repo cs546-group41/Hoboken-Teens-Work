@@ -1,0 +1,42 @@
+
+<div class="login-div">
+<h4 class="makecenter">Registration Page</h4>
+<form  action="/register" id="registration-form" method="post">
+		<label for="firstNameInput">Enter your First Name</label>
+		<input type="text" name="firstNameInput" id="firstNameInput" placeholder="Enter your first name">
+		<br><br>
+		<label for="lastNameInput">Enter your Last Name</label>
+		<input type="text" name="lastNameInput" id="lastNameInput" placeholder="Enter your last name">
+		<br><br>
+		<label for="emailInput">Enter your Email</label>
+		<input type="text" name="emailInput" id="emailInput" placeholder="Enter your email">
+		<br><br>
+		<label for="ageInput">Enter your Age</label>
+		<input type="text" name="ageInput" id="ageInput" placeholder="Enter your age">
+		<br><br>
+		<label for="phoneNumberInput">Enter your Phone Number</label>
+		<input type="text" name="phoneNumberInput" id="phoneNumberInput" placeholder="Enter your phone number">
+		<br><br>
+		<label for="passwordInput">Create a Password</label>
+		<input type="password" name="passwordInput" id="passwordInput" placeholder="Enter your password">
+		<br><br>
+		
+		<button type="submit" form="registration-form" class="loginBtn">Register</button>
+		<br>
+		 <a class="signupLogin" href="/login">Click here to Login!</a>
+		{{!-- <br>
+			<a href="/" class="RegisterLink">Already have an account? Click here to login</a> --}}
+		<div class="form-group hidden" id="error-container">
+		  <div class="alert alert-danger text-goes-here"></div>
+		</div>
+	</form>
+</div>
+
+
+	
+	<br><br><br><br>
+	{{#if errormsg}} <h4>Error : {{errormsg}}</h4>{{/if}}
+	<br>
+	{{!-- <a href="/">Already have an account? Click here to login</a> --}}
+	<script src="/public/js/signUpValidation.js"></script>
+
