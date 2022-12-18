@@ -135,6 +135,17 @@ function checkJobStreetName(streetName) {
   }
 }
 
+function checkJobTag(jobTag) {
+	if (!jobTag) throw "Must enter a job tag";
+	if (typeof jobTag !== "string") throw "Job tag must be a string";
+	jobTag = jobTag.trim();
+	if (jobTag.length === 0) throw "Job tag cannot be empty spaces";
+	if (jobTag.length < 5) throw "Job tag must have at least 5 characters";
+
+	return jobTag;
+}
+
+
 function checkJobStatus(status) {
 	status = checkString(status);
 
@@ -150,7 +161,7 @@ function checkSearchQuery(searchQuery) {
 	searchQuery = searchQuery.trim();
 	if (searchQuery.length === 0) throw "Only blank spaces are not allowed";
 	let reg = /^[A-Z a-z 0-9]*$/gm;
-	if (!searchQuery.match(reg)) throw "Search can only contain letters and numbers";
+	//if (!searchQuery.match(reg)) throw "Search can only contain letters and numbers";
 	return searchQuery;
 }
 
@@ -180,5 +191,6 @@ module.exports = {
 	checkJobStatus,
 	checkSearchQuery,
 	encryptPwd,
-	validatePwd
+	validatePwd,
+	checkJobTag
 };
