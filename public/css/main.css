@@ -547,3 +547,17 @@ a:hover {
 .value-block{
   display: none;
 }
+.postJobs{
+  position: relative;
+    left: 48%;
+    margin-bottom: 20px;
+}
+.ulJobs{
+  position: relative;
+  left: 48%;
+  margin-bottom: 20px;;
+}
+.signupLogin{
+  margin-left: 30%;
+  margin-top: 20px;
+}
