@@ -49,10 +49,13 @@ function checkAge(age) {
 function checkPhone(phone) {
   if (!phone) return "N/A";
   const regex = /[^0-9]/;
-  phone = phone.trim();
+  const phoneTrimmed = phone.trim();
+  if(phoneTrimmed.length !== 0){
   if (regex.test(phone)) throw "Phone number must contain only integer number";
   if (phone.length !== 10) throw "Phone number must have 10 digits";
   return phone;
+  }
+  else return true
 }
 function checkPassword(strVal) {
 	const oneUpper = /[A-Z]/;
