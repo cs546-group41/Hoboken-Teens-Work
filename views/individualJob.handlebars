@@ -1,17 +1,19 @@
 <meta name="varUserId" content="{{loginUserData.id}}">
 <meta name="varJobId" content="{{jobDetail._id}}">
 
-<h1 class="IndividualJobsH1">Job detail</h1>
+<h1 class="IndividualJobsH1">Job detail</h1> 
+<button type="button" class="Share-Btn" onclick="shareBtn({{jobDetail.jobAuthor.id}});" id="shareJob">Share</button>
 <div class="individualJobs row">
 
 
 
 
 
-<p>job                 :    {{jobDetail.jobTitle}}</p>
-<p>Description         :    {{jobDetail.jobDescription}}</p>
-<p>job StreetName      :    {{jobDetail.jobStreetName}}</p>
-<p>job Status          :    {{jobDetail.jobStatus}}</p>
+<p>Job Title                :    {{jobDetail.jobTitle}}</p>
+<p>Job Description         :    {{jobDetail.jobDescription}}</p>
+<p>Job Tag         :    {{jobDetail.jobTag}}</p>
+<p>Job StreetName      :    {{jobDetail.jobStreetName}}</p>
+<p>Job Status          :    {{jobDetail.jobStatus}}</p>
 <p>Published by        :    <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
 <p>Contact Phone Number:    {{jobDetail.jobAuthor.phone}}</p>
 

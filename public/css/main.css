@@ -103,6 +103,13 @@ nav{
 }
 .homepageJobsInput{
   text-align: center;
+  position: relative;
+  left: 40%;
+}
+.keywordInput{
+  text-align: center;
+  position: relative;
+  left: 40%;
 }
 .homepageLi{
   justify-content: center;
@@ -186,6 +193,7 @@ text-align: center;
 color: rgb(0, 0, 0);
 margin-top: 30px;
 margin-bottom: 20px;
+text-decoration: underline;
 }
 .individualJobs{
   justify-content: center;
@@ -335,12 +343,12 @@ margin-bottom: 20px;
   display: inline-block;
   font-size: 16px;
   position: relative;
-  left: 40%;
+  left: 32%;
   cursor: pointer;
 }
 .RegisterLink{
   position: relative;
-  left: 37%;
+  left: 25%;
 }
 .footerText{
   position:relative;
@@ -367,11 +375,17 @@ input[type="text"], input[type="password"],select {
 {
   width: 20%;
   position: relative;
+  left: 41%;
+}
+#searchType
+{
+  width: 20%;
+  position: relative;
   left: 40%;
 }
 .submitJob{
   position: relative;
-  right: 47%;
+  right: 43%;
 }
 .enter-comment{
   width: 30%;
@@ -412,3 +426,57 @@ text-align: center;}
   color: white;
   transition: 0.3s;
 }
+.login-div{
+  border-style: groove;
+  width: 40%;
+  position: relative;
+  left: 30%;
+}
+.error-login{
+  text-align: center;
+}
+
+#error-container{
+  margin-left: 20%;
+}
+.error-login{
+  margin-left: 25%;
+}
+
+    #registration-form{
+      width: 70%;
+      position: relative;
+      left: 15%;
+      margin-bottom: 10%;
+    }
+    .Share-Btn{
+      position: relative;
+      left: 48%;
+      border: 0;
+      line-height: 2.5;
+      padding: 0 20px;
+      font-size: 1rem;
+      text-align: center;
+      color: #fff;
+      text-shadow: 1px 1px 1px #000;
+      border-radius: 10px;
+      background-color: rgb(63, 24, 237);
+      margin-bottom: 2%;
+    }
+
+    .submitJobBtn {
+      background-color: #8a908a;
+      border-radius: 1%;
+      color: white;
+      padding: 10px 25px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      position: relative;
+      left: 40%;
+      cursor: pointer;
+  }
+  a:hover{
+    cursor: pointer;
+  }
