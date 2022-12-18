@@ -173,9 +173,9 @@
         {{#if hideLogin}}
         {{else}}
         {{#if login}}
-        <p>User Status : Logged in</p>
-        <a href="/user/{{loginUserData.id}}">{{loginUserData.fullName}}</a><br><br>
-        <a href="/logout">Click to logout</a>
+        <h1>User Status : Logged in</h1>
+        <a class="homepageLoginAndSignup" href="/user/{{loginUserData.id}}">{{loginUserData.fullName}}</a><br><br>
+        <a class="homepageLoginAndSignup" href="/logout">Click to logout</a>
         {{else}}
         <p>User Status : Not logged in</p>
         <div>
