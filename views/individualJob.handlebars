@@ -1,9 +1,8 @@
-
 <meta name="varUserId" content="{{loginUserData.id}}">
 <meta name="varJobId" content="{{jobDetail._id}}">
 
 <h1 class="IndividualJobsH1">Job detail</h1> 
-<button  class="Share-Btn"  id="shareJob" value="{{jobId}}">Share</button>
+<button  class="Share-Btn"  id="shareJob" value="/user/{{jobDetail.jobAuthor.id}}">Share</button>
 <div class="individualJobs row">
 
 
@@ -41,13 +40,10 @@
     <div>
         <form action="/addComment" method="post" id="add-comment">
             <label for="comment" class="label-comment">Leave a comment: </label>
-            <input type="text" class="enter-comment" id="comment" name="comment" >
-            <input type="text" class="enter-comment" id="jobId" name="comment" value="{{jobDetail._id}}" style="display: none;">
+            <input type="text" class="enter-comment" id="comment" name="comment" />
+            <input type="text" class="enter-comment" id="jobId" name="comment" value="{{jobDetail._id}}" style="display: none;"/>
             <br>
             <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
-            <div class="form-group hidden" id="error-container">
-				<div class="alert alert-danger text-goes-here"></div>
-			</div>
         </form><br><br>
     </div>
     {{#if isMinor}}
@@ -67,9 +63,8 @@
                 <form id="resumeUpload" enctype="multipart/form-data" method="post">
                     <p>Upload your Resume</p>
                     <input type="file" id="resume" name="resume" accept="application/pdf"/>
-                    <button>Upload</button>
-                    <br>
                     <span id="resumeError"></span>
+                    <button>Upload</button>
                 </form>
             </div>
             <p id="hired-msg" style="display : none">You Had Already Post Your Application!.</p>
@@ -81,4 +76,3 @@
 <script src="/public/js/jobOperations.js"></script>
 <script src="/public/js/commentsValidation.js"></script>
 <script src="/public/js/resumeValidation.js"></script>
-{{/if}}
