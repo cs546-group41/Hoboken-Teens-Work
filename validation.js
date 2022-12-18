@@ -147,6 +147,7 @@ function checkJobStreetName(streetName) {
 }
 
 function checkJobTag(jobTag) {
+	console.log(jobTag)
 	if (!jobTag) throw "Must enter a job tag";
 	if (typeof jobTag !== "string") throw "Job tag must be a string";
 	jobTag = jobTag.trim();
@@ -158,8 +159,8 @@ function checkJobTag(jobTag) {
 	}
 	else{
 		const tagList = jobTag.split(",")
-		for (item in tagList){
-			checkString(item)
+		for (i=0;i<tagList.length;i++){
+			checkString(tagList[i])
 		}
 		return jobTag
 	}
