@@ -1,5 +1,5 @@
 function initialize() {
-    var isTaken = document.querySelectorAll("button.fire-button");
+    const isTaken = document.querySelectorAll("button.fire-button");
     if (isTaken.length > 0) {
         const hireButton = document.querySelectorAll('button.hire-button');
         hireButton.forEach(hireButton => {
@@ -46,10 +46,13 @@ function hire(obj, applicantId) {
                 for (var i = elements.length - 1; i >= 0; i--) {
                     elements[i].parentNode.removeChild(elements[i]);
                 }
+                var statusTxt = document.getElementById('jobStatusMsg')
+                statusTxt.innerText = "Taken"
                 location.reload();
             }
-            var statusTxt = document.getElementById('jobStatusMsg')
-            statusTxt.innerText = "Taken"
+            else{
+                alert("Hire applicant Failed!")
+            }
         }
     }
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -77,11 +80,21 @@ function fire(obj, applicantId) {
                 statusTxt.innerText = "Open"
                 location.reload();
             }
+            else{
+                alert("Fire applicant Failed!")
+            }
         }
     }
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(`authorId=${user}&jobId=${jobId}&applicantId=${applicantId}`);
 }
+
+function downloadResume(obj, applicantId){
+    const jobId = document.getElementById("value-jobId").innerText
+    obj.parentNode.href = `/file/download/${jobId}/${applicantId}`
+    console.log(obj.parentNode.href)
+}
+
 
 const addCommentForm = document.getElementById("add-comment")
 if(addCommentForm){
