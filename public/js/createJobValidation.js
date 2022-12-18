@@ -33,7 +33,6 @@ function checkJobTag(jobTag) {
 
 
 const staticForm = document.getElementById("create-Job");
-console.log(staticForm)
 if (staticForm) {
     const errorContainer = document.getElementById('error-container')
     const errorTextElem = document.getElementsByClassName('text-goes-here')[0];
@@ -47,7 +46,7 @@ if (staticForm) {
     
 
     staticForm.addEventListener('submit', (event) => {
-        console.log("Inside submit")
+        //console.log("Inside submit")
         
         try {
             errorContainer.classList.add('hidden')
