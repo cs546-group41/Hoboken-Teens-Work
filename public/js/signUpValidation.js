@@ -23,7 +23,7 @@ function checkLastName(input) {
     throw "Last name cannot have more than one apostrophe";
   let countHyphen = 0;
   for (char of input) if (char === "-") countHyphen++;
-  if (countHyphen > 1) throw "Last name cannot have more than one countHyphen";
+  if (countHyphen > 1) throw "Last name cannot have more than one hyphen";
 }
 
 function checkEmail(email) {
@@ -56,7 +56,7 @@ function checkPhone(phone) {
 }
 function checkPassword(strVal) {
   const oneUpper = /[A-Z]/;
-  const oneLower = /[a-Z]/;
+  const oneLower = /[a-z]/;
   const oneNumber = /[0-9]/;
   const specialChar = /[^\w\s]/;
   if (!strVal) throw "You must supply a password!";
