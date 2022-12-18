@@ -18,6 +18,7 @@ if(addCommentForm){
                         <p>On: ${result.commentDate}</p>
                         <br>
                     </li>`
+                    location.reload();
                 }else {
                     alert("Failed to add comment")
                 }
@@ -61,6 +62,10 @@ function saveJob(obj, id, saved) {
                     newButton.onclick = new Function('saveJob(this,"{{jobDetail._id}}", true)')
                 }
                 obj.parentNode.replaceChild(newButton, obj)
+                location.reload();
+            }
+            else{
+                alert("Unsave job Failed!")
             }
         }
     }
@@ -77,15 +82,16 @@ if(applyJobForm)
         event.preventDefault();
         const form = document.getElementById("resumeUpload")
         const formData = new FormData(form);
-        formData.append("jobId", document.getElementsByName("varJobId")[0].content)
         var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "/file/upload", true);
+        xhttp.open("POST", `/file/upload/${document.getElementById("value-userId").innerText}/${document.getElementById("value-jobId").innerText}`, true);
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 if (this.status == 200) {
                     form.parentNode.parentNode.removeChild(form.parentNode);
-                    document.getElementById("hired-msg").setAttribute("style", "display: initial")
-                } else {
+                    location.reload();
+                } 
+                else{
+                    alert("Apply for job Failed!")
                 }
             }
         }

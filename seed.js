@@ -26,40 +26,40 @@ async function main() {
 		console.log(err);
 	}
 
-	try {
-		secondUser = await users.createUser("Jane", "Doe", "janedoe@email.com", 30, "Test@123", "0385943712");
-		console.log(secondUser);
-	} catch (err) {
-		console.log(err);
-	}
+	// try {
+	// 	secondUser = await users.createUser("Jane", "Doe", "janedoe@email.com", 30, "Test@123", "0385943712");
+	// 	console.log(secondUser);
+	// } catch (err) {
+	// 	console.log(err);
+	// }
 
-	try {
-		thirdUser = await users.createUser("Derek", "Anderson", "anderson@email.com", 16, "TEST@123", "4950327384");
-		console.log(thirdUser);
-	} catch (err) {
-		console.log(err);
-	}
+	// try {
+	// 	thirdUser = await users.createUser("Derek", "Anderson", "anderson@email.com", 16, "TEST@123", "4950327384");
+	// 	console.log(thirdUser);
+	// } catch (err) {
+	// 	console.log(err);
+	// }
 
-	try {
-		fourthUser = await users.createUser("Joel", "Carrey", "joelcarrey@gmail.com", 13, "Test@123", "8946783471");
-		console.log(fourthUser);
-	} catch (err) {
-		console.log(err);
-	}
+	// try {
+	// 	fourthUser = await users.createUser("Joel", "Carrey", "joelcarrey@gmail.com", 13, "Test@123", "8946783471");
+	// 	console.log(fourthUser);
+	// } catch (err) {
+	// 	console.log(err);
+	// }
 
-	try {
-		fifthUser = await users.createUser("Gale", "Hyatt", "galehyatt@hotmail.com", 42, "Test@123", "9374856124");
-		console.log(fifthUser);
-	} catch (err) {
-		console.log(err);
-	}
+	// try {
+	// 	fifthUser = await users.createUser("Gale", "Hyatt", "galehyatt@hotmail.com", 42, "Test@123", "9374856124");
+	// 	console.log(fifthUser);
+	// } catch (err) {
+	// 	console.log(err);
+	// }
 
-	try {
-		sixthUser = await users.createUser("Test", "Account", "testacc@email.com", 18, "Test@123", "4756283467");
-		console.log(sixthUser);
-	} catch (err) {
-		console.log(err);
-	}
+	// try {
+	// 	sixthUser = await users.createUser("Test", "Account", "testacc@email.com", 18, "Test@123", "4756283467");
+	// 	console.log(sixthUser);
+	// } catch (err) {
+	// 	console.log(err);
+	// }
 
 	// try {
 	// 	console.log("\n\nGet user by ID\n");
@@ -108,14 +108,14 @@ async function main() {
 	// 	console.log(e);
 	// }
 
-	try {
-		newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", secondUser._id);
-		console.log("The new job:");
-		console.log(newJob);
-		// console.log(await users.getUserById(firstUser._id));
-	} catch (e) {
-		console.log(e);
-	}
+	// try {
+	// 	newJob = await jobs.createJob("Car Wash", "Need urgent car wash for my Toyota Highlander Hybrid. I will provide all cleaning supplies required for the task.", "12th St", secondUser._id);
+	// 	console.log("The new job:");
+	// 	console.log(newJob);
+	// 	// console.log(await users.getUserById(firstUser._id));
+	// } catch (e) {
+	// 	console.log(e);
+	// }
 
 	// try {
 	// 	console.log("All jobs by user");

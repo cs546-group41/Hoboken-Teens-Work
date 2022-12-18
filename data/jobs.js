@@ -33,32 +33,29 @@ const getApplicantById = async (jobId, applicantId) => {
 };
 
 // Search keywords for job titles or description in the entire database
-const searchJobs = async (jobSearchQuery,searchType) => {
+const searchJobs = async (jobSearchQuery, searchType) => {
 
   jobSearchQuery = validation.checkSearchQuery(jobSearchQuery);
   const jobList = await jobs();
   if(searchType == "JobTag")
   {
-    console.log(jobList);
-    const searchJobs = await jobList.find({ jobTag: { $regex: jobSearchQuery, $options: "i" }}).toArray();
-    console.log(searchJobs);
-  if (searchJobs.length === 0) return []
-  for (job of searchJobs) {
-    job._id = job._id.toString();
-  }
-  return searchJobs;
+    //console.log(jobList);
+    const searchJobs = await jobList.find({ jobTag: {$regex: new RegExp("^" + jobSearchQuery + "$", "i") }}).toArray();
+    //console.log(searchJobs);
+    if (searchJobs.length === 0) return []
+    for (job of searchJobs) {
+      job._id = job._id.toString();
+    }
+    return searchJobs;
   }
   else{
-    const searchJobs = await jobList.find({ jobTitle: { $regex: jobSearchQuery, $options: "i" }}).toArray();
-     
-  if (searchJobs.length === 0) return []
-  for (job of searchJobs) {
-    job._id = job._id.toString();
+    const searchJobs = await jobList.find({ jobTitle: { $regex: jobSearchQuery, $options: "i" }}).toArray();   
+    if (searchJobs.length === 0) return []
+    for (job of searchJobs) {
+      job._id = job._id.toString();
+    }
+    return searchJobs;
   }
-  return searchJobs;
-  }
-
-
 };
 
 // Create a new job posting
@@ -67,6 +64,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId, jobT
   jobDescription = validation.checkJobDescription(jobDescription);
   jobStreetName = validation.checkJobStreetName(jobStreetName);
   jobTag = validation.checkJobTag(jobTag);
+  jobTag = jobTag.split(",")
   authorId = validation.checkId(authorId);
 
   const usersCollection = await users();
@@ -141,6 +139,7 @@ const editJob = async (
   jobDescription = validation.checkJobDescription(jobDescription);
   jobStreetName = validation.checkJobStreetName(jobStreetName);
   jobTag = validation.checkJobTag(jobTag);
+  jobTag = jobTag.split(",")
   authorId = validation.checkId(authorId);
 
   if (phoneNumber) {

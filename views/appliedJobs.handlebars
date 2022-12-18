@@ -1,5 +1,3 @@
-<meta name="applicantId" content="{{loginUserData.id}}" />
-
 <p>Job Applied:</p>
 {{#each curUser.jobsApplied}}
 <li>
@@ -7,4 +5,5 @@
 </li>
 {{/each}}
 
+<p id="value-applicantId" class="value-block">{{loginUserData.id}}</p>
 <script src="/public/js/appliedJobOperation.js"></script>

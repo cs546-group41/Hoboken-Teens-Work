@@ -1,3 +1,4 @@
+const { checkPhone } = require("../../validation");
 
 function checkJobTitle(title) {
 	if (!title) throw "Must provide a job title";
@@ -41,7 +42,8 @@ if (staticForm) {
     const JobDescriptionInput = document.getElementById("jobDescription")
     const JobStreet = document.getElementById("jobStreetName")
     const JobTag = document.getElementById("jobTag")
-    console.log(JobStreet)
+    const Phone = document.getElementById("phone")
+    
     
 
     staticForm.addEventListener('submit', (event) => {
@@ -53,12 +55,17 @@ if (staticForm) {
             const jobDescriptionValue = JobDescriptionInput.value;
             const jobStreetValue = JobStreet.value;
             const JobTagInputValue = JobTag.value;
-
+            var validatePhone = true
+            if (Phone) {
+                const PhoneValue = Phone.value
+                validatePhone = checkPhoneTag(PhoneValue)
+            }
             const validatedJobTitle = checkJobTitle(JobTitleInputValue)
             const validatedJobDescription = checkJobDescription(jobDescriptionValue)
             const validatedJobTag = checkJobTag(JobTagInputValue)
+            
             if (validatedJobDescription
-             && validatedJobTitle && validatedJobTag) {
+             && validatedJobTitle && validatedJobTag && validatePhone) {
                 errorContainer.style.display = "none"
             }
             if(jobStreetValue == "Select Street") throw "Please select a job Street"
@@ -70,13 +77,3 @@ if (staticForm) {
         }
     })
 }
-
-// $('#Submit').click(function(){
-//     var ddlvalue= $("#dropdownid option:selected").val();
-//     if(ddlvalue!='-1')
-//     {    
-//         errorContainer.style.display = "none"
-//     }
-//   else
-//   alert('Please select Location');
-//    });

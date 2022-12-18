@@ -1,5 +1,5 @@
 function initialize() {
-    var isTaken = document.querySelectorAll("button.fire-button");
+    const isTaken = document.querySelectorAll("button.fire-button");
     if (isTaken.length > 0) {
         const hireButton = document.querySelectorAll('button.hire-button');
         hireButton.forEach(hireButton => {
@@ -30,8 +30,8 @@ function changeStatus(id, curStatus) {
 }
 
 function hire(obj, applicantId) {
-    var user = document.getElementsByName('authorId')[0].content;
-    var jobId = document.getElementsByName('jobId')[0].content;
+    var user = document.getElementById("value-authorId").innerText
+    var jobId = document.getElementById("value-jobId").innerText
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", `/job/hire`, true);
     xhttp.onreadystatechange = function () {
@@ -46,10 +46,13 @@ function hire(obj, applicantId) {
                 for (var i = elements.length - 1; i >= 0; i--) {
                     elements[i].parentNode.removeChild(elements[i]);
                 }
+                var statusTxt = document.getElementById('jobStatusMsg')
+                statusTxt.innerText = "Taken"
                 location.reload();
             }
-            var statusTxt = document.getElementById('jobStatusMsg')
-            statusTxt.innerText = "Taken"
+            else{
+                alert("Hire applicant Failed!")
+            }
         }
     }
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -57,8 +60,8 @@ function hire(obj, applicantId) {
 }
 
 function fire(obj, applicantId) {
-    var user = document.getElementsByName('authorId')[0].content;
-    var jobId = document.getElementsByName('jobId')[0].content;
+    var user = document.getElementById("value-authorId").innerText
+    var jobId = document.getElementById("value-jobId").innerText
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", `/job/fire`, true);
     xhttp.onreadystatechange = function () {
@@ -77,38 +80,49 @@ function fire(obj, applicantId) {
                 statusTxt.innerText = "Open"
                 location.reload();
             }
+            else{
+                alert("Fire applicant Failed!")
+            }
         }
     }
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(`authorId=${user}&jobId=${jobId}&applicantId=${applicantId}`);
 }
 
+function downloadResume(obj, applicantId){
+    const jobId = document.getElementById("value-jobId").innerText
+    obj.parentNode.href = `/file/download/${jobId}/${applicantId}`
+    console.log(obj.parentNode.href)
+}
+
+
 const addCommentForm = document.getElementById("add-comment")
-addCommentForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "addComment", true);
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4) {
-            var result = JSON.parse(xhttp.response).results;
-            if (this.status == 200) {
-                var container = document.getElementById('comment-list')
-                container.innerHTML = container.innerHTML
-                +`
-                <li class="comment-listLi">
-                    <p>By: <a href="/user/${result.authorId}">${result.name}</a></p>
-                    <p>${result.comment}</p>
-                    <p>On: ${result.commentDate}</p>
-                    <br>
-                </li>`
-            }else {
-                alert("Failed to add comment")
+if(addCommentForm){
+    addCommentForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "addComment", true);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                var result = JSON.parse(xhttp.response).results;
+                if (this.status == 200) {
+                    var container = document.getElementById('comment-list')
+                    container.innerHTML = container.innerHTML
+                    +`
+                    <li class="comment-listLi">
+                        <p>By: <a href="/user/${result.authorId}">${result.name}</a></p>
+                        <p>${result.comment}</p>
+                        <p>On: ${result.commentDate}</p>
+                        <br>
+                    </li>`
+                }else {
+                    alert("Failed to add comment")
+                }
             }
         }
-    }
-    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhttp.send(`jobId=${this.jobId.value}&comment=${this.comment.value}`);
-});
-
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhttp.send(`jobId=${this.jobId.value}&comment=${this.comment.value}`);
+    });
+}
 
 initialize()

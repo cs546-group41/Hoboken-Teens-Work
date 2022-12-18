@@ -44,6 +44,15 @@ function checkLastName(input) {
 	return input;
 }
 
+function checkFullName(input){
+	input = checkString(input);
+	names = input.split(" ")
+	if (names.length<2) throw "Name sytax Error"
+	checkFirstName(names[0])
+	checkLastName(names[1])
+	return input
+}
+
 function checkEmail(email) {
 	email = checkString(email);
 	email = email.toLowerCase();
@@ -143,15 +152,23 @@ function checkJobTag(jobTag) {
 	jobTag = jobTag.trim();
 	if (jobTag.length === 0) throw "Job tag cannot be empty spaces";
 	if (jobTag.length < 5) throw "Job tag must have at least 5 characters";
-
-	return jobTag;
+	if (jobTag.indexOf(",")<0){
+		jobTag = checkString(jobTag)
+		return jobTag
+	}
+	else{
+		const tagList = jobTag.split(",")
+		for (item in tagList){
+			checkString(item)
+		}
+		return jobTag
+	}
 }
 
 
 function checkJobStatus(status) {
 	status = checkString(status);
-
-	if (["Open", "Finished"].includes(status)) {
+	if (["Open", "Finished", "Taken"].includes(status)) {
 		return status;
 	} else {
 		throw "Invalid job status";
@@ -182,6 +199,7 @@ module.exports = {
 	checkString,
 	checkFirstName,
 	checkLastName,
+	checkFullName,
 	checkId,
 	checkPassword,
 	checkAge,
