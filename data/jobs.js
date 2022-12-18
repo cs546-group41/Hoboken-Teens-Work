@@ -57,7 +57,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId) => {
   const usersCollection = await users();
   const user = await usersCollection.findOne({ _id: ObjectId(authorId) });
   const jobAuthorPhoneNumber = user.phone;
-  console.log(user);
+  //console.log(user);
   const newJob = {
     jobTitle: jobTitle,
     jobDescription: jobDescription,
@@ -181,7 +181,7 @@ const changeStatus = async (jobId, id, status) => {
   if (curStatus !== status) {
     if (status === "Finished") {
       const applicantList = jobData.applicants
-      console.log(applicantList)
+      //console.log(applicantList)
       for (var i = 0; i < applicantList.length; i++) {
         var applicantId = applicantList[i].applicantId
         await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsSaved: { id: jobId } } })

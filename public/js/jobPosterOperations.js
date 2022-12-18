@@ -19,6 +19,7 @@ function changeStatus(id, curStatus) {
                 var container = document.getElementById("jobStatusMsg")
                 if (curStatus === "Open" || curStatus === "Taken") container.innerText = "Finished"
                 else container.innerText = "Open"
+                location.reload();
             }
         }
     }
@@ -45,6 +46,7 @@ function hire(obj, applicantId) {
                 for (var i = elements.length - 1; i >= 0; i--) {
                     elements[i].parentNode.removeChild(elements[i]);
                 }
+                location.reload();
             }
             var statusTxt = document.getElementById('jobStatusMsg')
             statusTxt.innerText = "Taken"
@@ -61,7 +63,7 @@ function fire(obj, applicantId) {
     xhttp.open("POST", `/job/fire`, true);
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4) {
-            if (this.status == 200) {
+            if (this.status == 200 || this.status=== 202) {
                 obj.parentNode.parentNode.removeChild(obj.parentNode);
                 var applicantDOM = document.querySelectorAll("ul.applicants-list li");
                 for (var v = 0; v < applicantDOM.length; v++) {
@@ -73,12 +75,40 @@ function fire(obj, applicantId) {
                 }
                 var statusTxt = document.getElementById('jobStatusMsg')
                 statusTxt.innerText = "Open"
+                location.reload();
             }
         }
     }
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(`authorId=${user}&jobId=${jobId}&applicantId=${applicantId}`);
 }
+
+const addCommentForm = document.getElementById("add-comment")
+addCommentForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "addComment", true);
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            var result = JSON.parse(xhttp.response).results;
+            if (this.status == 200) {
+                var container = document.getElementById('comment-list')
+                container.innerHTML = container.innerHTML
+                +`
+                <li class="comment-listLi">
+                    <p>By: <a href="/user/${result.authorId}">${result.name}</a></p>
+                    <p>${result.comment}</p>
+                    <p>On: ${result.commentDate}</p>
+                    <br>
+                </li>`
+            }else {
+                alert("Failed to add comment")
+            }
+        }
+    }
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send(`jobId=${this.jobId.value}&comment=${this.comment.value}`);
+});
 
 
 initialize()

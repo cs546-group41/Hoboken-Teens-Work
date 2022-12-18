@@ -4,7 +4,7 @@ const data = require('../data')
 const users = data.users
 const validation = require("../validation");
 const xss = require("xss");
-
+const path = require("path")
 
 router
   .route("/")
@@ -46,6 +46,10 @@ router
         errormsg: e
       })
     }
+  })
+  .all(async (req, res) => {
+    res.status(400)
+    res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 
 module.exports = router;

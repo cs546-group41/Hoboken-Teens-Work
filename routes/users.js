@@ -27,7 +27,11 @@ router.route("/deleteJob/:id").delete(async (req, res) => {
 		res.status(404).json({ result: "failed" });
 		return;
 	}
-});
+})
+	.all(async (req, res) => {
+		res.status(400)
+		res.sendFile(path.resolve("static/inValidRequest.html"));
+	});
 
 router.route("/:id").get(async (req, res) => {
 	//code here for GET
@@ -57,7 +61,11 @@ router.route("/:id").get(async (req, res) => {
 			errormsg: e,
 		});
 	}
-});
+})
+	.all(async (req, res) => {
+		res.status(400)
+		res.sendFile(path.resolve("static/inValidRequest.html"));
+	});
 
 router.route("/:id/savedJob").get(async (req, res) => {
 	//code here for GET
@@ -79,7 +87,11 @@ router.route("/:id/savedJob").get(async (req, res) => {
 			errormsg: e,
 		});
 	}
-});
+})
+	.all(async (req, res) => {
+		res.status(400)
+		res.sendFile(path.resolve("static/inValidRequest.html"));
+	});
 
 router.route("/:id/appliedJob").get(async (req, res) => {
 	if (!req.session.user) return res.redirect("/index");
@@ -100,7 +112,11 @@ router.route("/:id/appliedJob").get(async (req, res) => {
 			errormsg: e,
 		});
 	}
-});
+})
+	.all(async (req, res) => {
+		res.status(400)
+		res.sendFile(path.resolve("static/inValidRequest.html"));
+	});
 
 router.route("/:id/appliedJob/withdraw/:jobId").post(async (req, res) => {
 	if (!req.session.user) return res.sendStatus(401)
@@ -110,22 +126,25 @@ router.route("/:id/appliedJob/withdraw/:jobId").post(async (req, res) => {
 		var filePath = applicant.resume
 		filePath = path.join(__dirname, `../${filePath}`)
 		//console.log(filePath)
-		await users.withdrawJobApplication(req.params.jobId,req.params.id)
-		try{
+		await users.withdrawJobApplication(req.params.jobId, req.params.id)
+		try {
 			fs.unlinkSync(filePath);
-		  }catch(e){
+		} catch (e) {
 			console.log(e)
 			return res.sendStatus(200)
-		} 
+		}
 		return res.sendStatus(200)
 	} catch (e) {
 		console.log(e)
 		res.sendStatus(400)
 	}
-});
+})
+	.all(async (req, res) => {
+		res.status(400)
+		res.sendFile(path.resolve("static/inValidRequest.html"));
+	});
 
-router
-	.route("/:id/editUser")
+router.route("/:id/editUser")
 	.get(async (req, res) => {
 		if (!req.session.user) return res.redirect("/index");
 		if (req.session.user.id !== req.params.id) return res.redirect("/index");
@@ -154,7 +173,7 @@ router
 			await users.editUser(req.params.id, xss(req.body.firstNameInput), xss(req.body.lastNameInput), xss(req.body.phoneInput), xss(req.body.passwordInput));
 			res.redirect(`/user/${req.params.id}`);
 		} catch (e) {
-			try{
+			try {
 				const userData = await users.getUserById(req.session.user.id)
 				res.render("editProfile", {
 					title: `Edit Profile - ${req.session.user.fullName}`,
@@ -163,17 +182,21 @@ router
 					presetUser: userData,
 					errmsg: e,
 				});
-			}catch(e2){
+			} catch (e2) {
 				return res.render("error", {
 					title: `Error`,
 					login: true,
 					loginUserData: req.session.user,
 					errormsg: e2,
-				});	
+				});
 			}
 		}
+	})
+	.all(async (req, res) => {
+		res.status(400)
+		res.sendFile(path.resolve("static/inValidRequest.html"));
 	});
 
-	
+
 
 module.exports = router;

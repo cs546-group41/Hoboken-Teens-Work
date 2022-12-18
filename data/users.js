@@ -153,9 +153,9 @@ const applyForJob = async (userId, jobId, filePath) => {
 		throw "Already applied for this job!"
 	} else {
 		const applyJob = await jobCollection.updateOne({ _id: ObjectId(jobId) }, { $push: { applicants: applicantInfo } });
-		if (!applyJob.matchedCount && !applyJob.modifiedCount) throw "Apply failed!";
+		if (!applyJob.matchedCount && !applyJob.modifiedCount) throw "Apply failed msg1!";
 		const applyjobUser = await userCollection.updateOne({ _id: ObjectId(userId) }, { $push: { jobsApplied: jobShortInfo } });
-		if (!applyjobUser.matchedCount && !applyjobUser.modifiedCount) throw "Apply failed!";
+		if (!applyjobUser.matchedCount && !applyjobUser.modifiedCount) throw "Apply failed msg2!";
 	}
 };
 
@@ -188,28 +188,15 @@ const getAllPostJobsById = async (id) => {
 	const userCollection = await users();
 	const user = await userCollection.findOne({ _id: ObjectId(id) });
 	if (!user) throw "User not found";
-	var IDs = [];
-	if (user.jobPosted) {
-		for (let i = 0; i < user.jobsPosted.length; i++) {
-			IDs.push(user.jobsPosted[i].id);
-		}
-	}
-
-	return IDs;
+	return user.jobsPosted
 };
 
-// const getAllJobsByUser = async (authorId) => {
-// 	authorId = validation.checkId(authorId);
-// 	const myUser = await getUserById(authorId);
-// 	if(!myUser) throw "User not found";
-// 	return myUser.jobsPosted;
-// };
-
-const jobPosterCheck = async (jobId, id) => {
-	id = validation.checkId(id);
+const jobPosterCheck = async (jobId, posterId) => {
+	posterId = validation.checkId(posterId);
 	jobId = validation.checkId(jobId);
-	const IDS = await getAllPostJobsById(id);
-	if (IDS.indexOf(jobId) > -1) return true;
+	const jobs = await getAllPostJobsById(posterId);
+	//console.log(jobs)
+	if (jobs.find(item=>item.id===jobId)) return true
 	return false;
 };
 
@@ -277,7 +264,7 @@ const isJobApplied = async (userId, jobId) => {
 	userId = validation.checkId(userId);
 	jobId = validation.checkId(jobId);
 	const user = await getUserById(userId);
-	console.log(user);
+	//console.log(user);
 	if (user.jobsPosted.find((item) => item.id === jobId)) return true;
 	return false
 }
