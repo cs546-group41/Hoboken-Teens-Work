@@ -31,7 +31,20 @@ router.route("/searchJobs").post(async (req, res) => {
   }
   var searchResults = null
   try {
-    searchResults = await jobs.searchJobs(searchQuery,req.body.searchType)
+    searchResults = await jobs.searchJobs(searchQuery,req.body.searchType);
+    for (result of searchResults) {
+      words = result.jobDescription.split(" ");
+      if(words.length <= 15) {
+        continue;
+      } else {
+         let description = "";
+         for(i = 0; i < 15; i++) {
+          description += `${words[i]} `;
+         }
+         console.log(description);
+         result.jobDescription = description.trim() + "...";
+      }
+    }
   } catch (e) {
     //should be server side if throws error
     res.status(500)
