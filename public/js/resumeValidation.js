@@ -5,6 +5,7 @@ function checkResume(resume){
     return resume
 }
 
+/*
 const staticForm1 = document.getElementById("resumeUpload")
 
 if (staticForm1) {
@@ -25,4 +26,4 @@ if (staticForm1) {
             event.preventDefault();
         }
     })
-}
+}*/

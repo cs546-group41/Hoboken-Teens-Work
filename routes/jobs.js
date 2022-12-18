@@ -97,11 +97,17 @@ router.route("/createJob")
     }
     try {
       //route side validtaion
+      console.log(req.body.jobTitle)
       var jobTitle = validation.checkJobTitle(xss(req.body.jobTitle));
+      console.log(req.body.jobDescription)
       var jobDescription = validation.checkJobDescription(xss(req.body.jobDescription));
+      console.log(req.body.jobStreetName)
       var jobStreetName = validation.checkJobStreetName(xss(req.body.jobStreetName));
+      console.log(req.body.jobTag)
       var jobTag = validation.checkJobTag(xss(req.body.jobTag));
+      console.log("done!")
     } catch (e) {
+      console.log(e)
       res.status(400)
       return res.render("createJob", {
         title: "Creating New Job - Error",
