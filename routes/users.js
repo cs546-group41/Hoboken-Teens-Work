@@ -84,10 +84,11 @@ router.route("/:id").get(async (req, res) => {
 			errormsg: e,
 		});
 	}
-
-	if (login && loginUserId !== curUserId) {
+	
+	if (loginUserId !== curUserId) {	
 		selfReview = false;
 	}
+	
 	try {
 		const userData = await users.getUserById(curUserId);
 		if (userData.age < 18) adultUser = false;
