@@ -1,8 +1,24 @@
-<h1>{{jobDetail.jobTitle}}</h1>
+<h1 class="IndividualJobsH1">Post Job detail</h1> 
+<button  class="Share-Btn"  id="shareJob" value="user/{{jobDetail.jobAuthor.id}}">Share</button>
+<div class="individualJobs row">
 
-<p>{{jobDetail.jobDescription}}</p>
 
-<p>Status: <p id="jobStatusMsg">{{jobDetail.jobStatus}}</p> <button onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')">Change Status</button></p>
+
+
+
+<p>Job Title                :    {{jobDetail.jobTitle}}</p>
+<p>Job Description         :    {{jobDetail.jobDescription}}</p>
+<p>Job Tag         :    {{jobDetail.jobTag}}</p>
+<p>Job StreetName      :    {{jobDetail.jobStreetName}}</p>
+<p id="jobStatusMsg">Job Status: {{jobDetail.jobStatus}}</p> 
+<p>Contact Phone Number:    {{jobDetail.jobAuthor.phone}}</p>
+
+</div>
+
+<div class="editProfileButton">
+    <a class="editProfile" onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')"> Change Status </a>
+		<a class="editProfile" href="/job/{{jobDetail._id}}/editJob">Edit Job</a>
+</div>
 
 <div class="comments">
 <p>Comments:</p>
@@ -23,29 +39,30 @@
     <label for="comment" class="label-comment">Leave a comment: </label>
     <input type="text" class="enter-comment" id="comment" name="comment" />
     <input type="text" class="value-block" id="jobId" name="comment" value="{{jobDetail._id}}" />
-    <br>
     <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
     </form><br><br>
 </div>
 
 
-<a href="/job/{{jobDetail._id}}/editJob">Edit job</a>
+<div class="list-button-div">
+  <h1>Applicants</h1>
 
-<h2>Applicants</h2>
-
-<ul id="applicants-list" class="applicants-list">
-  {{#each jobDetail.applicants}}
-    <li>
-      <a href="/user/{{applicantId}}">{{name}}</a> 
-      <a class="download-resume" id="resume-download-link" href="#" ><button onclick="downloadResume(this,'{{applicantId}}')">Click to Download Resume</button></a>
-      {{#if hired}}
-        <button class="fire-button" onclick='fire(this,"{{applicantId}}")'>Fire!</button>
-      {{else}}
-        <button class="hire-button" onclick='hire(this,"{{applicantId}}")'>Hire</button>
-      {{/if}}
-    </li>
-  {{/each}}
-</ul>
+  <ul id="applicants-list" class="list-button-ul">
+    {{#each jobDetail.applicants}}
+      <li class="list-button-li">
+        <a class="list-button-link" href="/user/{{applicantId}}">{{name}}</a> 
+        <a class="list-button-link" id="resume-download-link" href="#" >
+          <button class="list-button-button" onclick="downloadResume(this,'{{applicantId}}')">Click to Download Resume</button>
+        </a>
+        {{#if hired}}
+          <button class="fire-button" onclick='fire(this,"{{applicantId}}")'>Fire!</button>
+        {{else}}
+          <button class="hire-button" onclick='hire(this,"{{applicantId}}")'>Hire</button>
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+</div>
 
 <p id="value-authorId" class="value-block">{{loginUserData.id}}</p>
 <p id="value-jobId" class="value-block">{{jobDetail._id}}</p>
