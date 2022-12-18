@@ -156,7 +156,7 @@ function checkJobTag(jobTag) {
 	for (item in tagList){
 		checkString(item)
 	}
-	return tagList
+	return jobTag
 }
 
 
