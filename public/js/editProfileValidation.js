@@ -26,6 +26,7 @@ function checkFirstName(input) {
   
 
   function checkPhone(phone) {
+    if(phone === "N/A" || phone.length === 0 || !phone) return "N/A";
     const regex = /[^0-9]/;
     phone = phone.trim();
     if (regex.test(phone)) throw "Phone number must contain only integer number";
@@ -33,11 +34,11 @@ function checkFirstName(input) {
     return phone;
   }
   function checkPassword(strVal) {
+    if (!strVal) return;
     const oneUpper = /[A-Z]/;
     const oneLower = /[a-z]/;
     const oneNumber = /[0-9]/;
     const specialChar = /[^\w\s]/;
-    if (!strVal) throw "You must supply a password!";
     if (typeof strVal !== "string") throw "Password must be a string!";
     strVal = strVal.trim();
     if (strVal.length === 0) throw "Password cannot be an empty string or string with just spaces";
@@ -55,8 +56,6 @@ const staticForm = document.getElementById("edit-profile-form");
 if (staticForm) {
   const firstNameInput = document.getElementById("firstNameInput");
   const lastNameInput = document.getElementById("lastNameInput");
-  const emailInput = document.getElementById("emailInput");
-  const ageInput = document.getElementById("ageInput");
   const phoneNumberInput = document.getElementById("phoneInput");
   const passwordInput = document.getElementById("passwordInput");
 

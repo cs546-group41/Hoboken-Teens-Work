@@ -79,7 +79,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId, jobT
       name: `${user.firstName} ${user.lastName}`,
       phone: user.phone
     },
-    jobStatus: "open",
+    jobStatus: "Open",
     applicants: [],
     hired: {},
     comments: [],

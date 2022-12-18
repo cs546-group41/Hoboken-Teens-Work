@@ -75,7 +75,7 @@ function checkAge(age) {
 }
 
 function checkPhone(phone) {
-	if (!phone) return "N/A";
+	if(phone === "N/A" || phone.length === 0 || !phone) return "N/A";
 	const regex = /[^0-9]/;
 	phone = phone.trim();
 	if (regex.test(phone)) throw "Phone number must contain only integer number";
@@ -83,20 +83,6 @@ function checkPhone(phone) {
 	if(!parseInt(phone)) throw "Phone must be a 10 digits number";
 	return phone;
 }
-
-// function checkStringArray(arr) {
-// 	let arrayInvalidFlag = false;
-// 	if (!arr || !Array.isArray(arr)) throw `You must provide an array of `;
-// 	for (i in arr) {
-// 		if (typeof arr[i] !== "string" || arr[i].trim().length === 0) {
-// 			arrayInvalidFlag = true;
-// 			break;
-// 		}
-// 		arr[i] = arr[i].trim();
-// 	}
-// 	if (arrayInvalidFlag) throw `One or more elements in  array is not a string or is an empty string`;
-// 	return arr;
-// }
 
 function checkPassword(strVal) {
 	const oneUpper = /[A-Z]/;
@@ -208,9 +194,9 @@ module.exports = {
 	checkJobTitle,
 	checkJobDescription,
 	checkJobStreetName,
+	checkJobTag,
 	checkJobStatus,
 	checkSearchQuery,
 	encryptPwd,
-	validatePwd,
-	checkJobTag
+	validatePwd
 };
