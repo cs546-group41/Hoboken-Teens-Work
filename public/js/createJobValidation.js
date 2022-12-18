@@ -1,5 +1,3 @@
-const { checkPhone } = require("../../validation");
-
 function checkJobTitle(title) {
 	if (!title) throw "Must provide a job title";
 	if (typeof title !== "string") throw "Job title must be a string";
@@ -42,7 +40,6 @@ if (staticForm) {
     const JobDescriptionInput = document.getElementById("jobDescription")
     const JobStreet = document.getElementById("jobStreetName")
     const JobTag = document.getElementById("jobTag")
-    const Phone = document.getElementById("phone")
     
     
 
@@ -54,18 +51,13 @@ if (staticForm) {
             const JobTitleInputValue = JobTitleInput.value;
             const jobDescriptionValue = JobDescriptionInput.value;
             const jobStreetValue = JobStreet.value;
-            const JobTagInputValue = JobTag.value;
-            var validatePhone = true
-            if (Phone) {
-                const PhoneValue = Phone.value
-                validatePhone = checkPhoneTag(PhoneValue)
-            }
+            const JobTagInputValue = JobTag.value;        
             const validatedJobTitle = checkJobTitle(JobTitleInputValue)
             const validatedJobDescription = checkJobDescription(jobDescriptionValue)
             const validatedJobTag = checkJobTag(JobTagInputValue)
             
-            if (validatedJobDescription
-             && validatedJobTitle && validatedJobTag && validatePhone) {
+            if (validatedJobTitle
+             && validatedJobDescription && validatedJobTag) {
                 errorContainer.style.display = "none"
             }
             if(jobStreetValue == "Select Street") throw "Please select a job Street"

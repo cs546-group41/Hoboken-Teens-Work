@@ -2,6 +2,7 @@
 
 function checkComment(comment){
     if (!comment) throw "Must provide a comment";
+    return comment
 }
 
 
@@ -17,6 +18,7 @@ if (staticForm) {
         try {
             errorContainer.classList.add('hidden')
             const commentInput = Input.value;
+            console.log(commentInput)
             const validatedComment = checkComment(commentInput)
             if (validatedComment) {
                 errorContainer.style.display = "none"
