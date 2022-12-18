@@ -30,7 +30,6 @@ router.route("/").get(async (req, res) => {
 	var errormsg = "";
 	try {
 		jobData = await jobs.getAllJobs();
-		console.log(jobData)
 	} catch (e) {
 		//fail to get data from database
 		errormsg = e;
@@ -47,7 +46,6 @@ router.route("/").get(async (req, res) => {
 			 for(i = 0; i < 15; i++) {
 			  description += `${words[i]} `;
 			 }
-			 console.log(description);
 			 job.jobDescription = description.trim() + "...";
 		  }
 	}
