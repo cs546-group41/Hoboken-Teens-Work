@@ -315,7 +315,8 @@ router.route("/:id")
 
       try {
         saved = await users.isJobSaved(jobId, userId);
-        applied = await users.isJobApplied(userId, jobId)
+        applied = await users.isJobApplied(userId, jobId);
+        //console.log(applied)
       }
       catch (e) {
         res.status(500)
@@ -349,7 +350,7 @@ router.route("/:id")
           saved: saved,
         });
       }
-      console.log(jobDetail);
+      //console.log(jobDetail);
       res.render("individualJob", {
         title: `Job Detail - ${jobDetail.jobTitle}`,
         login: login,

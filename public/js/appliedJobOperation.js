@@ -7,6 +7,9 @@ function withdrawJob(Obj,jobId){
             if (this.status == 200 || this.status == 202) {
                 Obj.parentNode.parentNode.removeChild(Obj.parentNode);
             }
+            else{
+                alert("Withdraw job Failed!")
+            }
         }
     }
     xhttp.send();
