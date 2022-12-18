@@ -77,7 +77,8 @@ if(applyJobForm)
         event.preventDefault();
         const form = document.getElementById("resumeUpload")
         const formData = new FormData(form);
-        formData.append("jobId", document.getElementsByName("varJobId")[0].content)
+        formData.append("jobId", document.getElementById("value-jobId").value)
+        formData.append("applicantId", document.getElementById("value-userId").value)
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", "/file/upload", true);
         xhttp.onreadystatechange = function () {

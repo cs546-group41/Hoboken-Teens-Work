@@ -152,11 +152,17 @@ function checkJobTag(jobTag) {
 	jobTag = jobTag.trim();
 	if (jobTag.length === 0) throw "Job tag cannot be empty spaces";
 	if (jobTag.length < 5) throw "Job tag must have at least 5 characters";
-	const tagList = jobTag.split(",")
-	for (item in tagList){
-		checkString(item)
+	if (jobTag.indexOf(",")<0){
+		jobTag = checkString(jobTag)
+		return jobTag
 	}
-	return jobTag
+	else{
+		const tagList = jobTag.split(",")
+		for (item in tagList){
+			checkString(item)
+		}
+		return jobTag
+	}
 }
 
 

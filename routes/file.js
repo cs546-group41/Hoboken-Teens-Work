@@ -10,6 +10,7 @@ const validation = require('../validation')
 // use multer as file upload middleware
 const saveOptions = multer.diskStorage({
     destination: function (req, file, cb) {
+        console.log(req.body)
         cb(null, './uploads/');
     },
     filename: function (req, file, cb) {
@@ -27,13 +28,27 @@ router.use(function (req, res, next) {
 
 
 router.route("/upload").post(upload.single("resume"), async (req, res) => {
+    
+    try {
+        await users.getUserById(validation.checkId(req.session.user.id))
+    } catch (e) {
+        req.session.destroy()
+        res.status(400)
+        res.redirect("/index")
+    }
+    
     const file = req.file;
     //console.log(1)
     try{
         //route side validation 
+        
         var userId = validation.checkId(req.session.user.id);
+        console.log(userId)
+        console.log(jobId)
         var jobId = validation.checkId(xss(req.body.jobId));
+        console.log(jobId)
     }catch(e){
+        console.log(e)
         res.sendStatus(400);
         return;
     }
@@ -43,7 +58,7 @@ router.route("/upload").post(upload.single("resume"), async (req, res) => {
         res.sendStatus(200);
         return;
     } catch (e) {
-        //console.log(e)
+        console.log(e)
         // normally the error here will be server side problem
         res.sendStatus(500);
         return;

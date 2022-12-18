@@ -57,7 +57,7 @@
             <p>You Had Already Post Your Application!.</p>
         {{else}}
             <div>
-                <form id="resumeUpload" enctype="multipart/form-data" method="post">
+                <form id="resumeUpload" action="/file/upload" enctype="multipart/form-data" method="post">
                     <p>Upload your Resume</p>
                     <input type="file" id="resume" name="resume" accept="application/pdf"/>
                     <span id="resumeError"></span>
