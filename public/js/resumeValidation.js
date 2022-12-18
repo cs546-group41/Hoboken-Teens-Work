@@ -21,26 +21,31 @@
 //         try {
 //             function resume(input){
 //             const re = /.+\.(.pdf)$/i
-//             if(re.test(Input)) throw "File should be of type pdf"
+//             if(!re.test(Input)) throw "File should be of type pdf"
 //             return input
 //             }
 //             const validatedResume = resume(Input)
-//             if(validatedResume){
-//                 errorContainer.style.display = "none"
+//             // if(validatedResume){
+//             //     errorContainer.style.display = "none"
+//             // }
+//             if(!validatedResume){
+//                 document.getElementById("resumeError").innerHTML = "File should be of type pdf"
+
 //             }
            
             
-            if(Input == ""){
-                document.getElementById("resumeError").innerHTML = "You must upload a resume"
-            } 
-            if (resumeInput) {
-                errorContainer.style.display = "none"
-            }
-        } catch (e) {
-            event.preventDefault();
-        }
-    })
-}*/
+//             if(Input == ""){
+//                 document.getElementById("resumeError").innerHTML = "You must upload a resume"
+//             } 
+//             if (resumeInput) {
+//                 errorContainer.style.display = "none"
+//             }
+//         } catch (e) {
+//             event.preventDefault();
+//         }
+//     })
+// }
+// }*/
 //         } catch (e) {
 //             event.preventDefault();
 //             errorTextElem.textContent = "Error: " + e
@@ -48,3 +53,44 @@
 //         }
 //     })
 // }
+
+
+
+
+
+
+
+
+$('#resumeUpload').submit((event) => {
+    const re = /.+\.(.pdf)$/i
+    const value =$('#resume').val().trim()
+    if ($('#resume').val().trim()) {
+      $('#error').hide();
+      $('#resume').focus();
+    }
+    else{
+      $('#error').show();
+      $('#error').html('You must upload something before submitting');
+      $('#resume').focus();
+    }
+    if(!value.match(re)){
+        event.preventDefault();
+        $('#error').show();
+        $('#error').html('only pdf file is allowed');
+        $('#resume').focus();
+      }
+
+    // if(re.match($('#resume').val().trim())){
+    //   $('#error1').hide();
+    //   $('#resume').focus();
+    // }else{
+    //   event.preventDefault();
+    //   $('#error1').show();
+    //   $('#error1').html('only pdf file is allowed');
+    //   $('#resume').focus();
+    // }
+    if ($('#resume').val().trim()) {
+        $('#error1').hide();
+        $('#resume').focus();
+      }
+  });
