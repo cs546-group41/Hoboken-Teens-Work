@@ -68,11 +68,9 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId, jobT
   jobStreetName = validation.checkJobStreetName(jobStreetName);
   jobTag = validation.checkJobTag(jobTag);
   authorId = validation.checkId(authorId);
-  // let jobAuthorPhoneNumber = null;
 
   const usersCollection = await users();
   const user = await usersCollection.findOne({ _id: ObjectId(authorId) });
-  const jobAuthorPhoneNumber = user.phone;
   //console.log(user);
   const newJob = {
     jobTitle: jobTitle,
@@ -81,7 +79,7 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId, jobT
     jobAuthor: {
       id: authorId,
       name: `${user.firstName} ${user.lastName}`,
-      phone: jobAuthorPhoneNumber
+      phone: user.phone
     },
     jobStatus: "open",
     applicants: [],
