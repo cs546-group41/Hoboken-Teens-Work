@@ -47,7 +47,7 @@
             <input type="text" class="enter-comment" id="comment" name="comment" />
             <input type="text" class="value-block" id="jobId" name="comment" value="{{jobDetail._id}}" />
             <br>
-            <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
+            <button type="submit" form="add-comment" value="submit" class="submitComment" >Submit</button>
         </form><br><br>
     </div>
     {{#if isMinor}}
@@ -60,10 +60,11 @@
         {{else}}
             <div class="comments">
                 <form id="resumeUpload" action="/file/upload" enctype="multipart/form-data" method="post">
-                    <p>Upload your Resume and Apply!</p>
+                    <p>Upload your Resume and Apply! </p>
+                    <p>(File need to be Pdf file and less than 4MB)</p>
                     <input type="file" id="resume" name="resume" accept="application/pdf"/>
                     <span id="resumeError"></span>
-                    <button >Upload</button>
+                    <button id="applyJobButton">Upload</button>
                 </form>
             </div>
         {{/if}}

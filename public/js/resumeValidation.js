@@ -53,33 +53,26 @@
 //         }
 //     })
 // }
-
-
-
-
-
-
-
-
+/*
 $('#resumeUpload').submit((event) => {
     const re = /.+\.(.pdf)$/i
     const value =$('#resume').val().trim()
     if ($('#resume').val().trim()) {
       $('#error').hide();
       $('#resume').focus();
-    }
-    else{
-      $('#error').show();
-      $('#error').html('You must upload something before submitting');
-      $('#resume').focus();
-    }
-    if(!value.match(re)){
+      if(!value.match(re)){
         event.preventDefault();
         $('#error').show();
         $('#error').html('only pdf file is allowed');
         $('#resume').focus();
       }
-
+    }
+    else{
+      event.preventDefault();
+      $('#error').show();
+      $('#error').html('You must upload something before submitting');
+      $('#resume').focus();
+    }
     // if(re.match($('#resume').val().trim())){
     //   $('#error1').hide();
     //   $('#resume').focus();
@@ -89,8 +82,35 @@ $('#resumeUpload').submit((event) => {
     //   $('#error1').html('only pdf file is allowed');
     //   $('#resume').focus();
     // }
-    if ($('#resume').val().trim()) {
-        $('#error1').hide();
+    //if ($('#resume').val().trim()) {
+    //    $('#error1').hide();
+    //    $('#resume').focus();
+    //  }
+  });
+*/
+$(document).ready(function(){
+  $('input[type="file"]').change(function(e){
+      const re = /(pdf)$/i
+      var fileName = e.target.files[0].name;
+      var fileType = fileName.split(".")
+      fileType = fileType[fileType.length-1]
+      var fileSize = e.target.files[0].size
+      if(!re.test(fileType)){
+          $('#applyJobButton').hide();
+          $('#resumeError').show();
+          $('#resumeError').html('Only pdf file is allowed');
+          $('#resume').focus()   
+      }
+      else if (fileSize > 4*1024*1024){
+          $('#applyJobButton').hide();
+          $('#resumeError').show();
+          $('#resumeError').html('Choiced File Exceed size limit!');
+          $('#resume').focus()
+      }
+      else{
+        $('#applyJobButton').show();
+        $('#resumeError').hide();
         $('#resume').focus();
       }
   });
+});
