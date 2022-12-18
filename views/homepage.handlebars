@@ -11,12 +11,10 @@
 	<br><br>
 	<label for="jobsInput" class="keywordInput">Keyword :</label>
 			<input type="text" id="jobsInput" name="jobsInput" placeholder="Enter Keyword">
+			<br><span id="error" class="makecenter"></span>
 			<br><br>
 			<input type="submit" class="button submitJob">
 			<br>
-			<div class="form-group hidden" id="error-container">
-				<div class="alert alert-danger text-goes-here"></div>
-			</div>
 			<div id="error" hidden>Please input something to search</div>
 		</form>
 		<br><br>
@@ -33,6 +31,7 @@
       </li>
       {{/each}}
     </ul>
-	<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-		crossorigin="anonymous"></script>
+	<script src="/public/js/searchbarValidation.js"></script>
+	    <script src="https://code.jquery.com/jquery-3.6.2.js" integrity="sha256-pkn2CUZmheSeyssYw3vMp1+xyub4m+e+QK4sQskvuo4=" crossorigin="anonymous"></script>
+
 </main>
