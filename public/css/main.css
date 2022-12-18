@@ -334,8 +334,8 @@ position: relative;
 left: 27%;
 }
 .loginBtn{
-  background-color: #8a908a; /* Green */
-  border-radius: 1%;
+  background-color: #717871; /* Green */
+  border-radius: 5px;
   color: white;
   padding: 10px 25px;
   text-align: center;
@@ -465,7 +465,7 @@ transition: 0.3s;
     }
 
     .submitJobBtn {
-      background-color: #8a908a;
+      background-color: #717871;
       border-radius: 1%;
       color: white;
       padding: 10px 25px;
