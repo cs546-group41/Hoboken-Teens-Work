@@ -1,6 +1,3 @@
-<meta name="authorId" content="{{loginUserData.id}}" />
-<meta name="jobId" content="{{jobDetail._id}}" />
-
 <h1>{{jobDetail.jobTitle}}</h1>
 
 <p>{{jobDetail.jobDescription}}</p>
@@ -25,7 +22,7 @@
   <form action="/addComment" method="post" id="add-comment">
     <label for="comment" class="label-comment">Leave a comment: </label>
     <input type="text" class="enter-comment" id="comment" name="comment" />
-    <input type="text" class="enter-comment" id="jobId" name="comment" value="{{jobDetail._id}}" style="display: none;"/>
+    <input type="text" class="value-block" id="jobId" name="comment" value="{{jobDetail._id}}" />
     <br>
     <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
     </form><br><br>
@@ -50,5 +47,6 @@
   {{/each}}
 </ul>
 
-
+<p id="value-authorId" class="value-block">{{loginUserData.id}}</p>
+<p id="value-jobId" class="value-block">{{jobDetail._id}}</p>
 <script src="/public/js/jobPosterOperations.js"></script>

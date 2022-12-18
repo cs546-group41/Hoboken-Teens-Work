@@ -1,5 +1,5 @@
 function withdrawJob(Obj,jobId){
-    var applicantId = document.getElementsByName('applicantId')[0].content;
+    var applicantId = document.getElementById("value-applicantId").innerText
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", `/user/${applicantId}/appliedJob/withdraw/${jobId}`, true);
     xhttp.onreadystatechange = function () {
