@@ -49,7 +49,7 @@ function checkFullName(input){
 	names = input.split(" ")
 	if (names.length<2) throw "Name sytax Error"
 	checkFirstName(names[0])
-	checkLastName(names[-1])
+	checkLastName(names[1])
 	return input
 }
 

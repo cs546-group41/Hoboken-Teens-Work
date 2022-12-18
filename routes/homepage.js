@@ -13,6 +13,7 @@ router.route("/").get(async (req, res) => {
 	var loginUserData = null;
 	if (req.session.user !== undefined) {
 		//if have cookie, auto login
+		//console.log(req.session.user)
 		try {
 			//check the if the id is valid
 			await users.getUserById(validation.checkId(req.session.user.id));
@@ -20,11 +21,12 @@ router.route("/").get(async (req, res) => {
 			loginUserData = req.session.user;
 		} catch (e) {
 			//if the cookie stored id is not valid, delete the cookie
+			//console.log(e)
 			req.session.destroy();
 		}
 	}
 	//recieve data from jobsDatabase
-	var jobData = {};
+	var jobData = [];
 	var errormsg = "";
 	try {
 		jobData = await jobs.getAllJobs();
@@ -33,6 +35,8 @@ router.route("/").get(async (req, res) => {
 		errormsg = e;
 		res.status(500)
 	}
+	if (jobData.length===0) errormsg = "No job available."
+
 	res.render("homepage", {
 		title: title,
 		login: login,

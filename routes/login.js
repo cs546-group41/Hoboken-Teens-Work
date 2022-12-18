@@ -63,7 +63,8 @@ router.route("/").get(async (req, res) => {
   }
 })
 .all(async (req, res) => {
-  res.status(400)
+  //other method should not Allowed
+  res.status(405)
   res.sendFile(path.resolve("static/inValidRequest.html"));
 });
 

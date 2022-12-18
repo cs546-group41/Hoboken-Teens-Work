@@ -1,4 +1,3 @@
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,14 +5,19 @@
   background-color: #dae3f1;
 }
 
-input[type=text], select, textarea {
+input[type=text],
+select,
+textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
 }
-input[type=password], select, textarea {
+
+input[type=password],
+select,
+textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -67,46 +71,55 @@ input[type=submit]:hover {
 
 /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 600px) {
-  .col-25, .col-75, input[type=submit] {
+
+  .col-25,
+  .col-75,
+  input[type=submit] {
     width: 100%;
     margin-top: 0;
   }
 }
 
-*{
+* {
   margin: 0;
   padding: 0;
 }
-nav{
+
+nav {
   display: flex;
   padding: 2% 6%;
   justify-content: space-between;
   align-items: center;
 }
-.nav-links{
+
+.nav-links {
   flex: 1;
   text-align: right;
 }
-.nav-links ul li{
+
+.nav-links ul li {
   list-style: none;
   display: inline-block;
   padding: 8px 12px;
   position: relative;
-  
-}
-.homepageUl{
-color: #f2f2f2;
-margin: auto;
-width: 50%;
-padding: 10px;
 
 }
-.homepageJobsInput{
+
+.homepageUl {
+  color: #f2f2f2;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+
+}
+
+.homepageJobsInput {
   text-align: center;
   position: relative;
   left: 40%;
 }
-.keywordInput{
+
+.keywordInput {
   text-align: center;
   position: relative;
   left: 40%;
@@ -124,217 +137,243 @@ font-size: 32px;
 list-style: none;
 
 }
-.homepageLi a{
-background-color:#393E46 ;
-}
-.joblistTitle{
-color: #00ADB5;
-text-decoration: none;
-background-color: #393E46 ;
-}
-.joblistTitle a{
-color: #00ADB5;
-text-decoration: none;
-background-color: #393E46 ;
-}
-.joblistDescription{
-font-size: 20px;
-color: #EEEEEE;
-text-decoration: none;
-background-color: #393E46;
 
-}
-.joblistStatus{
-text-decoration: none;
-color: white;
-font-size: 28px;
+.homepageLi a {
+  background-color: #393E46;
 }
 
-.homepageH1{
-text-align: center;
-margin: 15px;
-color: rgb(0, 0, 0);
+.joblistTitle {
+  color: #00ADB5;
+  text-decoration: none;
+  background-color: #393E46;
+}
+
+.joblistTitle a {
+  color: #00ADB5;
+  text-decoration: none;
+  background-color: #393E46;
+}
+
+.joblistDescription {
+  font-size: 20px;
+  color: #EEEEEE;
+  text-decoration: none;
+  background-color: #393E46;
 
 }
 
-.homepageLoginAndSignup{
-background-color: white;
-color: black;
-border: 2px solid rgb(0, 0, 0);
-padding: 10px 20px;
-text-align: center;
-text-decoration: none;
-display: inline-block;
-border-radius: 30px;
+.joblistStatus {
+  text-decoration: none;
+  color: white;
+  font-size: 28px;
 }
-.homepageLoginAndSignup:hover{
-transition: 0.3s;
-color: white;
-background-color: black;
+
+.homepageH1 {
+  text-align: center;
+  margin: 15px;
+  color: rgb(0, 0, 0);
+
 }
+
+.homepageLoginAndSignup {
+  background-color: white;
+  color: black;
+  border: 2px solid rgb(0, 0, 0);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 30px;
+}
+
+.homepageLoginAndSignup:hover {
+  transition: 0.3s;
+  color: white;
+  background-color: black;
+}
+
 .homepageLoginAndSignup li {
-list-style: none;
+  list-style: none;
 }
-.none{
-list-style: none;
+
+.none {
+  list-style: none;
 }
 
 
 
-footer{
-text-align: center;
-position: absolute;
-align-items: center;
-width: 100%;
+footer {
+  text-align: center;
+  position: absolute;
+  align-items: center;
+  width: 100%;
 }
 
-.IndividualJobsH1{
-text-align: center;
-color: rgb(0, 0, 0);
-margin-top: 30px;
-margin-bottom: 20px;
-text-decoration: underline;
+.IndividualJobsH1 {
+  text-align: center;
+  color: rgb(0, 0, 0);
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-decoration: underline;
 }
-.individualJobs{
-justify-content: center;
-width: 50%;
-background-color: #222831;
-text-align: justify;
-text-decoration:solid;
-padding: 5px;
-font-size: 30px;
-list-style: none;
-color: #000000;
-margin: auto;
-margin-bottom: 15px;
+
+.individualJobs {
+  justify-content: center;
+  width: 50%;
+  background-color: #222831;
+  text-align: justify;
+  text-decoration: solid;
+  padding: 5px;
+  font-size: 30px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  margin-bottom: 15px;
 }
-.comments{
-justify-content: center;
-background-color: #222831;
-text-align: center;
-text-decoration:solid;
-padding: 5px 5px;
-border-radius: 6px;
-font-size: 30px;
-list-style: none;
-color: #000000;
-margin: auto;
-width: 50%;
+
+.comments {
+  justify-content: center;
+  background-color: #222831;
+  text-align: center;
+  text-decoration: solid;
+  padding: 5px 5px;
+  border-radius: 6px;
+  font-size: 30px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  width: 50%;
 
 }
-.comment-list{
-justify-content: center;
-background-color: #393E46;
-margin: 15px;
-text-decoration:none;
-padding: 50px 35px;
-border-radius: 14px;
-font-size: 30px;
-list-style: none;
-color: #f2f2f2;
-margin: auto;
-width: 50%;
-padding: 10px;
+
+.comment-list {
+  justify-content: center;
+  background-color: #393E46;
+  margin: 15px;
+  text-decoration: none;
+  padding: 50px 35px;
+  border-radius: 14px;
+  font-size: 30px;
+  list-style: none;
+  color: #f2f2f2;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
 }
+
 .comment-listLi a {
-list-style: none;
-}
-.comment-listLi{
-list-style: none;
-text-align: center;
+  list-style: none;
 }
 
-.makecenter{
-text-align: center;
-margin: 10px;
-text-decoration: underline;
+.comment-listLi {
+  list-style: none;
+  text-align: center;
 }
-.desc-text{
-margin-bottom: 10px;
-font-size: medium;
-font-weight: lighter;
+
+.makecenter {
+  text-align: center;
+  margin: 10px;
+  text-decoration: underline;
 }
-.main-about{
-margin-left: 3%;
+
+.desc-text {
+  margin-bottom: 10px;
+  font-size: medium;
+  font-weight: lighter;
 }
-.move-right{
-margin-left: 3%;
+
+.main-about {
+  margin-left: 3%;
 }
-.personDetails{
-justify-content: center;
-background-color: #393E46;
-text-decoration:none;
-padding: 50px 35px;
-border-radius: 6px;
-font-size: 30px;
-list-style: none;
-color: #000000;
-margin: auto;
-width: 50%;
-padding: 5px;
+
+.move-right {
+  margin-left: 3%;
 }
-.UserH1{
-margin-top: 20px;
-margin-bottom: 20px;
-text-align: center;
-color: black;
+
+.personDetails {
+  justify-content: center;
+  background-color: #393E46;
+  text-decoration: none;
+  padding: 50px 35px;
+  border-radius: 6px;
+  font-size: 30px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  width: 50%;
+  padding: 5px;
 }
-.postJob{
-justify-content: center;
-text-decoration:none;
-border: #000000;
-border: 5px;
-border-radius: 6px;
-font-size: 30px;
-list-style: none;
-color: #000000;
-margin: auto;
-margin-top: 20px;
-width: 50%;
-padding: 5px;
+
+.UserH1 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: black;
 }
-.jobsHired{
-justify-content: center;
-text-decoration:none;
-border: #000000;
-border: 5px;
-border-radius: 6px;
-font-size: 30px;
-list-style: none;
-color: #000000;
-margin: auto;
-margin-top: 40px;
-margin-bottom: 40px;
-width: 50%;
-padding: 5px;
+
+.postJob {
+  justify-content: center;
+  text-decoration: none;
+  border: #000000;
+  border: 5px;
+  border-radius: 6px;
+  font-size: 30px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  margin-top: 20px;
+  width: 50%;
+  padding: 5px;
 }
-.editProfile{
-background-color: white;
-color: black;
-border: 2px solid rgb(0, 0, 0);
-padding: 10px 20px;
-text-align: center;
-text-decoration: none;
-display: inline-block;
-border-radius: 30px;
-justify-content: center;
-text-align: center;
+
+.jobsHired {
+  justify-content: center;
+  text-decoration: none;
+  border: #000000;
+  border: 5px;
+  border-radius: 6px;
+  font-size: 30px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  width: 50%;
+  padding: 5px;
 }
-.editProfile:hover{
-transition: 0.3s;
-color: white;
-background-color: black;
+
+.editProfile {
+  background-color: white;
+  color: black;
+  border: 2px solid rgb(0, 0, 0);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 30px;
+  justify-content: center;
+  text-align: center;
 }
-.editProfileButton{
-text-align: center;
+
+.editProfile:hover {
+  transition: 0.3s;
+  color: white;
+  background-color: black;
 }
-#login-form{
-width: 50%;
-position: relative;
-left: 27%;
+
+.editProfileButton {
+  text-align: center;
 }
-.loginBtn{
-  background-color: #717871; /* Green */
+
+#login-form {
+  width: 50%;
+  position: relative;
+  left: 27%;
+}
+
+.loginBtn {
+  background-color: #717871;
+  /* Green */
   border-radius: 5px;
   color: white;
   padding: 10px 25px;
@@ -346,137 +385,165 @@ left: 27%;
   left: 32%;
   cursor: pointer;
 }
-.RegisterLink{
+
+.RegisterLink {
   position: relative;
   left: 25%;
 }
-.footerText{
-position:relative;
-bottom: 1%;
-} */
-#registration-form{
-width: 50%;
-position: relative;
-left: 27%;
-height: 50%;
-}
-input[type="text"], input[type="password"],select {
 
-background-color : #f3ebeb; 
+.footerText {
+  position: relative;
+  bottom: 1%;
+}
+
+*/ #registration-form {
+  width: 50%;
+  position: relative;
+  left: 27%;
+  height: 50%;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+
+  background-color: #f3ebeb;
 
 }
-#create-Job{
-width: 50%;
-position: relative;
-left: 27%;
-height: 50%;
+
+#create-Job {
+  width: 50%;
+  position: relative;
+  left: 27%;
+  height: 50%;
 }
-#jobsInput
-{
+
+#jobsInput {
   width: 20%;
   position: relative;
   left: 41%;
 }
-#searchType
-{
-width: 20%;
-position: relative;
-left: 40%;
+
+#searchType {
+  width: 20%;
+  position: relative;
+  left: 40%;
 }
-.submitJob{
+
+.submitJob {
   position: relative;
   right: 43%;
 }
-.enter-comment{
-width: 30%;
+
+.enter-comment {
+  width: 30%;
 }
-#add-comment{
-width: 30%;
-position: relative;
-left: 35%;
+
+#add-comment {
+  width: 30%;
+  position: relative;
+  left: 35%;
 }
-.label-comment{
-position: relative;
-left: 40%;
+
+.label-comment {
+  position: relative;
+  left: 40%;
 }
-.submitComment{
-position: relative;
-left: 40%;
-margin: 10px;
-width: 15%;
+
+.submitComment {
+  position: relative;
+  left: 40%;
+  margin: 10px;
+  width: 15%;
 }
-.savedjobs{
-text-align: center;}
+
+.savedjobs {
+  text-align: center;
+}
+
 .savedjobs a {
-font-size: 25px;
+  font-size: 25px;
 }
+
 .savedjobs li {
-list-style: none;
-margin-top: 15px;
-margin-bottom: 15px;
+  list-style: none;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
+
 .savedjobs p {
-font-size: 35px;
+  font-size: 35px;
 }
-.icon{
-width: 100%;
+
+.icon {
+  width: 100%;
 
 }
-.icon:hover{
-color: white;
-transition: 0.3s;
+
+.icon:hover {
+  color: white;
+  transition: 0.3s;
 }
-.login-div{
+
+.login-div {
   border-style: groove;
   width: 40%;
   position: relative;
   left: 30%;
 }
-.error-login{
+
+.error-login {
   text-align: center;
 }
 
-#error-container{
+#error-container {
   margin-left: 20%;
 }
-.error-login{
+
+.error-login {
   margin-left: 25%;
 }
 
-    #registration-form{
-      width: 70%;
-      position: relative;
-      left: 15%;
-      margin-bottom: 10%;
-    }
-    .Share-Btn{
-      position: relative;
-      left: 48%;
-      border: 0;
-      line-height: 2.5;
-      padding: 0 20px;
-      font-size: 1rem;
-      text-align: center;
-      color: #fff;
-      text-shadow: 1px 1px 1px #000;
-      border-radius: 10px;
-      background-color: rgb(63, 24, 237);
-      margin-bottom: 2%;
-    }
+#registration-form {
+  width: 70%;
+  position: relative;
+  left: 15%;
+  margin-bottom: 10%;
+}
 
-    .submitJobBtn {
-      background-color: #717871;
-      border-radius: 1%;
-      color: white;
-      padding: 10px 25px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      position: relative;
-      left: 40%;
-      cursor: pointer;
-  }
-  a:hover{
-    cursor: pointer;
-  }
+.Share-Btn {
+  position: relative;
+  left: 48%;
+  border: 0;
+  line-height: 2.5;
+  padding: 0 20px;
+  font-size: 1rem;
+  text-align: center;
+  color: #fff;
+  text-shadow: 1px 1px 1px #000;
+  border-radius: 10px;
+  background-color: rgb(63, 24, 237);
+  margin-bottom: 2%;
+}
+
+.submitJobBtn {
+  background-color: #717871;
+  border-radius: 1%;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  position: relative;
+  left: 40%;
+  cursor: pointer;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+.value-block{
+  display: none;
+}
