@@ -23,7 +23,7 @@ function checkLastName(input) {
     throw "Last name cannot have more than one apostrophe";
   let countHyphen = 0;
   for (char of input) if (char === "-") countHyphen++;
-  if (countHyphen > 1) throw "Last name cannot have more than one countHyphen";
+  if (countHyphen > 1) throw "Last name cannot have more than one hyphen";
 }
 
 function checkEmail(email) {
@@ -56,6 +56,7 @@ function checkPhone(phone) {
 }
 function checkPassword(strVal) {
   const oneUpper = /[A-Z]/;
+  const oneLower = /[a-z]/;
   const oneNumber = /[0-9]/;
   const specialChar = /[^\w\s]/;
   if (!strVal) throw "You must supply a password!";
@@ -65,7 +66,8 @@ function checkPassword(strVal) {
     throw "Password cannot be an empty string or string with just spaces";
   if (strVal.length < 6) throw "Password must at least 6 characters long";
   if (strVal.includes(" ")) throw "Password must not contain space";
-  if (!oneUpper.test(strVal)) throw "Password must contain one upper case ";
+  if (!oneUpper.test(strVal)) throw "Password must contain one upper case letter ";
+  if (!oneLower.test(strVal)) throw "Password must contain one lower case letter ";
   if (!oneNumber.test(strVal)) throw "Password must contain one number ";
   if (!specialChar.test(strVal) && !strVal.includes("_"))
     throw "Password must contain one special character ";

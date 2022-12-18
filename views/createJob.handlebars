@@ -12,7 +12,7 @@
         <label for="jobTitle">Job Title</label>
       </div>
       <div class="col-75">
-        <input type="text" id="jobTitle" name="jobTitle" placeholder="Enter Job Title" value="{{presetJob.jobTitle}}">
+        <input type="text" id="jobTitle" name="jobTitle" placeholder="Enter Job Title" value="{{presetJob.jobTitle}}" >
       </div>
     </div>
     <div class="row">
@@ -86,8 +86,16 @@
 
       </div>
     </div>
+      <div class="row">
+      <div class="col-25">
+        <label for="jobDescription">Job Tag</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="jobTag" name="jobTag" placeholder="Enter Job Tag" value="{{presetJob.jobTag}}" >
+      </div>
+    </div>
     <br>
-    <button type="submit" form="create-Job" class="loginBtn">Submit</button>
+    <button type="submit" form="create-Job" class="submitJobBtn">Submit</button>
     {{!-- <div class="row">
       <div class="col-25">
         <label for="phone">Phone Number</label>

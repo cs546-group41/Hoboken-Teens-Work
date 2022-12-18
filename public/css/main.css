@@ -1,184 +1,191 @@
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    background-color: #dae3f1;
-  }
-  
-  input[type=text], select, textarea {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: #dae3f1;
+}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+input[type=password], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
+    margin-top: 0;
   }
-  input[type=password], select, textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-  }
-  
-  label {
-    padding: 12px 12px 12px 0;
-    display: inline-block;
-  }
-  
-  input[type=submit] {
-    background-color: #04AA6D;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-  }
-  
-  input[type=submit]:hover {
-    background-color: #45a049;
-  }
-  
-  .container {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-  }
-  
-  .col-25 {
-    float: left;
-    width: 25%;
-    margin-top: 6px;
-  }
-  
-  .col-75 {
-    float: left;
-    width: 75%;
-    margin-top: 6px;
-  }
-  
-  /* Clear floats after the columns */
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  
-  /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
-  @media screen and (max-width: 600px) {
-    .col-25, .col-75, input[type=submit] {
-      width: 100%;
-      margin-top: 0;
-    }
-  }
+}
 
 *{
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 nav{
-    display: flex;
-    padding: 2% 6%;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  padding: 2% 6%;
+  justify-content: space-between;
+  align-items: center;
 }
 .nav-links{
-    flex: 1;
-    text-align: right;
+  flex: 1;
+  text-align: right;
 }
 .nav-links ul li{
-    list-style: none;
-    display: inline-block;
-    padding: 8px 12px;
-    position: relative;
-    
+  list-style: none;
+  display: inline-block;
+  padding: 8px 12px;
+  position: relative;
+  
 }
 .homepageUl{
-  color: #f2f2f2;
-  margin: auto;
-  width: 50%;
-  padding: 10px;
+color: #f2f2f2;
+margin: auto;
+width: 50%;
+padding: 10px;
 
 }
 .homepageJobsInput{
   text-align: center;
+  position: relative;
+  left: 40%;
+}
+.keywordInput{
+  text-align: center;
+  position: relative;
+  left: 40%;
 }
 .homepageLi{
-  justify-content: center;
-  width: 100%;
-  background-color: #393E46;
-  text-align: center;
-  margin: 15px;
-  text-decoration:solid;
-  padding: 50px 35px;
-  border-radius: 14px;
-  font-size: 32px;
-  list-style: none;
-  
+justify-content: center;
+width: 100%;
+background-color: #393E46;
+text-align: center;
+margin: 15px;
+text-decoration:solid;
+padding: 25px 35px;
+border-radius: 14px;
+font-size: 32px;
+list-style: none;
+
 }
 .homepageLi a{
-  background-color:#393E46 ;
+background-color:#393E46 ;
 }
 .joblistTitle{
-  color: #00ADB5;
-  text-decoration: none;
-  background-color: #393E46 ;
+color: #00ADB5;
+text-decoration: none;
+background-color: #393E46 ;
 }
 .joblistTitle a{
-  color: #00ADB5;
-  text-decoration: none;
-  background-color: #393E46 ;
+color: #00ADB5;
+text-decoration: none;
+background-color: #393E46 ;
 }
 .joblistDescription{
-  font-size: 20px;
-  color: #EEEEEE;
-  text-decoration: none;
-  background-color: #393E46;
+font-size: 20px;
+color: #EEEEEE;
+text-decoration: none;
+background-color: #393E46;
 
 }
 .joblistStatus{
-  text-decoration: none;
-  color: white;
-  font-size: 28px;
+text-decoration: none;
+color: white;
+font-size: 28px;
 }
 
 .homepageH1{
-  text-align: center;
-  margin: 15px;
-  color: rgb(0, 0, 0);
- 
+text-align: center;
+margin: 15px;
+color: rgb(0, 0, 0);
+
 }
 
 .homepageLoginAndSignup{
-  background-color: white;
-  color: black;
-  border: 2px solid rgb(0, 0, 0);
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  border-radius: 30px;
+background-color: white;
+color: black;
+border: 2px solid rgb(0, 0, 0);
+padding: 10px 20px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+border-radius: 30px;
 }
 .homepageLoginAndSignup:hover{
-  transition: 0.3s;
-  color: white;
-  background-color: black;
+transition: 0.3s;
+color: white;
+background-color: black;
 }
 .homepageLoginAndSignup li {
-  list-style: none;
+list-style: none;
 }
 .none{
-  list-style: none;
+list-style: none;
 }
 
 
 
 footer{
-  text-align: center;
-  position: absolute;
-  align-items: center;
-  width: 100%;
+text-align: center;
+position: absolute;
+align-items: center;
+width: 100%;
 }
 
 .IndividualJobsH1{
@@ -186,148 +193,149 @@ text-align: center;
 color: rgb(0, 0, 0);
 margin-top: 30px;
 margin-bottom: 20px;
+text-decoration: underline;
 }
 .individualJobs{
-  justify-content: center;
-  width: 50%;
-  background-color: #222831;
-  text-align: justify;
-  text-decoration:solid;
-  padding: 5px;
-  font-size: 30px;
-  list-style: none;
-  color: #000000;
-  margin: auto;
-  margin-bottom: 15px;
+justify-content: center;
+width: 50%;
+background-color: #222831;
+text-align: justify;
+text-decoration:solid;
+padding: 5px;
+font-size: 30px;
+list-style: none;
+color: #000000;
+margin: auto;
+margin-bottom: 15px;
 }
 .comments{
-  justify-content: center;
-  background-color: #222831;
-  text-align: center;
-  text-decoration:solid;
-  padding: 5px 5px;
-  border-radius: 6px;
-  font-size: 30px;
-  list-style: none;
-  color: #000000;
-  margin: auto;
-  width: 50%;
-  
+justify-content: center;
+background-color: #222831;
+text-align: center;
+text-decoration:solid;
+padding: 5px 5px;
+border-radius: 6px;
+font-size: 30px;
+list-style: none;
+color: #000000;
+margin: auto;
+width: 50%;
+
 }
 .comment-list{
-  justify-content: center;
-  background-color: #393E46;
-  margin: 15px;
-  text-decoration:none;
-  padding: 50px 35px;
-  border-radius: 14px;
-  font-size: 30px;
-  list-style: none;
-  color: #f2f2f2;
-  margin: auto;
-  width: 50%;
-  padding: 10px;
+justify-content: center;
+background-color: #393E46;
+margin: 15px;
+text-decoration:none;
+padding: 50px 35px;
+border-radius: 14px;
+font-size: 30px;
+list-style: none;
+color: #f2f2f2;
+margin: auto;
+width: 50%;
+padding: 10px;
 }
 .comment-listLi a {
-  list-style: none;
+list-style: none;
 }
 .comment-listLi{
-  list-style: none;
-  text-align: center;
+list-style: none;
+text-align: center;
 }
 
 .makecenter{
-  text-align: center;
-  margin: 10px;
-  text-decoration: underline;
+text-align: center;
+margin: 10px;
+text-decoration: underline;
 }
 .desc-text{
-  margin-bottom: 10px;
-  font-size: medium;
-  font-weight: lighter;
+margin-bottom: 10px;
+font-size: medium;
+font-weight: lighter;
 }
 .main-about{
-  margin-left: 3%;
+margin-left: 3%;
 }
 .move-right{
-  margin-left: 3%;
+margin-left: 3%;
 }
 .personDetails{
-  justify-content: center;
-  background-color: #393E46;
-  text-decoration:none;
-  padding: 50px 35px;
-  border-radius: 6px;
-  font-size: 30px;
-  list-style: none;
-  color: #000000;
-  margin: auto;
-  width: 50%;
-  padding: 5px;
+justify-content: center;
+background-color: #393E46;
+text-decoration:none;
+padding: 50px 35px;
+border-radius: 6px;
+font-size: 30px;
+list-style: none;
+color: #000000;
+margin: auto;
+width: 50%;
+padding: 5px;
 }
 .UserH1{
-  margin-top: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-  color: black;
+margin-top: 20px;
+margin-bottom: 20px;
+text-align: center;
+color: black;
 }
 .postJob{
-  justify-content: center;
-  text-decoration:none;
-  border: #000000;
-  border: 5px;
-  border-radius: 6px;
-  font-size: 30px;
-  list-style: none;
-  color: #000000;
-  margin: auto;
-  margin-top: 20px;
-  width: 50%;
-  padding: 5px;
+justify-content: center;
+text-decoration:none;
+border: #000000;
+border: 5px;
+border-radius: 6px;
+font-size: 30px;
+list-style: none;
+color: #000000;
+margin: auto;
+margin-top: 20px;
+width: 50%;
+padding: 5px;
 }
 .jobsHired{
-  justify-content: center;
-  text-decoration:none;
-  border: #000000;
-  border: 5px;
-  border-radius: 6px;
-  font-size: 30px;
-  list-style: none;
-  color: #000000;
-  margin: auto;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  width: 50%;
-  padding: 5px;
+justify-content: center;
+text-decoration:none;
+border: #000000;
+border: 5px;
+border-radius: 6px;
+font-size: 30px;
+list-style: none;
+color: #000000;
+margin: auto;
+margin-top: 40px;
+margin-bottom: 40px;
+width: 50%;
+padding: 5px;
 }
 .editProfile{
-  background-color: white;
-  color: black;
-  border: 2px solid rgb(0, 0, 0);
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  border-radius: 30px;
-  justify-content: center;
-  text-align: center;
+background-color: white;
+color: black;
+border: 2px solid rgb(0, 0, 0);
+padding: 10px 20px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+border-radius: 30px;
+justify-content: center;
+text-align: center;
 }
 .editProfile:hover{
-  transition: 0.3s;
-  color: white;
-  background-color: black;
+transition: 0.3s;
+color: white;
+background-color: black;
 }
 .editProfileButton{
-  text-align: center;
+text-align: center;
 }
 #login-form{
-  width: 50%;
-  position: relative;
-  left: 27%;
+width: 50%;
+position: relative;
+left: 27%;
 }
 .loginBtn{
-  background-color: #8a908a; /* Green */
-  border-radius: 1%;
+  background-color: #717871; /* Green */
+  border-radius: 5px;
   color: white;
   padding: 10px 25px;
   text-align: center;
@@ -335,46 +343,52 @@ margin-bottom: 20px;
   display: inline-block;
   font-size: 16px;
   position: relative;
-  left: 40%;
+  left: 32%;
   cursor: pointer;
 }
 .RegisterLink{
   position: relative;
-  left: 37%;
+  left: 25%;
 }
 .footerText{
-  position:relative;
-  bottom: 1%;
+position:relative;
+bottom: 1%;
 } */
 #registration-form{
-  width: 50%;
-  position: relative;
-  left: 27%;
-  height: 50%;
+width: 50%;
+position: relative;
+left: 27%;
+height: 50%;
 }
 input[type="text"], input[type="password"],select {
 
-  background-color : #f3ebeb; 
+background-color : #f3ebeb; 
 
 }
 #create-Job{
-  width: 50%;
-  position: relative;
-  left: 27%;
-  height: 50%;
+width: 50%;
+position: relative;
+left: 27%;
+height: 50%;
 }
 #jobsInput
 {
   width: 20%;
   position: relative;
-  left: 40%;
+  left: 41%;
+}
+#searchType
+{
+width: 20%;
+position: relative;
+left: 40%;
 }
 .submitJob{
   position: relative;
-  right: 47%;
+  right: 43%;
 }
 .enter-comment{
-  width: 30%;
+width: 30%;
 }
 #add-comment{
 width: 30%;
@@ -382,33 +396,87 @@ position: relative;
 left: 35%;
 }
 .label-comment{
-  position: relative;
-  left: 40%;
+position: relative;
+left: 40%;
 }
 .submitComment{
-  position: relative;
-  left: 40%;
-  margin: 10px;
-  width: 15%;
+position: relative;
+left: 40%;
+margin: 10px;
+width: 15%;
 }
 .savedjobs{
 text-align: center;}
 .savedjobs a {
-  font-size: 25px;
+font-size: 25px;
 }
 .savedjobs li {
-  list-style: none;
-  margin-top: 15px;
-  margin-bottom: 15px;
+list-style: none;
+margin-top: 15px;
+margin-bottom: 15px;
 }
 .savedjobs p {
-  font-size: 35px;
+font-size: 35px;
 }
 .icon{
-  width: 100%;
-  
+width: 100%;
+
 }
 .icon:hover{
-  color: white;
-  transition: 0.3s;
+color: white;
+transition: 0.3s;
 }
+.login-div{
+  border-style: groove;
+  width: 40%;
+  position: relative;
+  left: 30%;
+}
+.error-login{
+  text-align: center;
+}
+
+#error-container{
+  margin-left: 20%;
+}
+.error-login{
+  margin-left: 25%;
+}
+
+    #registration-form{
+      width: 70%;
+      position: relative;
+      left: 15%;
+      margin-bottom: 10%;
+    }
+    .Share-Btn{
+      position: relative;
+      left: 48%;
+      border: 0;
+      line-height: 2.5;
+      padding: 0 20px;
+      font-size: 1rem;
+      text-align: center;
+      color: #fff;
+      text-shadow: 1px 1px 1px #000;
+      border-radius: 10px;
+      background-color: rgb(63, 24, 237);
+      margin-bottom: 2%;
+    }
+
+    .submitJobBtn {
+      background-color: #717871;
+      border-radius: 1%;
+      color: white;
+      padding: 10px 25px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      position: relative;
+      left: 40%;
+      cursor: pointer;
+  }
+  a:hover{
+    cursor: pointer;
+  }

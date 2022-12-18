@@ -20,6 +20,17 @@ function checkJobDescription(jobDescription) {
 	return jobDescription;
 }
 
+function checkJobTag(jobTag) {
+	if (!jobTag) throw "Must enter a job tag";
+	if (typeof jobTag !== "string") throw "Job tag must be a string";
+	jobTag = jobTag.trim();
+	if (jobTag.length === 0) throw "Job tag cannot be empty spaces";
+	if (jobTag.length < 5) throw "Job tag must have at least 5 characters";
+
+	return jobTag;
+}
+
+
 const staticForm = document.getElementById("create-Job");
 console.log(staticForm)
 if (staticForm) {
@@ -29,6 +40,7 @@ if (staticForm) {
     const JobTitleInput = document.getElementById("jobTitle")
     const JobDescriptionInput = document.getElementById("jobDescription")
     const JobStreet = document.getElementById("jobStreetName")
+    const JobTag = document.getElementById("jobTag")
     console.log(JobStreet)
     
 
@@ -40,11 +52,13 @@ if (staticForm) {
             const JobTitleInputValue = JobTitleInput.value;
             const jobDescriptionValue = JobDescriptionInput.value;
             const jobStreetValue = JobStreet.value;
+            const JobTagInputValue = JobTag.value;
 
             const validatedJobTitle = checkJobTitle(JobTitleInputValue)
             const validatedJobDescription = checkJobDescription(jobDescriptionValue)
+            const validatedJobTag = checkJobTag(JobTagInputValue)
             if (validatedJobDescription
-             && validatedJobTitle) {
+             && validatedJobTitle && validatedJobTag) {
                 errorContainer.style.display = "none"
             }
             if(jobStreetValue == "Select Street") throw "Please select a job Street"
@@ -56,13 +70,3 @@ if (staticForm) {
         }
     })
 }
-
-// $('#Submit').click(function(){
-//     var ddlvalue= $("#dropdownid option:selected").val();
-//     if(ddlvalue!='-1')
-//     {    
-//         errorContainer.style.display = "none"
-//     }
-//   else
-//   alert('Please select Location');
-//    });

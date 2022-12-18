@@ -1,30 +1,46 @@
 //add comment js funciton
 const addCommentForm = document.getElementById("add-comment")
-addCommentForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "addComment", true);
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4) {
-            var result = JSON.parse(xhttp.response).results;
-            if (this.status == 200) {
-                var container = document.getElementById('comment-list')
-                container.innerHTML = container.innerHTML
-                +`
-                <li class="comment-listLi">
-                    <p>By: <a href="/user/${result.authorId}">${result.name}</a></p>
-                    <p>${result.comment}</p>
-                    <p>On: ${result.commentDate}</p>
-                    <br>
-                </li>`
-            }else {
-                alert("Failed to add comment")
+if(addCommentForm){
+    addCommentForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "addComment", true);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                var result = JSON.parse(xhttp.response).results;
+                if (this.status == 200) {
+                    var container = document.getElementById('comment-list')
+                    container.innerHTML = container.innerHTML
+                    +`
+                    <li class="comment-listLi">
+                        <p>By: <a href="/user/${result.authorId}">${result.name}</a></p>
+                        <p>${result.comment}</p>
+                        <p>On: ${result.commentDate}</p>
+                        <br>
+                    </li>`
+                }else {
+                    alert("Failed to add comment")
+                }
             }
         }
-    }
-    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhttp.send(`jobId=${this.jobId.value}&comment=${this.comment.value}`);
-});
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhttp.send(`jobId=${this.jobId.value}&comment=${this.comment.value}`);
+    });
+}
+
+
+// //share job
+
+const shareBtn = document.getElementById("shareJob")
+if(shareBtn){
+    shareBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        console.log(window.location.hostname+shareBtn.value);
+
+  navigator.clipboard.writeText("http://localhost:3000/job/"+shareBtn.value);
+  alert("Copied the URL : " + "http://localhost:3000/job"+shareBtn.value);
+    });
+}
 
 
 //save/unsave job js function saved=ture for unsave, 
@@ -55,24 +71,27 @@ function saveJob(obj, id, saved) {
 
 //apply for job funciton
 const applyJobForm = document.getElementById("resumeUpload");
-
-applyJobForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const form = document.getElementById("resumeUpload")
-    const formData = new FormData(form);
-    formData.append("jobId", document.getElementsByName("varJobId")[0].content)
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/file/upload", true);
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4) {
-            if (this.status == 200) {
-                form.parentNode.parentNode.removeChild(form.parentNode);
-                document.getElementById("hired-msg").setAttribute("style", "display: initial")
-            } else {
+if(applyJobForm)
+{
+    applyJobForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const form = document.getElementById("resumeUpload")
+        const formData = new FormData(form);
+        formData.append("jobId", document.getElementsByName("varJobId")[0].content)
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/file/upload", true);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    form.parentNode.parentNode.removeChild(form.parentNode);
+                    document.getElementById("hired-msg").setAttribute("style", "display: initial")
+                } else {
+                }
             }
         }
-    }
-    xhttp.send(formData);
-});
+        xhttp.send(formData);
+    });
+}
+
 
 

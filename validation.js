@@ -44,6 +44,15 @@ function checkLastName(input) {
 	return input;
 }
 
+function checkFullName(input){
+	input = checkString(input);
+	names = input.split(" ")
+	if (names.length<2) throw "Name sytax Error"
+	checkFirstName(names[0])
+	checkLastName(names[-1])
+	return input
+}
+
 function checkEmail(email) {
 	email = checkString(email);
 	email = email.toLowerCase();
@@ -91,6 +100,7 @@ function checkPhone(phone) {
 
 function checkPassword(strVal) {
 	const oneUpper = /[A-Z]/;
+	const oneLower = /[a-z]/;
 	const oneNumber = /[0-9]/;
 	const specialChar = /[^\w\s]/;
 	if (!strVal) throw "You must supply a password!";
@@ -100,6 +110,7 @@ function checkPassword(strVal) {
 	if (strVal.length < 8) throw "Password must at least 8 characters long";
 	if (strVal.includes(" ")) throw "Password must not contain space";
 	if (!oneUpper.test(strVal)) throw "Password must contain one upper case";
+	if (!oneLower.test(strVal)) throw "Password must contain one lower case letter ";
 	if (!oneNumber.test(strVal)) throw "Password must contain one number";
 	if (!specialChar.test(strVal) && !strVal.includes("_")) throw "Password must contain one special character";
 	return strVal;
@@ -135,10 +146,20 @@ function checkJobStreetName(streetName) {
   }
 }
 
+function checkJobTag(jobTag) {
+	if (!jobTag) throw "Must enter a job tag";
+	if (typeof jobTag !== "string") throw "Job tag must be a string";
+	jobTag = jobTag.trim();
+	if (jobTag.length === 0) throw "Job tag cannot be empty spaces";
+	if (jobTag.length < 5) throw "Job tag must have at least 5 characters";
+
+	return jobTag;
+}
+
+
 function checkJobStatus(status) {
 	status = checkString(status);
-
-	if (["Open", "Finished"].includes(status)) {
+	if (["Open", "Finished", "Taken"].includes(status)) {
 		return status;
 	} else {
 		throw "Invalid job status";
@@ -150,7 +171,7 @@ function checkSearchQuery(searchQuery) {
 	searchQuery = searchQuery.trim();
 	if (searchQuery.length === 0) throw "Only blank spaces are not allowed";
 	let reg = /^[A-Z a-z 0-9]*$/gm;
-	if (!searchQuery.match(reg)) throw "Search can only contain letters and numbers";
+	//if (!searchQuery.match(reg)) throw "Search can only contain letters and numbers";
 	return searchQuery;
 }
 
@@ -169,6 +190,7 @@ module.exports = {
 	checkString,
 	checkFirstName,
 	checkLastName,
+	checkFullName,
 	checkId,
 	checkPassword,
 	checkAge,
@@ -180,5 +202,6 @@ module.exports = {
 	checkJobStatus,
 	checkSearchQuery,
 	encryptPwd,
-	validatePwd
+	validatePwd,
+	checkJobTag
 };

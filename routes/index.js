@@ -12,14 +12,16 @@ const constructorMethod = (app) => {
 	//server side check request
 	app.use(function (req, res, next) {
 		var id = "";
+		var fullName = ""
 		if (req.session.user) {
 			id = req.session.user.id;
+			fullName = req.session.user.fullName;
 		}
 		var authentication = "Unauthenticated";
 		if (id) {
 			authentication = id;
 		}
-		console.log(`${new Date().toLocaleString("en-US")} ${req.method} ${req.originalUrl} user: ${authentication}`);
+		console.log(`${new Date().toLocaleString("en-US")} ${req.method} ${req.originalUrl} user: ${fullName} (${authentication})`);
 		next();
 	});
 

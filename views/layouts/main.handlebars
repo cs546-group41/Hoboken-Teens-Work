@@ -24,7 +24,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <header>
+        <nav>
         <!-- the link will be change to a pic -->
         <ul>
             <li class="none">
@@ -179,16 +180,17 @@
         <a href="/logout">Click to logout</a>
         {{else}}
         <p>User Status : Not logged in</p>
-        <ul class="none">
-            <li class="none">
-                <a class="homepageLoginAndSignup" href="/login">Login</a>
-            </li>
-        </ul>
-        <ul class="none">
-            <li class="none">
-                <a class="homepageLoginAndSignup" href="/register">Sign Up</a>
-            </li>
-        </ul>
+        <div>
+              <a class="homepageLoginAndSignup" href="/login">Login</a>
+               <a class="homepageLoginAndSignup" href="/register">Sign Up</a>
+
+        </div>
+        {{!-- <li class="none">
+            <a class="homepageLoginAndSignup" href="/login">Login</a>
+        </li>
+        <li class="none">
+            <a class="homepageLoginAndSignup" href="/register">Sign Up</a>
+        </li> --}}
         {{/if}}
         {{/if}}
     </nav>
@@ -196,7 +198,8 @@
 
     <br><br>
     <footer class="footerText">
-        <a href="/about">Link to team introduction</a>
+        <p>© Hoboken Teens Work 2022</p>
+        <a href="/about" >About</a>
     </footer>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
         integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>

@@ -18,15 +18,6 @@ router.route("/searchJobs").post(async (req, res) => {
       req.session.destroy()
     }
   }
-  if (!req.session.user) {
-    //if not logged in
-    res.status(401)
-    return res.render("error", {
-      title: "Search Results - Error",
-      login: false,
-      errormsg: "You Need to Login first to use the Search Function!"
-    })
-  }
   try {
     var searchQuery = validation.checkSearchQuery(xss(req.body.jobsInput))
   } catch (e) {
@@ -40,7 +31,7 @@ router.route("/searchJobs").post(async (req, res) => {
   }
   var searchResults = null
   try {
-    searchResults = await jobs.searchJobs(searchQuery)
+    searchResults = await jobs.searchJobs(searchQuery,req.body.searchType)
   } catch (e) {
     //should be server side if throws error
     res.status(500)
@@ -50,12 +41,15 @@ router.route("/searchJobs").post(async (req, res) => {
       errormsg: e
     })
   }
+
   res.render("searchResults", {
     title: title,
-    login: true,
+    login: req.session.user ? true:false,
     loginUserData: req.session.user,
     searchResults: searchResults
   })
+
+
 }).all(async (req, res) => {
   //other method should not Allowed
   res.status(405)
@@ -68,10 +62,12 @@ router.route("/createJob")
     var userData = null;
     if (req.session.user !== undefined) {
       try {
-        userData = await users.getUserById(req.session.user.id);
+        userData = await users.getUserById(validation.checkId(req.session.user.id));
         //console.log(userData);
       } catch (e) {
         req.session.destroy()
+        res.status(400)
+        res.redirect("/index")
       }
     }
     if (!req.session.user) {
@@ -92,9 +88,11 @@ router.route("/createJob")
   .post(async (req, res) => {
     if (req.session.user !== undefined) {
       try {
-        await users.getUserById(req.session.user.id)
+        await users.getUserById(validation.checkId(req.session.user.id))
       } catch (e) {
         req.session.destroy()
+        res.status(400)
+        res.redirect("/index")
       }
     }
     try {
@@ -102,6 +100,7 @@ router.route("/createJob")
       var jobTitle = validation.checkJobTitle(xss(req.body.jobTitle));
       var jobDescription = validation.checkJobDescription(xss(req.body.jobDescription));
       var jobStreetName = validation.checkJobStreetName(xss(req.body.jobStreetName));
+      var jobTag = validation.checkJobTag(xss(req.body.jobTag));
     } catch (e) {
       res.status(400)
       return res.render("createJob", {
@@ -114,7 +113,7 @@ router.route("/createJob")
     }
 
     try {
-      await jobs.createJob(jobTitle, jobDescription, jobStreetName, req.session.user.id);
+      await jobs.createJob(jobTitle, jobDescription, jobStreetName, req.session.user.id, jobTag);
       return res.redirect('/user/' + req.session.user.id);
     } catch (e) {
       res.status(500);
@@ -134,6 +133,7 @@ router.route("/createJob")
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
 
+
 router.route("/addComment").post(async (req, res) => {
   if (!req.session) return res.sendStatus(401);
   if (req.session.user !== undefined) {
@@ -148,12 +148,14 @@ router.route("/addComment").post(async (req, res) => {
   try {
     var jobId = validation.checkId(xss(req.body.jobId))
     var commentText = validation.checkString(xss(req.body.comment))
+    var userId = validation.checkId(req.session.user.id)
+    var name = validation.checkFullName(req.session.user.fullName)
   } catch (e) {
     return res.status(400).json({ results: e });
   }
 
   try {
-    const comment = await comments.createComment(jobId, req.session.user.id, req.session.user.fullName, commentText);
+    const comment = await comments.createComment(jobId, userId, name, commentText);
     res.status(200).json({ results: comment });
   } catch (e) {
     res.status(400).json({ results: e });
@@ -164,6 +166,7 @@ router.route("/addComment").post(async (req, res) => {
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
   });
+
 
 router.route("/saveJob").post(async (req, res) => {
   if (!req.session) return res.sendStatus(401);
@@ -179,16 +182,17 @@ router.route("/saveJob").post(async (req, res) => {
   //route side validation
   try {
     var jobId = validation.checkId(xss(req.body.jobId))
+    var userId = validation.checkId(req.session.user.id)
   } catch (e) {
     return res.sendStatus(400)
   }
 
   try {
-    if (await users.isJobSaved(jobId, req.session.user.id)) {
-      await users.unSaveJob(jobId, req.session.user.id);
+    if (await users.isJobSaved(jobId, userId)) {
+      await users.unSaveJob(jobId, userId);
       res.sendStatus(200);
     } else {
-      await users.saveJob(jobId, req.session.user.id);
+      await users.saveJob(jobId, userId);
       res.sendStatus(200);
     }
   } catch (e) {
@@ -211,13 +215,14 @@ router
     try {
       var jobId = validation.checkId(xss(req.body.jobId))
       var applicantId = validation.checkId(xss(req.body.applicantId))
+      var userId = validation.checkId(req.session.user.id)
     } catch (e) {
       return res.sendStatus(400)
     }
 
     try {
-      await users.hireForJob(req.session.user.id, jobId, applicantId)
-      await jobs.changeStatus(req.body.jobId, req.session.user.id, "Taken")
+      await users.hireForJob(userId, jobId, applicantId)
+      await jobs.changeStatus(jobId, userId, "Taken")
       res.sendStatus(200)
     } catch (e) {
       console.log(e)
@@ -234,7 +239,7 @@ router
   .route('/fire')
   .post(async (req, res) => {
     if (!req.session.user) return res.sendStatus(401)
-    
+
     //route side validation
     try {
       var jobId = validation.checkId(xss(req.body.jobId))
@@ -243,10 +248,10 @@ router
     } catch (e) {
       return res.sendStatus(400)
     }
-    
+
     try {
       const path = await users.fireFromJob(authorId, jobId, applicantId)
-      await jobs.changeStatus(req.body.jobId, req.session.user.id, "Open")
+      await jobs.changeStatus(jobId, authorId, "Open")
       try {
         fs.unlinkSync("./" + path);
       } catch (e) {
@@ -255,7 +260,7 @@ router
       }
       res.sendStatus(200)
     } catch (e) {
-      console.log(e)
+      //console.log(e)
       res.sendStatus(500)
     }
   })
@@ -278,14 +283,35 @@ router.route("/:id")
     var login = false;
     var saved = false;
     var applied = false;
+
+    //validation1
+    try {
+      var jobId = validation.checkId(req.params.id)
+    } catch (e) {
+      res.status(400)
+      res.redirect("/index")
+      return
+    }
+
     if (req.session.user) {
       login = true;
       isMinor = user.age > 18 ? false : true;
+
+      //validation2
       try {
-        saved = await users.isJobSaved(req.params.id, req.session.user.id);
-        applied = await users.isJobApplied(req.session.user.id, req.params.id)
+        var userId = validation.checkId(req.session.user.id)
+      } catch (e) {
+        res.status(400)
+        res.redirect("/index")
+        return
+      }
+
+      try {
+        saved = await users.isJobSaved(jobId, userId);
+        applied = await users.isJobApplied(userId, jobId)
       }
       catch (e) {
+        res.status(500)
         return res.render("error", {
           title: "Error",
           login: login,
@@ -295,9 +321,10 @@ router.route("/:id")
 
     }
     try {
-      var jobDetail = await jobs.getJobById(req.params.id);
+      var jobDetail = await jobs.getJobById(jobId);
       var isAvaliable = jobDetail.jobStatus === "Finished" ? false : true;
     } catch (e) {
+      res.status(500)
       return res.render("error", {
         title: `Posted Job Detail - Error`,
         login: true,
@@ -306,7 +333,7 @@ router.route("/:id")
       });
     }
     try {
-      if (req.session.user && (await users.jobPosterCheck(req.params.id, req.session.user.id))) {
+      if (req.session.user && (await users.jobPosterCheck(jobId, userId))) {
         return res.render("applicants", {
           title: `Posted Job Detail - ${jobDetail.jobTitle}`,
           login: true,
@@ -327,6 +354,7 @@ router.route("/:id")
       });
     }
     catch (e) {
+      res.status(500)
       return res.render("error", {
         title: "Error",
         login: login,
@@ -361,37 +389,37 @@ router.route("/:id/editJob")
   .post(async (req, res) => {
     //check if login in and if is the author of the job, if not redirect to the job detail page
     if (!req.session.user) return res.redirect(`jobs/${req.params.id}`)
+    
+    //route side validation
+    //validation
+    try {
+      var jobId = validation.checkId(req.params.id)
+      var userId = validation.checkId(req.session.user.id)
+      var jobTitle = validation.checkJobTitle(xss(req.body.jobTitle)) 
+      var jobDescription = validation.checkJobDescription(xss(req.body.jobDescription))  
+      var jobStreetName = validation.checkJobStreetName(xss(req.body.jobStreetName)) 
+      var phone = validation.checkPhone(xss(req.body.phone))  
+    } catch (e) {
+      res.status(400)
+      res.redirect("/index")
+      return
+    }
+    
     var jobDetail = null
     try {
-      jobDetail = await jobs.getJobById(req.params.id)
+      jobDetail = await jobs.getJobById(jobId)
       if (jobDetail.jobAuthor.id != req.session.user.id) res.redirect(`jobs/${req.params.id}`)
     } catch (e) {
+      res.status(400)
       return res.redirect("/index")
     }
     //edit job part
     try {
-      //validation need to put in client side
-      if (xss(req.body.phone) === "N/A") {
-        await jobs.editJob(
-          req.params.id,
-          req.session.user.id,
-          xss(req.body.jobTitle),
-          xss(req.body.jobDescription),
-          xss(req.body.jobStreetName));
-      } else {
-        await jobs.editJob(
-          req.params.id,
-          req.session.user.id,
-          xss(req.body.jobTitle),
-          xss(req.body.jobDescription),
-          xss(req.body.jobStreetName),
-          xss(req.body.phone));
-      }
-      res.redirect(`/job/${req.params.id}`)
-
+      await jobs.editJob(jobId, userId, jobTitle, jobDescription, jobStreetName, phone);
+      res.redirect(`/job/${req.params.id}`);
     } catch (e) {
       //add status code here
-      //res.status()
+      res.status(500)
       res.render("createJob", {
         title: "Editing Job",
         login: true,
@@ -419,11 +447,22 @@ router.route("/:id/changeStatus")
         return res.status(401).json({ results: "Unauthorized User Request." })
       }
     }
+
+    //validation
     try {
-      var result = await jobs.changeStatus(req.params.id, req.session.user.id, req.body.status)
+      var jobId = validation.checkId(req.params.id)
+      var userId = validation.checkId(req.session.user.id)
+      var status = validation.checkJobStatus(xss(req.body.status))  
+    } catch (e) {
+      res.status(400).json({ results: e })
+      return
+    }
+
+    try {
+      var result = await jobs.changeStatus(jobId, userId, status)
       res.status(200).json({ results: result })
     } catch (e) {
-      console.log(e)
+      //console.log(e)
       res.status(400).json({ results: e })
     }
   })
