@@ -11,8 +11,8 @@ function checkJobTitle(title) {
 $(document).ready(function() {
   $('#search-form').submit(function(event) {
     var input = $('#jobsInput').val().trim()
-    //var regex = new RegExp(/^[a-zA-Z\s]+$/);
-    if (checkJobTitle(input)) {
+    var regex = new RegExp(/^[a-zA-Z0-9 ]+$/);
+    if (regex.test(input)) {
       $('#error').hide();
       $('#jobsInput').focus();
     } else {
