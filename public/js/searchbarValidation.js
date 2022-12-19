@@ -17,4 +17,3 @@ $('#search-form').submit((event) => {
     $('#searchType').focus();
   }
 });
-

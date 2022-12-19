@@ -243,7 +243,6 @@ footer {
   color: #000000;
   margin: auto;
   width: 50%;
-
 }
 
 .comment-list {
@@ -526,6 +525,11 @@ select {
   margin-bottom: 2%;
 }
 
+.Share-Btn:hover {
+cursor: pointer;
+
+}
+
 .submitJobBtn {
   background-color: #717871;
   border-radius: 1%;
@@ -577,4 +581,35 @@ a:hover {
 }
 .errorResume{
   text-align: left;
+}
+.error-text1{
+  position: relative;
+  left: 25%;
+}
+.error-text2{
+  position: relative;
+  left: 35%;
+  margin-top: 15px;
+}
+.list-button-div{
+  justify-content: center;
+  background-color: #222831;
+  text-align: center;
+  text-decoration: solid;
+  padding: 5px 5px;
+  border-radius: 6px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  width: 50%;
+}
+.list-button-a{
+  font-size: 5px;
+}
+
+.list-button-li{
+  padding: 5px 20px; 
+  margin: 0 2px;
+  text-align: center;
+  list-style: none;
 }

@@ -17,8 +17,8 @@ function changeStatus(id, curStatus) {
         if (this.readyState == 4) {
             if (this.status == 200) {
                 var container = document.getElementById("jobStatusMsg")
-                if (curStatus === "Open" || curStatus === "Taken") container.innerText = "Finished"
-                else container.innerText = "Open"
+                if (curStatus === "Open" || curStatus === "Taken") container.innerText = "Job Status: Finished"
+                else container.innerText = "Job Status: Finished"
                 location.reload();
             }
         }
