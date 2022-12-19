@@ -1,17 +1,7 @@
-function checkJobTitle(title) {
-	if (!title) return false;
-	if (typeof title !== "string") return false;
-	title = title.trim();
-	if (title.length === 0) return false
-	if (title.match("/[^ws]/g") || title.includes("_")) return false;
-	if (title.length < 3) return false;
-	return true;
-}
-
 $(document).ready(function() {
   $('#search-form').submit(function(event) {
     var input = $('#jobsInput').val().trim()
-    var regex = new RegExp(/^[a-zA-Z0-9 ]+$/);
+    var regex = new RegExp(/^[a-zA-Z0-9\s]+$/);
     if (regex.test(input)) {
       $('#error').hide();
       $('#jobsInput').focus();
