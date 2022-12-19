@@ -1,3 +1,4 @@
+/*
 //add comment js funciton
 const addCommentForm = document.getElementById("add-comment")
 if(addCommentForm){
@@ -28,7 +29,7 @@ if(addCommentForm){
         xhttp.send(`jobId=${this.jobId.value}&comment=${this.comment.value}`);
     });
 }
-
+*/
 
 // //share job
 
