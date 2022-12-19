@@ -1,19 +1,16 @@
-$('#search-form').submit((event) => {
- 
-  if ($('#jobsInput').val().trim()) {
-    $('#error').hide();
-    $('#jobsInput').focus();
-  } else {
-    event.preventDefault();
-    $('#error').show();
-    $('#error').html('You must enter something in the searchbar to search');
-    $('#jobsInput').focus();
-  }
-  if($('#searchType').val().trim() === "Select Search type"){
 
-    event.preventDefault();
-    $('#error').show();
-    $('#error').html('You must select the search type');
-    $('#searchType').focus();
-  }
+$(document).ready(function() {
+  $('#search-form').submit(function(event) {
+    var input = $('#jobsInput').val().trim()
+    var regex = new RegExp(/^[a-zA-Z\s]+$/);
+    if (regex.test(input)) {
+      $('#error').hide();
+      $('#jobsInput').focus();
+    } else {
+      event.preventDefault();
+      $('#error').show();
+      $('#error').html('Only Support alphanumeric characters!');
+      $('#jobsInput').focus();
+    }
+  })
 });
