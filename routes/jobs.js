@@ -8,6 +8,7 @@ const validation = require("../validation");
 const fs = require('fs');
 const path = require('path');
 const xss = require("xss");
+const { ConnectionPoolClosedEvent } = require("mongodb");
 
 router.route("/searchJobs").post(async (req, res) => {
   var title = "Search Results"
@@ -26,6 +27,7 @@ router.route("/searchJobs").post(async (req, res) => {
     return res.render("error", {
       title: "Search Results - Error",
       login: false,
+      msg: "No Results Found",
       errormsg: e
     })
   }
@@ -50,6 +52,7 @@ router.route("/searchJobs").post(async (req, res) => {
     return res.render("error", {
       title: "Search Results - Error",
       login: false,
+      msg: "No Results Found",
       errormsg: e
     })
   }
@@ -109,7 +112,7 @@ router.route("/createJob")
       res.render("createJob", {
         title: "Creating New Job",
         login: true,
-        loginUserData: userData,
+        loginUserData: req.session.user,
         phone: userData.phone
       })
     }
@@ -185,10 +188,16 @@ router.route("/addComment").post(async (req, res) => {
   
   //route side validation
   try {
+    //console.log(1)
     var jobId = validation.checkId(xss(req.body.jobId))
-    var commentText = validation.checkString(xss(req.body.comment))
+    //console.log(2)
+    var commentText = xss(req.body.comment)
+    if (!commentText) return res.status(400).json({results: "Empty comment!"})
+    //console.log(3)
     var userId = validation.checkId(req.session.user.id)
+    //console.log(4)
     var name = validation.checkFullName(req.session.user.fullName)
+    //console.log(5)
   } catch (e) {
     return res.status(400).json({ results: e });
   }
@@ -387,6 +396,7 @@ router.route("/:id")
             login: true,
             loginUserData: req.session.user,
             jobDetail: jobDetail,
+            jobId:req.params.id,
             saved: saved,
           });
         }

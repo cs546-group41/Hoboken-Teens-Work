@@ -1,6 +1,6 @@
-<h1 class="IndividualJobsH1">Job Details</h1> 
-<button  class="Share-Btn"  id="shareJob" value="user/{{jobDetail.jobAuthor.id}}">Share</button>
-<button onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')">Change Status</button>
+<h1 class="IndividualJobsH1">Post Job detail</h1> 
+<button  class="Share-Btn"  id="shareJob" value="{{jobId}}">Share</button>
+{{!-- <button onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')">Change Status</button> --}}
 
 
 <div class="individualJobs row">
@@ -39,8 +39,8 @@
 <div>
   <form action="/addComment" method="post" id="add-comment">
     <label for="comment" class="label-comment">Leave a comment: </label>
-    <input type="text" class="enter-comment" id="comment" name="comment">
-    <input type="text" class="value-block" id="jobId" name="comment" value="{{jobDetail._id}}">
+    <input type="text" class="enter-comment" id="comment" name="comment" />
+    <input type="text" class="value-block" id="jobId" name="comment" value="{{jobDetail._id}}" />
     <br>
     <button type="submit" form="add-comment" value="submit" class="submitComment">Submit</button>
     </form><br><br>
@@ -55,7 +55,7 @@
       <li class="list-button-li">
         <a class="list-button-link" href="/user/{{applicantId}}">{{name}}</a> 
         <a class="list-button-link" id="resume-download-link" href="#" >
-          <button class="list-button-button" onclick="downloadResume(this,'{{applicantId}}')">Click to Download Resume</button>
+          <span class="list-button-button" onclick="downloadResume(this,'{{applicantId}}')">Click to Download Resume</span>
         </a>
         {{#if hired}}
           <button class="fire-button" onclick='fire(this,"{{applicantId}}")'>Fire!</button>

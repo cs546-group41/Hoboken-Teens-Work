@@ -122,6 +122,11 @@ const removeJob = async (jobId) => {
   const userCollection = await users();
   const userUpdate = await userCollection.updateOne({ _id: ObjectId(theJob.jobAuthor.id) }, { $pull: { jobsPosted: { id: jobId } } });
   if (userUpdate.modifiedCount === 0) throw "Update user info failed!"
+
+  await userCollection.updateMany({},{$pull:{jobsApplied:{id: jobId}}})
+  await userCollection.updateMany({},{$pull:{jobsSaved:{id: jobId}}})
+  await userCollection.updateMany({},{$pull:{hiredForJobs:{id: jobId}}})
+
   return `The Job: "${jobName}" has been successfully removed`;
 
 };

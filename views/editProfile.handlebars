@@ -1,10 +1,10 @@
 <h1>Edit your profile</h1>
 <form id="edit-profile-form" action="/user/{{presetUser._id}}/editUser" method="post">
 	<label for="firstNameInput">Enter your first name</label>
-	<input type="text" name="firstNameInput" id="firstNameInput" placeholder="Enter your first name" value="{{presetUser.firstName}}"/>
+	<input type="text" name="firstNameInput" id="firstNameInput" placeholder="Enter your first name" value="{{presetUser.firstName}}"  />
 	<br /><br />
 	<label for="lastNameInput">Enter your last name</label>
-	<input type="text" name="lastNameInput" id="lastNameInput" placeholder="Enter your last name" value="{{presetUser.lastName}}" />
+	<input type="text" name="lastNameInput" id="lastNameInput" placeholder="Enter your last name" value="{{presetUser.lastName}} "  />
 	<br /><br />
 	<label for="emailInput">Enter your email</label>
 	<input type="text" name="emailInput" id="emailInput" placeholder="Enter your email" value="{{presetUser.email}}" readonly="readonly"/>

@@ -44,6 +44,10 @@ input[type=submit]:hover {
   background-color: #45a049;
 }
 
+#navbar-logo {
+  height: 100px;
+}
+
 .container {
   border-radius: 5px;
   background-color: #f2f2f2;
@@ -243,6 +247,8 @@ footer {
   color: #000000;
   margin: auto;
   width: 50%;
+  margin-top: 20px;
+
 }
 
 .comment-list {
@@ -572,6 +578,23 @@ a:hover {
   margin-left: 30%;
   margin-top: 20px;
 }
+.download-resume{
+  border: 2px solid;
+  background-color: #000000;
+  border-radius: 5px;
+  color: rgb(54, 36, 36);
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+.download-resume:hover{
+  background-color: white;
+  color: black;
+  transition: 0.3s;
+}
+.errorResume{
+  text-align: left;
+}
 .error-text1{
   position: relative;
   left: 25%;
@@ -603,7 +626,21 @@ a:hover {
   text-align: center;
   list-style: none;
 }
-
+.list-button-button{
+  border: 2px solid;
+  background-color: #87c2f3;
+  border-radius: 5px;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.list-button-button:hover{
+  background-color: white;
+  color: black;
+  transition: 0.3s;
+}
 
 .job-title {
   color: #222831;
@@ -687,4 +724,14 @@ a:hover {
   padding-right: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.login-title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.registration-title {
+  font-size: 30px;
+  font-weight: bold;
 }
