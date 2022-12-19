@@ -2,8 +2,9 @@
 		<br><br>
 		<form action="job/searchJobs" method="post" class="search-form" id="search-form">
 			<label for="searchType" class="homepageJobsInput">Search Type :</label>
-			         <select name="searchType" id="searchType" aria-placeholder="Select Search Type">
+			         <select name="searchType" id="searchType">
        {{!-- <option value="" disabled selected>Search Type</option> --}}
+	   <option>Select Search type</option>
       <option value="JobTitle">Job Title</option>
       <option value="JobTag">Job Tag</option>
 
@@ -15,7 +16,7 @@
 			<br><br>
 			<input type="submit" class="button submitJob">
 			<br>
-			<div id="error" hidden>Please input something to search</div>
+			{{!-- <div id="error" hidden>Please input something to search</div> --}}
 		</form>
 		<br><br>
     <h1 class="homepageH1">Available Jobs in Hoboken right now!</h1>

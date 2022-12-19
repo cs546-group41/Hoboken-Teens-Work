@@ -1,9 +1,10 @@
-
 <div class="savedjobs">
 <p>job saved:</p>
 {{#each curUser.jobsSaved}}
+<ul>
 <li>
     <a href="/job/{{id}}">{{title}}</a>
 </li>
+</ul>
 {{/each}}
 </div>

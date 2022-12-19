@@ -30,12 +30,27 @@ router.route("/").get(async (req, res) => {
 	var errormsg = "";
 	try {
 		jobData = await jobs.getAllJobs();
+		console.log(jobData)
 	} catch (e) {
 		//fail to get data from database
 		errormsg = e;
 		res.status(500)
 	}
 	if (jobData.length===0) errormsg = "No job available."
+
+	for(job of jobData) {
+		words = job.jobDescription.split(" ");
+		if(words.length <= 15) {
+			continue;
+		  } else {
+			 let description = "";
+			 for(i = 0; i < 15; i++) {
+			  description += `${words[i]} `;
+			 }
+			 console.log(description);
+			 job.jobDescription = description.trim() + "...";
+		  }
+	}
 
 	res.render("homepage", {
 		title: title,

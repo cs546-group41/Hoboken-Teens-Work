@@ -243,7 +243,6 @@ footer {
   color: #000000;
   margin: auto;
   width: 50%;
-
 }
 
 .comment-list {
@@ -547,10 +546,6 @@ a:hover {
 .value-block{
   display: none;
 }
-span{
-  text-align: center;
-  justify-content: center;
-}
 .postJobs{
   position: relative;
     left: 48%;
@@ -565,6 +560,7 @@ span{
   margin-left: 30%;
   margin-top: 20px;
 }
+<<<<<<< HEAD
 .error-text1{
   position: relative;
   left: 25%;
@@ -573,4 +569,28 @@ span{
   position: relative;
   left: 35%;
   margin-top: 15px;
+=======
+
+.list-button-div{
+  justify-content: center;
+  background-color: #222831;
+  text-align: center;
+  text-decoration: solid;
+  padding: 5px 5px;
+  border-radius: 6px;
+  list-style: none;
+  color: #000000;
+  margin: auto;
+  width: 50%;
+}
+.list-button-a{
+  font-size: 5px;
+}
+
+.list-button-li{
+  padding: 5px 20px; 
+  margin: 0 2px;
+  text-align: center;
+  list-style: none;
+>>>>>>> 69ed1095d16377afe7ea034bdb2d9d480b4c5682
 }
