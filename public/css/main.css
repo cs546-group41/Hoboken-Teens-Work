@@ -525,6 +525,11 @@ select {
   margin-bottom: 2%;
 }
 
+.Share-Btn:hover {
+cursor: pointer;
+
+}
+
 .submitJobBtn {
   background-color: #717871;
   border-radius: 1%;
@@ -560,7 +565,15 @@ a:hover {
   margin-left: 30%;
   margin-top: 20px;
 }
-
+.error-text1{
+  position: relative;
+  left: 25%;
+}
+.error-text2{
+  position: relative;
+  left: 35%;
+  margin-top: 15px;
+}
 .list-button-div{
   justify-content: center;
   background-color: #222831;
