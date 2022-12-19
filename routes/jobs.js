@@ -341,8 +341,10 @@ router.route("/:id")
       });
     }
     try {
+      console.log("find");
       if (req.session.user && (await users.jobPosterCheck(jobId, userId))) {
-        return res.render("applicants", {
+           console.log("find");
+          return res.render("applicants", {
           title: `Posted Job Detail - ${jobDetail.jobTitle}`,
           login: true,
           loginUserData: req.session.user,
@@ -351,17 +353,43 @@ router.route("/:id")
         });
       }
       //console.log(jobDetail);
-      res.render("individualJob", {
-        title: `Job Detail - ${jobDetail.jobTitle}`,
-        login: login,
-        loginUserData: req.session.user,
-        jobDetail: jobDetail,
-        jobId:req.params.id,
-        saved: saved,
-        applied: applied,
-        isMinor: isMinor,
-        isAvaliable: isAvaliable
-      });
+      try{
+        if(req.session.user)
+        {
+          res.render("individualJob", {
+            title: `Job Detail - ${jobDetail.jobTitle}`,
+            login: login,
+            loginUserData: req.session.user,
+            jobDetail: jobDetail,
+            jobId:req.params.id,
+            saved: saved,
+            applied: applied,
+            isMinor: isMinor,
+            isAvaliable: isAvaliable
+          });
+        }
+        else{
+          res.status(500)
+          res.render("error", {
+          title: `Posted Job Detail - Error`,
+          login: true,
+          loginUserData: req.session.user,
+          errormsg: "User Should be Logged In to view this Job.",
+        });
+        }
+      }
+      catch(e)
+      {
+        res.status(500)
+        return res.render("error", {
+          title: `Posted Job Detail - Error`,
+          login: true,
+          loginUserData: req.session.user,
+          errormsg: e,
+        });
+      }
+      
+ 
     }
     catch (e) {
       res.status(500)
