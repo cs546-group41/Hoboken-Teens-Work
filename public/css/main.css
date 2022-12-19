@@ -613,3 +613,18 @@ a:hover {
   text-align: center;
   list-style: none;
 }
+.list-button-button{
+  border: 2px solid;
+  background-color: #87c2f3;
+  border-radius: 5px;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.list-button-button:hover{
+  background-color: white;
+  color: black;
+  transition: 0.3s;
+}

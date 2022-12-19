@@ -54,7 +54,7 @@
       <li class="list-button-li">
         <a class="list-button-link" href="/user/{{applicantId}}">{{name}}</a> 
         <a class="list-button-link" id="resume-download-link" href="#" >
-          <button class="list-button-button" onclick="downloadResume(this,'{{applicantId}}')">Click to Download Resume</button>
+          <span class="list-button-button" onclick="downloadResume(this,'{{applicantId}}')">Click to Download Resume</span>
         </a>
         {{#if hired}}
           <button class="fire-button" onclick='fire(this,"{{applicantId}}")'>Fire!</button>
