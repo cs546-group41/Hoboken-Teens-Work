@@ -41,7 +41,6 @@ router.route("/searchJobs").post(async (req, res) => {
          for(i = 0; i < 15; i++) {
           description += `${words[i]} `;
          }
-         console.log(description);
          result.jobDescription = description.trim() + "...";
       }
     }
