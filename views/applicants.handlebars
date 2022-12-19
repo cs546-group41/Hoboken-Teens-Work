@@ -7,12 +7,13 @@
 
 
 
-<p> <b>Job Title</b>                 :    {{jobDetail.jobTitle}}</p>
-<p><b>Job Description</b>         :    {{jobDetail.jobDescription}}</p>
-<p><b>Job Tag</b>         :    {{jobDetail.jobTag}}</p>
-<p><b>Job StreetName</b>      :    {{jobDetail.jobStreetName}}</p>
-<p id="jobStatusMsg"> <b>Job Status</b> : {{jobDetail.jobStatus}}</p> 
-<p><b>Contact Phone Number</b>  :    {{jobDetail.jobAuthor.phone}}</p>
+<p class="job-title">{{jobDetail.jobTitle}}</p>
+<p class="job-description">{{jobDetail.jobDescription}}</p>
+<p id="jobStatusMsg" class="job-status">Status: {{jobDetail.jobStatus}}</p>
+<p class="job-tag">Tag: {{jobDetail.jobTag}}</p>
+<p class="job-street-address">Street address      :    {{jobDetail.jobStreetName}}</p>
+<p class="job-author-label">Published by        :    <a class="job-author" href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<p class="job-author-phone">Contact :    {{jobDetail.jobAuthor.phone}}</p>
 
 </div>
 
