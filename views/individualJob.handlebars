@@ -61,15 +61,16 @@
         {{else}}
             <div>
                 <form id="resumeUpload" action="/file/upload" enctype="multipart/form-data" method="post">
-                    <p>Upload your Resume</p>
+                    <p>Upload your Resume and apply</p>
                     <input type="file" id="resume" name="resume" accept="application/pdf"/>
                     <span id="resumeError"></span>
                     <button type="submit">Upload</button>
                     <br>
-                    <div class="form-group hidden" id="error-container">
+                    
+                </form>
+                <div class="form-group hidden" id="error-container">
 		  <div class="alert alert-danger text-goes-here"></div>
 		</div>
-                </form>
             </div>
             <p id="hired-msg" style="display : none">You Had Already Post Your Application!.</p>
         {{/if}}

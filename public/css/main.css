@@ -561,3 +561,20 @@ a:hover {
   margin-left: 30%;
   margin-top: 20px;
 }
+.download-resume{
+  border: 2px solid;
+  background-color: #000000;
+  border-radius: 5px;
+  color: rgb(54, 36, 36);
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+.download-resume:hover{
+  background-color: white;
+  color: black;
+  transition: 0.3s;
+}
+.errorResume{
+  text-align: left;
+}

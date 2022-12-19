@@ -10,10 +10,11 @@ $('#search-form').submit((event) => {
     $('#jobsInput').focus();
   }
   if($('#searchType').val().trim() === "Select Search type"){
-    
+
     event.preventDefault();
     $('#error').show();
     $('#error').html('You must select the search type');
     $('#searchType').focus();
   }
 });
+
