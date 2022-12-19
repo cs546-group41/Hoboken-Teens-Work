@@ -47,19 +47,21 @@ const upload = multer({
 });
 
 
-router.use(function (req, res, next) {
-    //authentication
-    if (!req.session.user){ 
-        res.send(401);
-        res.render("error",{
-            title: "Error - Unauthorized!",
-            errormsg: "Your request had been reject becuase you had not logged in!"
-        })
-        return
+router.use(async function (req, res, next) {
+    if (!req.session.user){
+        res.status(401)
+        return res.redirect("/login")
+    }else{
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+        res.status(401)
+        return res.redirect("/login")
+      }
     }
     next();
-});
-
+})
 
 router.route("/upload/:id/:jobId").post(upload.single("resume"), async (req, res) => {
     try {
@@ -95,6 +97,7 @@ router.route("/upload/:id/:jobId").post(upload.single("resume"), async (req, res
     //other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
 });
 
 router.route("/download/:jobId/:id").get(async (req, res) => {
@@ -120,6 +123,7 @@ router.route("/download/:jobId/:id").get(async (req, res) => {
 	//other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
 });
 
 

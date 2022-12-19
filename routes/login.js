@@ -25,6 +25,7 @@ router.route("/").get(async (req, res) => {
       hideLogin: true 
     });
   }
+  return
 })
 .post(async (req, res) => {
   //if the input match the data in the database, then will store a cookie otherwise re-render the page with error msg
@@ -66,6 +67,7 @@ router.route("/").get(async (req, res) => {
   //other method should not Allowed
   res.status(405)
   res.sendFile(path.resolve("static/inValidRequest.html"));
+  return
 });
 
 module.exports = router;

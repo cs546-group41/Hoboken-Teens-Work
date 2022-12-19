@@ -61,13 +61,30 @@ router.route("/searchJobs").post(async (req, res) => {
     loginUserData: req.session.user,
     searchResults: searchResults
   })
-
+  return
 
 }).all(async (req, res) => {
   //other method should not Allowed
   res.status(405)
   res.sendFile(path.resolve("static/inValidRequest.html"));
+  return
 });
+
+router.use(async function (req, res, next) {
+  if (!req.session.user){
+      res.status(401)
+      return res.redirect("/login")
+  }else{
+    try {
+      await users.getUserById(req.session.user.id)
+    } catch (e) {
+      req.session.destroy()
+      res.status(401)
+      return res.redirect("/login")
+    }
+  }
+  next();
+})
 
 router.route("/createJob")
   .get(async (req, res) => {
@@ -97,6 +114,7 @@ router.route("/createJob")
         phone: userData.phone
       })
     }
+    return
   })
   .post(async (req, res) => {
     if (req.session.user !== undefined) {
@@ -145,11 +163,13 @@ router.route("/createJob")
         errormsg: e
       })
     }
+    return
   })
   .all(async (req, res) => {
     //other method should not Allowed
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
   });
 
 
@@ -180,11 +200,13 @@ router.route("/addComment").post(async (req, res) => {
   } catch (e) {
     res.status(400).json({ results: e });
   }
+  return
 })
   .all(async (req, res) => {
     //other method should not Allowed
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
   });
 
 
@@ -219,11 +241,13 @@ router.route("/saveJob").post(async (req, res) => {
     console.log(e);
     res.status(500).json({ results: e });
   }
+  return
 })
   .all(async (req, res) => {
     //other method should not Allowed
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
   });
 
 router
@@ -248,11 +272,13 @@ router
       console.log(e)
       res.sendStatus(500)
     }
+    return
   })
   .all(async (req, res) => {
     //other method should not Allowed
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
   });
 
 router
@@ -283,11 +309,13 @@ router
       //console.log(e)
       res.sendStatus(500)
     }
+    return
   })
   .all(async (req, res) => {
     //other method should not Allowed
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
   });
 
 router.route("/:id")
@@ -410,11 +438,13 @@ router.route("/:id")
         errormsg: e,
       });
     }
+    return
   })
   .all(async (req, res) => {
     //other method should not Allowed
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
   });
 
 router.route("/:id/editJob")
@@ -434,6 +464,7 @@ router.route("/:id/editJob")
       loginUserData: req.session.user,
       presetJob: jobDetail
     })
+    return
   })
   .post(async (req, res) => {
     //check if login in and if is the author of the job, if not redirect to the job detail page
@@ -480,6 +511,7 @@ router.route("/:id/editJob")
         errormsg: e
       })
     }
+    return
   })
   .all(async (req, res) => {
     //other method should not Allowed
@@ -517,11 +549,13 @@ router.route("/:id/changeStatus")
       //console.log(e)
       res.status(400).json({ results: e })
     }
+    return
   })
   .all(async (req, res) => {
     //other method should not Allowed
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
   });
 
 module.exports = router;

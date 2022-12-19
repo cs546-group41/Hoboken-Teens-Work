@@ -8,13 +8,31 @@ const path = require("path")
 const fs = require('fs')
 const validation = require("../validation")
 
+router.use(async function (req, res, next) {
+    if (!req.session.user){
+        res.status(401)
+        return res.redirect("/login")
+    }else{
+      try {
+        await users.getUserById(req.session.user.id)
+      } catch (e) {
+        req.session.destroy()
+        res.status(401)
+        return res.redirect("/login")
+      }
+    }
+    next();
+})
+
 router.route("/").get(async (req, res) => {
 	res.redirect("/index");
+	return
 })
 .all(async (req, res) => {
 	//other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+	return
 });
 
 router.route("/deleteJob/:id").delete(async (req, res) => {
@@ -53,6 +71,7 @@ router.route("/deleteJob/:id").delete(async (req, res) => {
 	//other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+	return
 });
 
 router.route("/:id").get(async (req, res) => {
@@ -115,6 +134,7 @@ router.route("/:id").get(async (req, res) => {
 	//other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+	return
 });
 
 router.route("/:id/savedJob").get(async (req, res) => {
@@ -153,6 +173,7 @@ router.route("/:id/savedJob").get(async (req, res) => {
 	//other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+	return
 });
 
 
@@ -189,6 +210,7 @@ router.route("/:id/appliedJob").get(async (req, res) => {
 	//other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+	return
 });
 
 
@@ -220,11 +242,13 @@ router.route("/:id/appliedJob/withdraw/:jobId").post(async (req, res) => {
 		//console.log(e)
 		res.sendStatus(500)
 	}
+	return
 })
 .all(async (req, res) => {
 	//other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+	return
 });
 
 
@@ -304,11 +328,13 @@ router.route("/:id/editUser")
 				});
 			}
 		}
+		return
 	})
 	.all(async (req, res) => {
 		//other method should not Allowed
 		res.status(405)
 		res.sendFile(path.resolve("static/inValidRequest.html"));
+		return
 	});
 
 
