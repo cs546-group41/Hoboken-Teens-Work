@@ -525,6 +525,11 @@ select {
   margin-bottom: 2%;
 }
 
+.Share-Btn:hover {
+cursor: pointer;
+
+}
+
 .submitJobBtn {
   background-color: #717871;
   border-radius: 1%;
@@ -560,7 +565,6 @@ a:hover {
   margin-left: 30%;
   margin-top: 20px;
 }
-<<<<<<< HEAD
 .error-text1{
   position: relative;
   left: 25%;
@@ -569,8 +573,7 @@ a:hover {
   position: relative;
   left: 35%;
   margin-top: 15px;
-=======
-
+}
 .list-button-div{
   justify-content: center;
   background-color: #222831;
@@ -592,5 +595,4 @@ a:hover {
   margin: 0 2px;
   text-align: center;
   list-style: none;
->>>>>>> 69ed1095d16377afe7ea034bdb2d9d480b4c5682
 }

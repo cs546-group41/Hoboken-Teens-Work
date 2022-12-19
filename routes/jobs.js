@@ -291,80 +291,78 @@ router
   });
 
 router.route("/:id")
-  .get(async (req, res) => {
-    let isMinor = false;
-    if (req.session.user !== undefined) {
-      try {
-        var user = await users.getUserById(req.session.user.id);
-      } catch (e) {
-        req.session.destroy();
+    .get(async (req, res) => {
+      let isMinor = false;
+      if (req.session.user !== undefined) {
+        try {
+          var user = await users.getUserById(req.session.user.id);
+        } catch (e) {
+          req.session.destroy();
+        }
       }
-    }
-    var login = false;
-    var saved = false;
-    var applied = false;
-
-    //validation1
-    try {
-      var jobId = validation.checkId(req.params.id)
-    } catch (e) {
-      res.status(400)
-      res.redirect("/index")
-      return
-    }
-
-    if (req.session.user) {
-      login = true;
-      isMinor = user.age > 18 ? false : true;
-
-      //validation2
+      var login = false;
+      var saved = false;
+      var applied = false;
+  
+      //validation1
       try {
-        var userId = validation.checkId(req.session.user.id)
+        var jobId = validation.checkId(req.params.id)
       } catch (e) {
         res.status(400)
         res.redirect("/index")
         return
       }
-
-      try {
-        saved = await users.isJobSaved(jobId, userId);
-        applied = await users.isJobApplied(userId, jobId);
-        //console.log(applied)
+  
+      if (req.session.user) {
+        login = true;
+        isMinor = user.age > 18 ? false : true;
+  
+        //validation2
+        try {
+          var userId = validation.checkId(req.session.user.id)
+        } catch (e) {
+          res.status(400)
+          res.redirect("/index")
+          return
+        }
+  
+        try {
+          saved = await users.isJobSaved(jobId, userId);
+          applied = await users.isJobApplied(userId, jobId);
+          //console.log(applied)
+        }
+        catch (e) {
+          res.status(500)
+          return res.render("error", {
+            title: "Error",
+            login: login,
+            errormsg: e,
+          });
+        }
+  
       }
-      catch (e) {
+      try {
+        var jobDetail = await jobs.getJobById(jobId);
+        var isAvaliable = jobDetail.jobStatus === "Finished" ? false : true;
+      } catch (e) {
         res.status(500)
         return res.render("error", {
-          title: "Error",
-          login: login,
+          title: `Posted Job Detail - Error`,
+          login: true,
+          loginUserData: req.session.user,
           errormsg: e,
         });
       }
-
-    }
-    try {
-      var jobDetail = await jobs.getJobById(jobId);
-      var isAvaliable = jobDetail.jobStatus === "Finished" ? false : true;
-    } catch (e) {
-      res.status(500)
-      return res.render("error", {
-        title: `Posted Job Detail - Error`,
-        login: true,
-        loginUserData: req.session.user,
-        errormsg: e,
-      });
-    }
-    try {
-      console.log("find");
-      if (req.session.user && (await users.jobPosterCheck(jobId, userId))) {
-           console.log("find");
+      try {
+        if (req.session.user && (await users.jobPosterCheck(jobId, userId))) {
           return res.render("applicants", {
-          title: `Posted Job Detail - ${jobDetail.jobTitle}`,
-          login: true,
-          loginUserData: req.session.user,
-          jobDetail: jobDetail,
-          saved: saved,
-        });
-      }
+            title: `Posted Job Detail - ${jobDetail.jobTitle}`,
+            login: true,
+            loginUserData: req.session.user,
+            jobDetail: jobDetail,
+            saved: saved,
+          });
+        }
       //console.log(jobDetail);
       try{
         if(req.session.user)
