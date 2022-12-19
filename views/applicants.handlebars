@@ -1,18 +1,19 @@
 <h1 class="IndividualJobsH1">Post Job detail</h1> 
-<button  class="Share-Btn"  id="shareJob" value="user/{{jobDetail.jobAuthor.id}}">Share</button>
-<button onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')">Change Status</button>
+<button  class="Share-Btn"  id="shareJob" value="{{jobId}}">Share</button>
+{{!-- <button onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')">Change Status</button> --}}
 
 
 <div class="individualJobs row">
 
 
 
-<p>Job Title                :    {{jobDetail.jobTitle}}</p>
-<p>Job Description         :    {{jobDetail.jobDescription}}</p>
-<p>Job Tag         :    {{jobDetail.jobTag}}</p>
-<p>Job StreetName      :    {{jobDetail.jobStreetName}}</p>
-<p id="jobStatusMsg">Job Status: {{jobDetail.jobStatus}}</p> 
-<p>Contact Phone Number:    {{jobDetail.jobAuthor.phone}}</p>
+<p class="job-title">{{jobDetail.jobTitle}}</p>
+<p class="job-description">{{jobDetail.jobDescription}}</p>
+<p id="jobStatusMsg" class="job-status">Status: {{jobDetail.jobStatus}}</p>
+<p class="job-tag">Tag: {{jobDetail.jobTag}}</p>
+<p class="job-street-address">Street address      :    {{jobDetail.jobStreetName}}</p>
+<p class="job-author-label">Published by        :    <a class="job-author" href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<p class="job-author-phone">Contact :    {{jobDetail.jobAuthor.phone}}</p>
 
 </div>
 
