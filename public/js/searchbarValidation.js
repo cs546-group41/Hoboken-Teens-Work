@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
   $('#search-form').submit(function(event) {
     var input = $('#jobsInput').val().trim()
