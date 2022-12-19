@@ -1,4 +1,4 @@
-<h1 class="IndividualJobsH1">Job detail</h1> 
+<h1 class="IndividualJobsH1">Job Details</h1> 
 <button  class="Share-Btn"  id="shareJob" value="{{jobDetail._id}}">Share</button>
 {{#if isMinor}}
 {{#if saved}}
@@ -13,13 +13,13 @@
 
 
 
-<p>Job Title                :    {{jobDetail.jobTitle}}</p>
-<p>Job Description         :    {{jobDetail.jobDescription}}</p>
-<p>Job Tag         :    {{jobDetail.jobTag}}</p>
-<p>Job StreetName      :    {{jobDetail.jobStreetName}}</p>
-<p>Job Status          :    {{jobDetail.jobStatus}}</p>
-<p>Published by        :    <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
-<p>Contact Phone Number:    {{jobDetail.jobAuthor.phone}}</p>
+<p class="job-title">{{jobDetail.jobTitle}}</p>
+<p class="job-description">{{jobDetail.jobDescription}}</p>
+<p class="job-status">Status: {{jobDetail.jobStatus}}</p>
+<p class="job-tag">Tag: {{jobDetail.jobTag}}</p>
+<p class="job-street-address">Street address      :    {{jobDetail.jobStreetName}}</p>
+<p class="job-author-label">Published by        :    <a class="job-author" href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<p class="job-author-phone">Contact :    {{jobDetail.jobAuthor.phone}}</p>
 
 
 
