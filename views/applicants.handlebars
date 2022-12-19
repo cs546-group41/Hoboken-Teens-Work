@@ -1,9 +1,9 @@
 <h1 class="IndividualJobsH1">Job Details</h1> 
 <button  class="Share-Btn"  id="shareJob" value="user/{{jobDetail.jobAuthor.id}}">Share</button>
+<button onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')">Change Status</button>
+
+
 <div class="individualJobs row">
-
-{{!-- <p>Status: <p id="jobStatusMsg">{{jobDetail.jobStatus}}</p> <button onclick="changeStatus('{{jobDetail._id}}','{{jobDetail.jobStatus}}')">Change Status</button> --}}
-
 
 
 
@@ -69,4 +69,6 @@
 
 <p id="value-authorId" class="value-block">{{loginUserData.id}}</p>
 <p id="value-jobId" class="value-block">{{jobDetail._id}}</p>
+
+<script src="/public/js/commentsValidation.js"></script>
 <script src="/public/js/jobPosterOperations.js"></script>
