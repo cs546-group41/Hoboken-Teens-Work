@@ -71,7 +71,6 @@ const createJob = async (jobTitle, jobDescription, jobStreetName, authorId, jobT
 
   const usersCollection = await users();
   const user = await usersCollection.findOne({ _id: ObjectId(authorId) });
-  //console.log(user);
   const newJob = {
     jobTitle: jobTitle,
     jobDescription: jobDescription,
