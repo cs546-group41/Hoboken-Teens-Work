@@ -1,5 +1,5 @@
 <h1 class="IndividualJobsH1">Job detail</h1> 
-<button  class="Share-Btn"  id="shareJob" value="user/{{jobDetail.jobAuthor.id}}">Share</button>
+<button  class="Share-Btn"  id="shareJob" value="{{jobId}}">Share</button>
 {{#if isMinor}}
 {{#if saved}}
     <button class="Share-Btn" onclick='saveJob(this,"{{jobDetail._id}}", true)'>Saved!</button>
@@ -13,13 +13,13 @@
 
 
 
-<p>Job Title                :    {{jobDetail.jobTitle}}</p>
-<p>Job Description         :    {{jobDetail.jobDescription}}</p>
-<p>Job Tag         :    {{jobDetail.jobTag}}</p>
-<p>Job StreetName      :    {{jobDetail.jobStreetName}}</p>
-<p>Job Status          :    {{jobDetail.jobStatus}}</p>
-<p>Published by        :    <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
-<p>Contact Phone Number:    {{jobDetail.jobAuthor.phone}}</p>
+<p> <b>Job Title</b>                 :    {{jobDetail.jobTitle}}</p>
+<p><b>Job Description</b>         :    {{jobDetail.jobDescription}}</p>
+<p><b>Job Tag</b>         :    {{jobDetail.jobTag}}</p>
+<p><b>Job StreetName</b>      :    {{jobDetail.jobStreetName}}</p>
+<p><b>Job Status</b>          :    {{jobDetail.jobStatus}}</p>
+<p><b>Published by</b>        :    <a href="/user/{{jobDetail.jobAuthor.id}}">{{jobDetail.jobAuthor.name}}</a></p> 
+<p><b>Contact Phone Number</b>  :    {{jobDetail.jobAuthor.phone}}</p>
 
 
 

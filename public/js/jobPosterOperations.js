@@ -95,6 +95,18 @@ function downloadResume(obj, applicantId){
     console.log(obj.parentNode.href)
 }
 
+// //share job
+
+const shareBtn = document.getElementById("shareJob")
+if(shareBtn){
+    shareBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        console.log(window.location.hostname+shareBtn.value);
+
+  navigator.clipboard.writeText("http://localhost:3000/job/"+shareBtn.value);
+  alert("Copied URL to clipboard");
+    });
+}
 
 const addCommentForm = document.getElementById("add-comment")
 if(addCommentForm){
