@@ -26,6 +26,7 @@ router.route("/searchJobs").post(async (req, res) => {
     return res.render("error", {
       title: "Search Results - Error",
       login: false,
+      msg: "No Results Found",
       errormsg: e
     })
   }
@@ -50,6 +51,7 @@ router.route("/searchJobs").post(async (req, res) => {
     return res.render("error", {
       title: "Search Results - Error",
       login: false,
+      msg: "No Results Found",
       errormsg: e
     })
   }
