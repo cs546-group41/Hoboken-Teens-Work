@@ -47,7 +47,7 @@ router.route("/").get(async (req, res) => {
 			 for(i = 0; i < 15; i++) {
 			  description += `${words[i]} `;
 			 }
-			 console.log(description);
+			 //console.log(description);
 			 job.jobDescription = description.trim() + "...";
 		  }
 	}
@@ -59,11 +59,13 @@ router.route("/").get(async (req, res) => {
 		jobList: jobData,
 		errormsg: errormsg,
 	});
+	return
 })
 .all(async(req,res)=>{
 	//other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+	return
 });
 
 module.exports = router;
