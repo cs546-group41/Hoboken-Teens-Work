@@ -694,3 +694,13 @@ a:hover {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.login-title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.registration-title {
+  font-size: 30px;
+  font-weight: bold;
+}
