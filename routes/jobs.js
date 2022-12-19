@@ -387,6 +387,7 @@ router.route("/:id")
             login: true,
             loginUserData: req.session.user,
             jobDetail: jobDetail,
+            jobId:req.params.id,
             saved: saved,
           });
         }

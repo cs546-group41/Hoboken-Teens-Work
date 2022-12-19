@@ -1,5 +1,5 @@
-<h1 class="IndividualJobsH1">Job Details</h1> 
-<button  class="Share-Btn"  id="shareJob" value="{{jobDetail._id}}">Share</button>
+<h1 class="IndividualJobsH1">Job detail</h1> 
+<button  class="Share-Btn"  id="shareJob" value="{{jobId}}">Share</button>
 {{#if isMinor}}
 {{#if saved}}
     <button class="Share-Btn" onclick='saveJob(this,"{{jobDetail._id}}", true)'>Saved!</button>
@@ -67,7 +67,11 @@
                     <p>(File need to be Pdf file and less than 4MB)</p>
                     <input type="file" id="resume" name="resume" accept="application/pdf"/>
                     <span id="resumeError"></span>
+<<<<<<< HEAD
+                    <button id="applyJobButton">Upload</button>
+=======
                     <button id="applyJobButton" class="value-block">Upload</button>
+>>>>>>> f71d666cd3c62546b9395a0826708abfd29b400c
                     <br>
                     <div class="form-group hidden" id="error-container">
 		                <div class="alert alert-danger text-goes-here"></div>
