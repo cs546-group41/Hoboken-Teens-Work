@@ -108,6 +108,7 @@ if(shareBtn){
     });
 }
 
+/*
 const addCommentForm = document.getElementById("add-comment")
 if(addCommentForm){
     addCommentForm.addEventListener('submit', (event) => {
@@ -136,5 +137,5 @@ if(addCommentForm){
         xhttp.send(`jobId=${this.jobId.value}&comment=${this.comment.value}`);
     });
 }
-
+*/
 initialize()

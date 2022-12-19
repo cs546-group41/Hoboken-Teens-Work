@@ -164,11 +164,16 @@ const withdrawJobApplication = async (jobId, applicantId) => {
 	jobId = validation.checkId(jobId);
 	applicantId = validation.checkId(applicantId);
 	const userCollection = await users()
-    const userUpdate = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied : { id: jobId }} })
+    var userUpdate = await userCollection.updateOne({ _id: ObjectId(applicantId) }, { $pull: { jobsApplied : { id: jobId }} })
 	if (!userUpdate.matchedCount && !userUpdate.modifiedCount) throw "Withdraw Failed!";
 	const jobCollection = await jobs()
-	const jobUpdate = await jobCollection.updateOne({ _id: ObjectId(jobId) },  {$pull: {applicants:{ applicantId: applicantId}}})
+	var jobUpdate = await jobCollection.updateOne({ _id: ObjectId(jobId) },  {$pull: {applicants:{ applicantId: applicantId}}})
 	if (!jobUpdate.matchedCount && !jobUpdate.modifiedCount) throw "Withdraw Failed!";
+	jobUpdate = await jobCollection.updateOne({ _id: ObjectId(jobId) },  {$set: {jobStatus:"Open"}})
+	if (!jobUpdate.matchedCount && !jobUpdate.modifiedCount) throw "Withdraw Failed!";
+	userUpdate = await userCollection.updateOne({ _id: ObjectId(applicantId) },  {$pull: {hiredForJobs:{ id: jobId}}})
+	if (!userUpdate.matchedCount && !userUpdate.modifiedCount) throw "Withdraw Failed!";
+
 };
 
 const loginCheck = async (email, pwd) => {
