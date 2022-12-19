@@ -57,11 +57,13 @@ router.route("/").get(async (req, res) => {
 		jobList: jobData,
 		errormsg: errormsg,
 	});
+	return
 })
 .all(async(req,res)=>{
 	//other method should not Allowed
 	res.status(405)
 	res.sendFile(path.resolve("static/inValidRequest.html"));
+	return
 });
 
 module.exports = router;

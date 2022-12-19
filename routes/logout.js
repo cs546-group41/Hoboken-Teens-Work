@@ -9,10 +9,12 @@ router
     req.session.destroy((err) => {
       res.redirect('/index')
     })
+    return
   })
   .all(async (req, res) => {
     //other method should not Allowed
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
   });
 module.exports = router

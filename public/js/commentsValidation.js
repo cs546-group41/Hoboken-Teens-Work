@@ -1,38 +1,3 @@
-/*
-
-function checkComment(comment){
-    if (!comment) throw "Must provide a comment";
-    return comment
-}
-
-
-const staticForm = document.getElementById("add-comment")
-
-if (staticForm) {
-    const Input = document.getElementById("comment")
-
-    const errorContainer = document.getElementById('error-container')
-    const errorTextElem = document.getElementsByClassName('text-goes-here')[0];
-
-    staticForm.addEventListener('submit', (event) => {
-        try {
-            errorContainer.classList.add('hidden')
-            const commentInput = Input.value;
-            const commentInputTrimmed = commentInput.trim()
-            if(commentInputTrimmed.length === 0) throw "Enter something in the comment box before clicking the submit button"
-            console.log(commentInput)
-            const validatedComment = checkComment(commentInput)
-            if (validatedComment) {
-                errorContainer.style.display = "none"
-            }
-        } catch (e) {
-            event.preventDefault();
-            errorTextElem.textContent = "Error: " + e
-            errorContainer.style.display = "block"
-        }
-    })
-}*/
-
 $(document).ready(function () {
     $("#add-comment").submit(function(event){
         event.preventDefault();
