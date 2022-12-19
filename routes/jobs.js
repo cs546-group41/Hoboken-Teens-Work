@@ -109,7 +109,7 @@ router.route("/createJob")
       res.render("createJob", {
         title: "Creating New Job",
         login: true,
-        loginUserData: userData,
+        loginUserData: req.session.user,
         phone: userData.phone
       })
     }

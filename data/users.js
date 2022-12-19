@@ -11,7 +11,11 @@ const createUser = async (firstName, lastName, email, age, password, phone) => {
 	lastName = validation.checkLastName(lastName);
 	email = validation.checkEmail(email);
 	age = validation.checkAge(age);
-	phone = validation.checkPhone(phone);
+	if(!phone) {
+		phone = "N/A";
+	} else {
+		phone = validation.checkPhone(phone);
+	}
 	password = validation.checkPassword(password);
 	const hashedPassword = validation.encryptPwd(password);
 	const userCollection = await users();
