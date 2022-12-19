@@ -274,6 +274,18 @@ const isJobApplied = async (userId, jobId) => {
 	return false
 }
 
+const changeNameForAllJobs = async(userId, firstName, lastName, phone)=> {
+	userId = validation.checkId(userId);
+	firstName = validation.checkFirstName(firstName);
+	lastName = validation.checkLastName(lastName);
+	phone = validation.checkPhone(phone)
+	const jobCollection = await jobs()
+	await jobCollection.updateMany({"applicants.applicantId": userId},{$set: {"applicants.$.name": `${firstName} ${lastName}`}})
+	await jobCollection.updateMany({"jobAuthor.id": userId},{$set: {"jobAuthor.name": `${firstName} ${lastName}`}})
+	await jobCollection.updateMany({"jobAuthor.id": userId},{$set: {"jobAuthor.phone": `${phone}`}})
+	await jobCollection.updateMany({"comments.authorId": userId},{$set: {"comments.$.name": `${firstName} ${lastName}`}})
+}
+
 
 module.exports = {
 	createUser,
@@ -295,4 +307,5 @@ module.exports = {
 	applyForJob,
 	isJobHired,
 	isJobApplied,
+	changeNameForAllJobs
 };
