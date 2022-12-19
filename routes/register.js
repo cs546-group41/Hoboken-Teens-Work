@@ -6,8 +6,7 @@ const validation = require("../validation");
 const xss = require("xss");
 const path = require("path")
 
-router
-  .route("/")
+router.route("/")
   .get(async (req, res) => {
     //simple render the register page, if already logged in, will not see this page
     if (req.session.user) return res.redirect("/index");
@@ -16,6 +15,7 @@ router
       login: false,
       hideLogin: true
     });
+    return
   })
   .post(async (req, res) => {
     //code here for POST
@@ -60,11 +60,13 @@ router
         errormsg: e
       })
     }
+    return
   })
   .all(async (req, res) => {
     //other method should not Allowed
     res.status(405)
     res.sendFile(path.resolve("static/inValidRequest.html"));
+    return
   });
 
 module.exports = router;

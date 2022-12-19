@@ -9,7 +9,8 @@ $(document).ready(function() {
     } else {
       event.preventDefault();
       $('#error').show();
-      $('#error').html('Only Support alphanumeric characters!');
+      if (input) $('#error').html('Only Support alphanumeric characters!');
+      else $('#error').html('Empty string was recieved!');
       $('#jobsInput').focus();
     }
   })
